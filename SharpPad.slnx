@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+  </Folder>
+  <Project Path="MonacoRoslynCompletionProvider\MonacoRoslynCompletionProvider.csproj" />
+  <Project Path="SharpPad\SharpPad.csproj" />
+  <Project Path="SharpPad.Desktop\SharpPad.Desktop.csproj" />
+  <Project Path="SharpPad.ExecutionHost\SharpPad.ExecutionHost.csproj" />
+  <Project Path="src\SharpPad.SqlTool\SharpPad.SqlTool.csproj" />
+  <Project Path="src\SharpPad.SqlCore\SharpPad.SqlCore.csproj" />
+  <Project Path="src\SharpPad.SqlCore.Tests\SharpPad.SqlCore.Tests.csproj" />
+  <Project Path="src\RoslynTest\RoslynTest.csproj" />
+</Solution>

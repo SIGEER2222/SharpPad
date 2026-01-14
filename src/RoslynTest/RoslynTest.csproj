@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.15.2" />
+		<PackageReference Include="coverlet.collector" Version="6.0.2" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageReference Include="xunit" Version="2.9.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+		<PackageReference Include="Serilog.Sinks.Xunit2" Version="1.1.0" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+		<PackageReference Update="SqlSugarCore" Version="5.1.4.187" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Serilog" Version="*" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="*" />
+		<PackageReference Include="Serilog.Sinks.File" Version="*" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="*" />
+		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+		<PackageReference Include="System.Reactive" Version="6.0.1" />
+		<PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GiGraph.Dot" Version="4.1.0" />
+		
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Reactive" Version="6.0.0" />
+		<PackageReference Include="System.Runtime.Loader" Version="4.*" />
+
+		<PackageReference Include="Buildalyzer" Version="6.*" />
+		<PackageReference Include="Buildalyzer.Workspaces" Version="6.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.*"></PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.11.0" />
+		<PackageReference Include="YamlDotNet" Version="16.0.0" />
+	</ItemGroup>
+
+</Project>

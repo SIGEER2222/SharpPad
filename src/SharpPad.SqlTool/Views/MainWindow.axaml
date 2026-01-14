@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SharpPad.SqlTool.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ae="using:AvaloniaEdit"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SharpPad.SqlTool.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SharpPad.SqlTool">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto, *, Auto">
+        <!-- Toolbar -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="5">
+            <TextBlock Text="Connection:" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Grid.Column="1" Text="{Binding ConnectionString}" Margin="5"/>
+            <Button Grid.Column="2" Content="Execute" Command="{Binding ExecuteCommand}" Margin="5"/>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" ColumnDefinitions="*, 5, *" Margin="5">
+            <!-- Editor Area -->
+            <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1">
+                <ae:TextEditor Name="Editor"
+                               ShowLineNumbers="True"
+                               FontFamily="Cascadia Code,Consolas,Monospace"
+                               FontSize="14"/>
+            </Border>
+
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
+
+            <!-- Results Area -->
+            <DataGrid Grid.Column="2" 
+                      ItemsSource="{Binding Results}" 
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"
+                      GridLinesVisibility="All"
+                      BorderThickness="1" BorderBrush="Gray"/>
+        </Grid>
+
+        <!-- Status Bar -->
+        <TextBlock Grid.Row="2" Text="{Binding Status}" Margin="5"/>
+    </Grid>
+
+</Window>
