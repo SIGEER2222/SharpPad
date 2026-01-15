@@ -3,65 +3,58 @@
 SharpPad 是一个面向 C# 开发者的代码实验与 AI 辅助平台，结合 Monaco 编辑器、Roslyn 编译服务与多实例管理，在浏览器或桌面端提供即时运行、补全与聊天体验。
 
 ## 解决方案结构
-- `SharpPad/`：ASP.NET Core 8/9 Web 应用，提供代码执行、语言服务 API 与静态资源托管。
-- `SharpPad.Desktop/`：基于 Avalonia 的跨平台桌面壳层，嵌入 WebView 并复用 Web 项目。
-- `MonacoRoslynCompletionProvider/`：Roslyn 驱动的语言服务库，对外暴露补全、格式化与多文件分析能力。
-- `Program.cs`：命令行入口演示 `InstanceManager` 的端口分配策略，便于调试多实例场景。
-- `KingOfTool/`：示例脚本与配置集合，可导入到应用中快速体验常用片段。
+- `SharpPad.GrpcEditor/`：**核心服务**。基于 ASP.NET Core gRPC 的后端服务，负责承载编辑器逻辑与语言服务。
+    - `Client/`：基于 React + Vite + Monaco Editor 的现代化前端。
+    - `Services/`：包含 `EditorService`，通过 gRPC 暴露语言功能。
+    - `Protos/`：定义前后端通信契约。
+- `SharpPad.SqlCore/`：**核心逻辑库**。封装了 Roslyn 分析、编译、执行与动态加载的核心实现。
+    - `Implementations/ProjectAnalysisSession.cs`：管理项目分析会话。
+    - `Implementations/DynamicCodeExecutor.cs`：负责动态加载程序集并执行代码。
+- `SharpPad/` & `SharpPad.Desktop/`：*（旧版/遗留）* 原有的 REST API 实现与 Avalonia 桌面壳层，现逐步迁移至 gRPC 架构。
+- `KingOfTool/`：示例脚本与配置集合。
 
-## Web 应用 (SharpPad)
+## 核心组件 (SharpPad.GrpcEditor)
 
-### 后端 API
-- `CompletionController` 调用 MonacoRoslynCompletionProvider，提供补全、签名提示、Hover、格式化、语义 Token 与多文件诊断。
-- `CodeRunController` 使用 `CodeRunner` 运行单文件或多文件 C# 程序，通过通道与 SSE 流式推送输出和错误。
-- `ChatController` 作为 AI 对话代理，从 `X-Endpoint` 头读取目标模型地址，保持授权信息和响应流。
+### 后端架构
+- **EditorService**：gRPC 服务入口，处理前端的所有编辑器请求（补全、高亮、执行等）。
+- **ProjectAnalysisSession**：有状态的会话管理器，维护 Roslyn Workspace 与 Project 状态，提供增量编译与分析。
+- **DynamicCodeExecutor**：使用 `AssemblyLoadContext` 实现代码的隔离执行与卸载，并支持 **控制台输出捕获**。
 
-### 框架配置
-- `Program.cs` 结合 `InstanceManager` 自动选择端口，开启静态文件、CORS、Swagger 与控制器路由。
-- 依赖 `Microsoft.AspNetCore.Mvc.NewtonsoftJson`、`Swashbuckle` 等组件，并在 `SharpPad.csproj` 中复制运行期 DLL 与资源。
-- `Services/InstanceManager` 默认占用 5090 端口，检测冲突后回退到可用端口，同时提供占用端口查询。
+### 前端架构 (Client)
+- **Monaco Editor**：核心编辑器，配置了 C# 语言特性。
+- **gRPC Client**：使用 `grpc-web` 或 `protobufjs` 与后端通信。
+- **功能特性**：
+    - **智能感知**：代码补全、悬停提示、签名帮助。
+    - **语义高亮**：基于 Roslyn 语义分析的精准着色。
+    - **即时运行**：一键编译运行，并在 UI 上查看结果。
 
-### 前端模块
-- `wwwroot/index.js` 作为入口，按需加载 Monaco、初始化文件系统、NuGet 管理、执行管线与通知。
-- `editor/` 管理编辑器状态与命令绑定，`execution/` 负责运行、输出面板和状态提示。
-- `fileSystem/` 维护本地存储、导入导出与目录视图，支持多目录和只看当前目录模式。
-- `components/nuget/` 构建包引用 UI，`chat/` 与 `utils/` 提供 AI 交互、API 调用与公共工具。
-- 静态资源包含 `monaco-editor`、样式、Markdown 和图标，并支持多模型切换与语义着色。
+## 开发指南
 
-## 桌面宿主 (SharpPad.Desktop)
-- 使用 Avalonia 11 + WebView.Avalonia，Windows/非 Windows 统一以 `net10.0` 目标编译。
-- `App.axaml` 与 `MainWindow` 配置 WebView，配合 `WebServerManager` 启动/停止嵌入的 ASP.NET Core 服务。
-- `WebServerManager` 处理发布包与开发环境路径，托管 `SharpPad.Program.ConfigureServices/Configure`。
-- `SharpPad.Desktop.csproj` 发布阶段复制 `wwwroot` 与 `appsettings.json`，并清理多余语言资源。
+## 要求
+每次更改之后必须经过验证，包括但不限于dotnet build
+npm build dev
+调用chrome devtool mcp等等
 
-## MonacoRoslynCompletionProvider
-- 以 .NET 8/9 为目标，引用 Microsoft.CodeAnalysis 4.14 系列包并使用 `IgnoresAccessChecksTo` 解锁内部特性。
-- `MonacoRequestHandler` 集成补全、签名帮助、Hover、Definition、语义 Token、格式化与多文件 CodeCheck。
-- `CodeRunner` 支持多文件运行、NuGet 包解析、语言版本选择与流式回调，用于 Web 与桌面端的执行功能。
+### 环境要求
+- .NET 10.0 SDK
+- Node.js 18+ (用于构建前端)
 
-## 多实例与工具
-- `SharpPad.Services.InstanceManager` 与桌面端同名实现负责端口探测，确保主实例 5090、其余实例使用动态端口。
-- 根目录 `Program.cs` 和 `TestInstanceManager.cs` 可用于验证端口分配逻辑，`TestInstance.csproj` 提供轻量入口。
-- `publish/`、`SharpPad.app/` 与脚本如 `package-macos.sh`、`docker-compose.yml` 帮助分发与容器化部署。
+### 构建与运行
+1.  **启动后端**：
+    ```bash
+    cd src/SharpPad.GrpcEditor
+    dotnet run
+    ```
+2.  **启动前端**：
+    ```bash
+    cd src/SharpPad.GrpcEditor/Client
+    npm install
+    npm run dev
+    ```
 
-## 构建与运行
-- 恢复依赖：`dotnet restore SharpPad.sln`
-- 编译调试：`dotnet build SharpPad.sln -c Debug`
-- 启动 Web：`dotnet run --project SharpPad/SharpPad.csproj`
-- 启动桌面：`dotnet run --project SharpPad.Desktop/SharpPad.Desktop.csproj`
-- 容器体验：在根目录执行 `docker compose up --build`
+### 关键特性实现
+- **输出重定向**：后端 `DynamicCodeExecutor` 捕获 `Console.Out`，通过 `ExecuteCodeReply` 返回给前端显示。
+- **语义着色**：后端 `SemanticTokensBuilder` 生成语义 Token，前端通过 Monaco Theme 进行自定义渲染。
 
-## 开发约定
-- C# 使用四空格缩进，类型与公共成员使用 PascalCase，参数与局部变量使用 camelCase，私有字段 `_camelCase`。
-- 控制器保持精简，复杂逻辑放入服务或独立模块，优先使用异步 API。
-- 静态资源、文件与目录命名保持英文，并避免泄露敏感配置；生产密钥放入安全存储或环境变量。
-- 新功能优先复用现有服务与前端模块，跨端共用逻辑置于 `SharpPad` 项目内。
-
-## 测试与质量
-- 目前尚未建立单元测试项目，新增覆盖建议使用 xUnit 并创建 `SharpPad.Tests/*Tests.cs`。
-- 建议在提交前执行 `dotnet build` 或 `dotnet test`，为 AI 相关改动补充回归验证脚本。
-
-## 文档与示例
-- `README.md`（中文）与 `README_EN.md` 提供快速上手与特性说明，`README-Desktop.md` 针对桌面版本。
-- `KingOfTool` 目录收录可导入的示例脚本、调试指南与多文件样例。
-- `RoslynPad技术研究报告.md` 记录语言服务调研结果，可用于扩展 Monaco 能力。
+## 维护记录
+- **2026-01-15**：迁移至 gRPC 架构，增强输出捕获能力，优化编辑器体验。

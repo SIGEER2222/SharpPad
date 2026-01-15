@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+option csharp_namespace = "SharpPad.GrpcEditor.Protos";
+
+package editor;
+
+service EditorService {
+  rpc Initialize (InitializeRequest) returns (InitializeReply);
+  rpc GetCompletions (CompletionRequest) returns (CompletionReply);
+  rpc GetHoverInfo (HoverInfoRequest) returns (HoverInfoReply);
+  rpc GetSignatureHelp (SignatureHelpRequest) returns (SignatureHelpReply);
+  rpc GetDefinition (DefinitionRequest) returns (DefinitionReply);
+  rpc GetSemanticTokens (SemanticTokensRequest) returns (SemanticTokensReply);
+  rpc FormatCode (FormatCodeRequest) returns (FormatCodeReply);
+  rpc GetDiagnostics (DiagnosticsRequest) returns (DiagnosticsReply);
+  rpc GetQuickFixes (QuickFixRequest) returns (QuickFixReply);
+  rpc ExecuteCode (ExecuteCodeRequest) returns (ExecuteCodeReply);
+}
+
+message InitializeRequest {
+  string projectPath = 1;
+  repeated string assemblyPaths = 2;
+}
+
+message InitializeReply {
+  bool success = 1;
+  string errorMessage = 2;
+}
+
+message CompletionRequest {
+  string code = 1;
+  int32 position = 2;
+}
+
+message CompletionReply {
+  repeated CompletionItem items = 1;
+}
+
+message CompletionItem {
+  string displayText = 1;
+  string insertText = 2;
+  string kind = 3;
+}
+
+message HoverInfoRequest {
+  string code = 1;
+  int32 position = 2;
+}
+
+message HoverInfoReply {
+  bool hasInfo = 1;
+  string information = 2;
+  int32 offsetFrom = 3;
+  int32 offsetTo = 4;
+}
+
+message SignatureHelpRequest {
+  string code = 1;
+  int32 position = 2;
+}
+
+message SignatureHelpReply {
+  bool hasHelp = 1;
+  repeated SignatureItem signatures = 2;
+  int32 activeParameter = 3;
+  int32 activeSignature = 4;
+}
+
+message SignatureItem {
+  string label = 1;
+  string documentation = 2;
+  repeated ParameterItem parameters = 3;
+}
+
+message ParameterItem {
+  string label = 1;
+  string documentation = 2;
+}
+
+message DefinitionRequest {
+  string code = 1;
+  int32 position = 2;
+}
+
+message DefinitionReply {
+  bool hasDefinition = 1;
+  string filePath = 2;
+  int32 line = 3;
+  int32 column = 4;
+}
+
+message SemanticTokensRequest {
+  string code = 1;
+}
+
+message SemanticTokensReply {
+  repeated int32 data = 1;
+}
+
+message FormatCodeRequest {
+  string code = 1;
+}
+
+message FormatCodeReply {
+  string formattedCode = 1;
+}
+
+message DiagnosticsRequest {
+  string code = 1;
+}
+
+message DiagnosticsReply {
+  repeated DiagnosticItem diagnostics = 1;
+}
+
+message QuickFixRequest {
+  string code = 1;
+  int32 position = 2;
+}
+
+message QuickFixReply {
+  repeated QuickFixItem fixes = 1;
+}
+
+message QuickFixItem {
+  string title = 1;
+  string newText = 2;
+  int32 spanStart = 3;
+  int32 spanLength = 4;
+}
+
+message ExecuteCodeRequest {
+  string code = 1;
+  string typeName = 2;
+  string methodName = 3;
+}
+
+message ExecuteCodeReply {
+  bool success = 1;
+  string output = 2; // For simple string output
+  string errorMessage = 3;
+  repeated DiagnosticItem diagnostics = 4;
+  string consoleOutput = 5;
+}
+
+message DiagnosticItem {
+  string id = 1;
+  string message = 2;
+  string severity = 3;
+  int32 line = 4;
+  int32 column = 5;
+}

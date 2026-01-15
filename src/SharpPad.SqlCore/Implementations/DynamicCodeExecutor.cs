@@ -9,13 +9,18 @@ namespace SharpPad.SqlCore.Implementations
 {
     public class DynamicCodeExecutor : IDynamicCodeExecutor
     {
-        public async Task<object?> ExecuteMethodAsync(byte[] assemblyBytes, string typeName, string methodName, object?[]? parameters = null)
+        public async Task<(object? Result, string ConsoleOutput)> ExecuteMethodAsync(byte[] assemblyBytes, string typeName, string methodName, object?[]? parameters = null)
         {
             using var stream = new MemoryStream(assemblyBytes);
             var context = new AssemblyLoadContext("DynamicContext", isCollectible: true);
+            
+            var originalOut = Console.Out;
+            using var stringWriter = new StringWriter();
 
             try
             {
+                Console.SetOut(stringWriter);
+
                 var assembly = context.LoadFromStream(stream);
                 var type = assembly.GetType(typeName);
                 if (type == null)
@@ -38,13 +43,14 @@ namespace SharpPad.SqlCore.Implementations
 
                     // Get Task<TResult> result if available
                     var resultProperty = task.GetType().GetProperty("Result");
-                    return resultProperty?.GetValue(task);
+                    return (resultProperty?.GetValue(task), stringWriter.ToString());
                 }
 
-                return result;
+                return (result, stringWriter.ToString());
             }
             finally
             {
+                Console.SetOut(originalOut);
                 context.Unload();
             }
         }

@@ -11,5 +11,6 @@ namespace SharpPad.SqlCore.Models
         public IEnumerable<string> CompilationErrors { get; set; } = Array.Empty<string>();
         public IEnumerable<DiagnosticResult> Diagnostics { get; set; } = Array.Empty<DiagnosticResult>();
         public string? ErrorMessage { get; set; }
+        public string? ConsoleOutput { get; set; }
     }
 }

@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Completion;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FindSymbols;
+using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Extensions.Logging;
 using SharpPad.SqlCore.Interfaces;
 using SharpPad.SqlCore.Models;
+using System.Xml.Linq;
 
 namespace SharpPad.SqlCore.Implementations
 {
@@ -18,32 +24,51 @@ namespace SharpPad.SqlCore.Implementations
         private readonly ICodeCompiler _codeCompiler;
         private readonly IDynamicCodeExecutor _codeExecutor;
         private readonly IPerformanceMeasurer _performanceMeasurer;
+        private readonly ILogger<ProjectAnalysisSession> _logger;
 
         private Project? _baseProject;
         private bool _initialized;
         private bool _disposed;
+        private readonly SemaphoreSlim _initLock = new SemaphoreSlim(1, 1);
+
+        public bool IsInitialized => _initialized;
 
         public ProjectAnalysisSession(
             IAssemblyLoader assemblyLoader,
             IWorkspaceProjectAnalyzer projectAnalyzer,
             ICodeCompiler codeCompiler,
             IDynamicCodeExecutor codeExecutor,
-            IPerformanceMeasurer performanceMeasurer)
+            IPerformanceMeasurer performanceMeasurer,
+            ILogger<ProjectAnalysisSession> logger)
         {
             _assemblyLoader = assemblyLoader;
             _projectAnalyzer = projectAnalyzer;
             _codeCompiler = codeCompiler;
             _codeExecutor = codeExecutor;
             _performanceMeasurer = performanceMeasurer;
+            _logger = logger;
         }
 
         public async Task InitializeAsync(string projectPath, IEnumerable<string> assemblyPaths)
         {
+            _logger.LogInformation("InitializeAsync called for {ProjectPath}", projectPath);
             if (_initialized)
-                throw new InvalidOperationException("Session already initialized");
+            {
+                _logger.LogWarning("Session already initialized. Returning.");
+                return;
+            }
 
+            await _initLock.WaitAsync();
             try
             {
+                if (_initialized)
+                {
+                    _logger.LogWarning("Session already initialized (Double Check). Returning.");
+                    return;
+                }
+
+                _logger.LogInformation("Starting initialization...");
+
                 // 1. Load Assemblies (One-time)
                 _performanceMeasurer.Measure("Initialize - Load Assemblies", () => {
                     _assemblyLoader.LoadAssemblies(assemblyPaths);
@@ -54,12 +79,51 @@ namespace SharpPad.SqlCore.Implementations
                     return await _projectAnalyzer.AnalyzeProjectAsync(projectPath);
                 });
 
+                // Remove Program.cs to avoid conflict with user script
+                if (_baseProject != null)
+                {
+                    var programDoc = _baseProject.Documents.FirstOrDefault(d => d.Name == "Program.cs");
+                    if (programDoc != null)
+                    {
+                        _baseProject = _baseProject.RemoveDocument(programDoc.Id);
+                    }
+
+                    // Inject DumpExtensions
+                    var dumpSource = @"
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+public static class DumpExtensions
+{
+    public static T Dump<T>(this T obj, string title = null)
+    {
+        var options = new JsonSerializerOptions 
+        { 
+            WriteIndented = true, 
+            ReferenceHandler = ReferenceHandler.IgnoreCycles 
+        };
+        var payload = new { title = title, data = obj };
+        var json = JsonSerializer.Serialize(payload, options);
+        Console.WriteLine($""$$DUMP$${json}"");
+        return obj;
+    }
+}";
+                    _baseProject = _baseProject.AddDocument("DumpExtensions.cs", dumpSource).Project;
+                }
+
                 _initialized = true;
+                _logger.LogInformation("Session initialization completed successfully.");
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Session initialization failed.");
                 _initialized = false;
                 throw;
+            }
+            finally
+            {
+                _initLock.Release();
             }
         }
 
@@ -108,7 +172,7 @@ namespace SharpPad.SqlCore.Implementations
                 }
 
                 // 4. Run Method (Every time)
-                var executionResult = await _performanceMeasurer.MeasureAsync("Execute - Run Method", async () => {
+                var (resultValue, consoleOutput) = await _performanceMeasurer.MeasureAsync("Execute - Run Method", async () => {
                     return await _codeExecutor.ExecuteMethodAsync(
                         compilationResult.AssemblyBytes!,
                         typeName,
@@ -119,8 +183,9 @@ namespace SharpPad.SqlCore.Implementations
                 return new CodeExecutionResult
                 {
                     Success = true,
-                    ExecutionResult = executionResult,
-                    ExecutionResultType = executionResult?.GetType().FullName
+                    ExecutionResult = resultValue,
+                    ExecutionResultType = resultValue?.GetType().FullName,
+                    ConsoleOutput = consoleOutput
                 };
             }
             catch (Exception ex)
@@ -178,38 +243,209 @@ namespace SharpPad.SqlCore.Implementations
 
             if (errorAtPosition != null)
             {
-                // Basic manual Quick Fix implementation for demo purposes
-                // Real implementation would require loading CodeFixProviders from assemblies
-                var fixes = new List<CodeFixResult>();
-
-                if (errorAtPosition.Id == "CS0246" || errorAtPosition.Id == "CS0103") // The type or namespace name '...' could not be found
-                {
-                    var message = errorAtPosition.GetMessage();
-                    // Heuristic: Check common missing namespaces
-                    if (message.Contains("SqlSugar"))
-                    {
-                        fixes.Add(new CodeFixResult 
-                        { 
-                            Title = "Add using SqlSugar;", 
-                            NewText = "using SqlSugar;\n" + code,
-                            Span = new TextSpan(0, 0)
-                        });
-                    }
-                    if (message.Contains("List"))
-                    {
-                        fixes.Add(new CodeFixResult 
-                        { 
-                            Title = "Add using System.Collections.Generic;", 
-                            NewText = "using System.Collections.Generic;\n" + code,
-                            Span = new TextSpan(0, 0)
-                        });
-                    }
-                }
-                
-                return fixes;
+                return await CodeActionBuilder.GetCodeActionsForDiagnosticAsync(document, errorAtPosition, default);
             }
 
             return Enumerable.Empty<CodeFixResult>();
+        }
+
+        public async Task<HoverInfoResult?> GetHoverInfoAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        {
+            if (!_initialized || _baseProject == null)
+                throw new InvalidOperationException("Session not initialized");
+
+            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var semanticModel = await document.GetSemanticModelAsync();
+            if (semanticModel == null) return null;
+
+            var syntaxRoot = await document.GetSyntaxRootAsync();
+            if (syntaxRoot == null) return null;
+
+            var expressionNode = syntaxRoot.FindToken(position).Parent;
+            if (expressionNode == null) return null;
+
+            // Handle specific node types for better hover info
+            if (expressionNode is VariableDeclaratorSyntax varDecl)
+            {
+                var childNode = varDecl.ChildNodes().FirstOrDefault()?.ChildNodes().FirstOrDefault();
+                if (childNode != null)
+                {
+                    var typeInfo = semanticModel.GetTypeInfo(childNode);
+                    if (typeInfo.Type != null)
+                    {
+                        var loc = expressionNode.GetLocation();
+                        return new HoverInfoResult
+                        {
+                            Information = typeInfo.Type.ToDisplayString(),
+                            OffsetFrom = loc.SourceSpan.Start,
+                            OffsetTo = loc.SourceSpan.End
+                        };
+                    }
+                }
+            }
+
+            var symbolInfo = semanticModel.GetSymbolInfo(expressionNode);
+            if (symbolInfo.Symbol == null) return null;
+
+            var location = expressionNode.GetLocation();
+            return new HoverInfoResult
+            {
+                Information = HoverInfoBuilder.Build(symbolInfo),
+                OffsetFrom = location.SourceSpan.Start,
+                OffsetTo = location.SourceSpan.End
+            };
+        }
+
+        public async Task<SignatureHelpResult?> GetSignatureHelpAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        {
+            if (!_initialized || _baseProject == null)
+                throw new InvalidOperationException("Session not initialized");
+
+            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            
+            var invocation = await InvocationContext.GetInvocation(document, position);
+            if (invocation == null) return null;
+
+            int activeParameter = 0;
+            foreach (var comma in invocation.Separators)
+            {
+                if (comma.Span.Start > invocation.Position)
+                    break;
+                activeParameter += 1;
+            }
+
+            var signaturesSet = new List<Signatures>();
+            var bestScore = int.MinValue;
+            Signatures? bestScoredItem = null;
+
+            var types = invocation.ArgumentTypes;
+            var semanticModel = invocation.SemanticModel;
+            
+            var methodGroup = semanticModel.GetMemberGroup(invocation.Receiver).OfType<IMethodSymbol>();
+
+            // Filter static/instance
+            if (invocation.Receiver is MemberAccessExpressionSyntax memberAccess)
+            {
+                var throughExpression = memberAccess.Expression;
+                var throughSymbol = semanticModel.GetSpeculativeSymbolInfo(invocation.Position, throughExpression, SpeculativeBindingOption.BindAsExpression).Symbol;
+                var throughType = semanticModel.GetSpeculativeTypeInfo(invocation.Position, throughExpression, SpeculativeBindingOption.BindAsTypeOrNamespace).Type;
+                
+                var includeInstance = (throughSymbol != null && !(throughSymbol is ITypeSymbol)) ||
+                                      throughExpression is LiteralExpressionSyntax ||
+                                      throughExpression is TypeOfExpressionSyntax;
+                
+                var includeStatic = (throughSymbol is INamedTypeSymbol) || throughType != null;
+                
+                if (throughType == null)
+                {
+                    var typeInfo = semanticModel.GetTypeInfo(throughExpression);
+                    throughType = typeInfo.Type;
+                    includeInstance = true;
+                }
+                
+                methodGroup = methodGroup.Where(m => (m.IsStatic && includeStatic) || (!m.IsStatic && includeInstance));
+            }
+            else if (invocation.Receiver is SimpleNameSyntax && invocation.IsInStaticContext)
+            {
+                methodGroup = methodGroup.Where(m => m.IsStatic || m.MethodKind == MethodKind.LocalFunction);
+            }
+
+            foreach (var methodOverload in methodGroup)
+            {
+                var signature = SignatureHelpBuilder.BuildSignature(methodOverload);
+                signaturesSet.Add(signature);
+
+                var score = SignatureHelpBuilder.InvocationScore(methodOverload, types);
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestScoredItem = signature;
+                }
+            }
+
+            if (signaturesSet.Count == 0) return null;
+
+            return new SignatureHelpResult
+            {
+                Signatures = signaturesSet.ToArray(),
+                ActiveParameter = activeParameter,
+                ActiveSignature = bestScoredItem != null ? signaturesSet.IndexOf(bestScoredItem) : 0
+            };
+        }
+
+        public async Task<DefinitionResult?> GetDefinitionAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        {
+            if (!_initialized || _baseProject == null)
+                throw new InvalidOperationException("Session not initialized");
+
+            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var symbol = await SymbolFinder.FindSymbolAtPositionAsync(document, position);
+
+            if (symbol == null) return null;
+
+            var definition = await SymbolFinder.FindSourceDefinitionAsync(symbol, _baseProject.Solution);
+            var targetSymbol = definition ?? symbol;
+
+            var location = targetSymbol.Locations.FirstOrDefault(l => l.IsInSource);
+            if (location != null && location.SourceTree != null)
+            {
+                var lineSpan = location.GetLineSpan();
+                return new DefinitionResult
+                {
+                    FilePath = location.SourceTree.FilePath,
+                    Line = lineSpan.StartLinePosition.Line + 1,
+                    Column = lineSpan.StartLinePosition.Character + 1
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<SemanticTokensResult> GetSemanticTokensAsync(string code, string documentName = "GeneratedDocument.cs")
+        {
+            if (!_initialized || _baseProject == null)
+                throw new InvalidOperationException("Session not initialized");
+
+            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var semanticModel = await document.GetSemanticModelAsync();
+            var root = await document.GetSyntaxRootAsync();
+
+            if (semanticModel == null || root == null)
+                return new SemanticTokensResult();
+
+            var data = SemanticTokensBuilder.Build(root, semanticModel, default);
+            return new SemanticTokensResult { Data = data };
+        }
+
+        public async Task<IEnumerable<DiagnosticResult>> GetDiagnosticsAsync(string code, string documentName = "GeneratedDocument.cs")
+        {
+            if (!_initialized || _baseProject == null)
+                throw new InvalidOperationException("Session not initialized");
+
+            var compilationResult = await _codeCompiler.CompileAsync(_baseProject, documentName, code);
+            
+            return compilationResult.Diagnostics.Select(d => {
+                var lineSpan = d.Location.GetLineSpan();
+                return new DiagnosticResult
+                {
+                    Id = d.Id,
+                    Message = d.GetMessage(),
+                    Severity = d.Severity.ToString(),
+                    Line = lineSpan.StartLinePosition.Line,
+                    Column = lineSpan.StartLinePosition.Character
+                };
+            });
+        }
+
+        public async Task<string> FormatCodeAsync(string code, string documentName = "GeneratedDocument.cs")
+        {
+            if (!_initialized || _baseProject == null)
+                throw new InvalidOperationException("Session not initialized");
+
+            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var formattedDocument = await Formatter.FormatAsync(document);
+            var formattedText = await formattedDocument.GetTextAsync();
+            return formattedText.ToString();
         }
 
         public Dictionary<string, TimeSpan> GetPerformanceMetrics() => _performanceMeasurer.GetResults();
@@ -221,6 +457,7 @@ namespace SharpPad.SqlCore.Implementations
             if (!_disposed)
             {
                 _baseProject = null;
+                _initLock.Dispose();
                 _disposed = true;
             }
         }

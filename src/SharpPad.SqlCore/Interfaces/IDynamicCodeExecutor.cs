@@ -4,6 +4,6 @@ namespace SharpPad.SqlCore.Interfaces
 {
     public interface IDynamicCodeExecutor
     {
-        Task<object?> ExecuteMethodAsync(byte[] assemblyBytes, string typeName, string methodName, object?[]? parameters = null);
+        Task<(object? Result, string ConsoleOutput)> ExecuteMethodAsync(byte[] assemblyBytes, string typeName, string methodName, object?[]? parameters = null);
     }
 }
