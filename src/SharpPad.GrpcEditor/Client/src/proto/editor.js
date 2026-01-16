@@ -577,6 +577,39 @@ export const editor = $root.editor = (() => {
          */
 
         /**
+         * Callback as used by {@link editor.EditorService#getGeneratedModels}.
+         * @memberof editor.EditorService
+         * @typedef GetGeneratedModelsCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.GetGeneratedModelsReply} [response] GetGeneratedModelsReply
+         */
+
+        /**
+         * Calls GetGeneratedModels.
+         * @function getGeneratedModels
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGetGeneratedModelsRequest} request GetGeneratedModelsRequest message or plain object
+         * @param {editor.EditorService.GetGeneratedModelsCallback} callback Node-style callback called with the error, if any, and GetGeneratedModelsReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.getGeneratedModels = function getGeneratedModels(request, callback) {
+            return this.rpcCall(getGeneratedModels, $root.editor.GetGeneratedModelsRequest, $root.editor.GetGeneratedModelsReply, request, callback);
+        }, "name", { value: "GetGeneratedModels" });
+
+        /**
+         * Calls GetGeneratedModels.
+         * @function getGeneratedModels
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGetGeneratedModelsRequest} request GetGeneratedModelsRequest message or plain object
+         * @returns {Promise<editor.GetGeneratedModelsReply>} Promise
+         * @variation 2
+         */
+
+        /**
          * Callback as used by {@link editor.EditorService#connectToDatabase}.
          * @memberof editor.EditorService
          * @typedef ConnectToDatabaseCallback
@@ -7350,6 +7383,7 @@ export const editor = $root.editor = (() => {
          * @property {string|null} [name] ConnectionInfo name
          * @property {string|null} [provider] ConnectionInfo provider
          * @property {string|null} [connectionString] ConnectionInfo connectionString
+         * @property {string|null} [lastGeneratedDate] ConnectionInfo lastGeneratedDate
          */
 
         /**
@@ -7400,6 +7434,14 @@ export const editor = $root.editor = (() => {
         ConnectionInfo.prototype.connectionString = "";
 
         /**
+         * ConnectionInfo lastGeneratedDate.
+         * @member {string} lastGeneratedDate
+         * @memberof editor.ConnectionInfo
+         * @instance
+         */
+        ConnectionInfo.prototype.lastGeneratedDate = "";
+
+        /**
          * Creates a new ConnectionInfo instance using the specified properties.
          * @function create
          * @memberof editor.ConnectionInfo
@@ -7431,6 +7473,8 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.provider);
             if (message.connectionString != null && Object.hasOwnProperty.call(message, "connectionString"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.connectionString);
+            if (message.lastGeneratedDate != null && Object.hasOwnProperty.call(message, "lastGeneratedDate"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.lastGeneratedDate);
             return writer;
         };
 
@@ -7483,6 +7527,10 @@ export const editor = $root.editor = (() => {
                         message.connectionString = reader.string();
                         break;
                     }
+                case 5: {
+                        message.lastGeneratedDate = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -7530,6 +7578,9 @@ export const editor = $root.editor = (() => {
             if (message.connectionString != null && message.hasOwnProperty("connectionString"))
                 if (!$util.isString(message.connectionString))
                     return "connectionString: string expected";
+            if (message.lastGeneratedDate != null && message.hasOwnProperty("lastGeneratedDate"))
+                if (!$util.isString(message.lastGeneratedDate))
+                    return "lastGeneratedDate: string expected";
             return null;
         };
 
@@ -7553,6 +7604,8 @@ export const editor = $root.editor = (() => {
                 message.provider = String(object.provider);
             if (object.connectionString != null)
                 message.connectionString = String(object.connectionString);
+            if (object.lastGeneratedDate != null)
+                message.lastGeneratedDate = String(object.lastGeneratedDate);
             return message;
         };
 
@@ -7574,6 +7627,7 @@ export const editor = $root.editor = (() => {
                 object.name = "";
                 object.provider = "";
                 object.connectionString = "";
+                object.lastGeneratedDate = "";
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -7583,6 +7637,8 @@ export const editor = $root.editor = (() => {
                 object.provider = message.provider;
             if (message.connectionString != null && message.hasOwnProperty("connectionString"))
                 object.connectionString = message.connectionString;
+            if (message.lastGeneratedDate != null && message.hasOwnProperty("lastGeneratedDate"))
+                object.lastGeneratedDate = message.lastGeneratedDate;
             return object;
         };
 
@@ -11631,6 +11687,485 @@ export const editor = $root.editor = (() => {
         };
 
         return ConnectReply;
+    })();
+
+    editor.GetGeneratedModelsRequest = (function() {
+
+        /**
+         * Properties of a GetGeneratedModelsRequest.
+         * @memberof editor
+         * @interface IGetGeneratedModelsRequest
+         * @property {string|null} [connectionId] GetGeneratedModelsRequest connectionId
+         */
+
+        /**
+         * Constructs a new GetGeneratedModelsRequest.
+         * @memberof editor
+         * @classdesc Represents a GetGeneratedModelsRequest.
+         * @implements IGetGeneratedModelsRequest
+         * @constructor
+         * @param {editor.IGetGeneratedModelsRequest=} [properties] Properties to set
+         */
+        function GetGeneratedModelsRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GetGeneratedModelsRequest connectionId.
+         * @member {string} connectionId
+         * @memberof editor.GetGeneratedModelsRequest
+         * @instance
+         */
+        GetGeneratedModelsRequest.prototype.connectionId = "";
+
+        /**
+         * Creates a new GetGeneratedModelsRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {editor.IGetGeneratedModelsRequest=} [properties] Properties to set
+         * @returns {editor.GetGeneratedModelsRequest} GetGeneratedModelsRequest instance
+         */
+        GetGeneratedModelsRequest.create = function create(properties) {
+            return new GetGeneratedModelsRequest(properties);
+        };
+
+        /**
+         * Encodes the specified GetGeneratedModelsRequest message. Does not implicitly {@link editor.GetGeneratedModelsRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {editor.IGetGeneratedModelsRequest} message GetGeneratedModelsRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetGeneratedModelsRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connectionId != null && Object.hasOwnProperty.call(message, "connectionId"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.connectionId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GetGeneratedModelsRequest message, length delimited. Does not implicitly {@link editor.GetGeneratedModelsRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {editor.IGetGeneratedModelsRequest} message GetGeneratedModelsRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetGeneratedModelsRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GetGeneratedModelsRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GetGeneratedModelsRequest} GetGeneratedModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetGeneratedModelsRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GetGeneratedModelsRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.connectionId = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GetGeneratedModelsRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GetGeneratedModelsRequest} GetGeneratedModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetGeneratedModelsRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GetGeneratedModelsRequest message.
+         * @function verify
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GetGeneratedModelsRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                if (!$util.isString(message.connectionId))
+                    return "connectionId: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GetGeneratedModelsRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GetGeneratedModelsRequest} GetGeneratedModelsRequest
+         */
+        GetGeneratedModelsRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GetGeneratedModelsRequest)
+                return object;
+            let message = new $root.editor.GetGeneratedModelsRequest();
+            if (object.connectionId != null)
+                message.connectionId = String(object.connectionId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GetGeneratedModelsRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {editor.GetGeneratedModelsRequest} message GetGeneratedModelsRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GetGeneratedModelsRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.connectionId = "";
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                object.connectionId = message.connectionId;
+            return object;
+        };
+
+        /**
+         * Converts this GetGeneratedModelsRequest to JSON.
+         * @function toJSON
+         * @memberof editor.GetGeneratedModelsRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GetGeneratedModelsRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GetGeneratedModelsRequest
+         * @function getTypeUrl
+         * @memberof editor.GetGeneratedModelsRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GetGeneratedModelsRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GetGeneratedModelsRequest";
+        };
+
+        return GetGeneratedModelsRequest;
+    })();
+
+    editor.GetGeneratedModelsReply = (function() {
+
+        /**
+         * Properties of a GetGeneratedModelsReply.
+         * @memberof editor
+         * @interface IGetGeneratedModelsReply
+         * @property {boolean|null} [success] GetGeneratedModelsReply success
+         * @property {string|null} [errorMessage] GetGeneratedModelsReply errorMessage
+         * @property {Array.<editor.ISourceFile>|null} [generatedFiles] GetGeneratedModelsReply generatedFiles
+         */
+
+        /**
+         * Constructs a new GetGeneratedModelsReply.
+         * @memberof editor
+         * @classdesc Represents a GetGeneratedModelsReply.
+         * @implements IGetGeneratedModelsReply
+         * @constructor
+         * @param {editor.IGetGeneratedModelsReply=} [properties] Properties to set
+         */
+        function GetGeneratedModelsReply(properties) {
+            this.generatedFiles = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GetGeneratedModelsReply success.
+         * @member {boolean} success
+         * @memberof editor.GetGeneratedModelsReply
+         * @instance
+         */
+        GetGeneratedModelsReply.prototype.success = false;
+
+        /**
+         * GetGeneratedModelsReply errorMessage.
+         * @member {string} errorMessage
+         * @memberof editor.GetGeneratedModelsReply
+         * @instance
+         */
+        GetGeneratedModelsReply.prototype.errorMessage = "";
+
+        /**
+         * GetGeneratedModelsReply generatedFiles.
+         * @member {Array.<editor.ISourceFile>} generatedFiles
+         * @memberof editor.GetGeneratedModelsReply
+         * @instance
+         */
+        GetGeneratedModelsReply.prototype.generatedFiles = $util.emptyArray;
+
+        /**
+         * Creates a new GetGeneratedModelsReply instance using the specified properties.
+         * @function create
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {editor.IGetGeneratedModelsReply=} [properties] Properties to set
+         * @returns {editor.GetGeneratedModelsReply} GetGeneratedModelsReply instance
+         */
+        GetGeneratedModelsReply.create = function create(properties) {
+            return new GetGeneratedModelsReply(properties);
+        };
+
+        /**
+         * Encodes the specified GetGeneratedModelsReply message. Does not implicitly {@link editor.GetGeneratedModelsReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {editor.IGetGeneratedModelsReply} message GetGeneratedModelsReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetGeneratedModelsReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.errorMessage);
+            if (message.generatedFiles != null && message.generatedFiles.length)
+                for (let i = 0; i < message.generatedFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.generatedFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GetGeneratedModelsReply message, length delimited. Does not implicitly {@link editor.GetGeneratedModelsReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {editor.IGetGeneratedModelsReply} message GetGeneratedModelsReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetGeneratedModelsReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GetGeneratedModelsReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GetGeneratedModelsReply} GetGeneratedModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetGeneratedModelsReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GetGeneratedModelsReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.generatedFiles && message.generatedFiles.length))
+                            message.generatedFiles = [];
+                        message.generatedFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GetGeneratedModelsReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GetGeneratedModelsReply} GetGeneratedModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetGeneratedModelsReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GetGeneratedModelsReply message.
+         * @function verify
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GetGeneratedModelsReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            if (message.generatedFiles != null && message.hasOwnProperty("generatedFiles")) {
+                if (!Array.isArray(message.generatedFiles))
+                    return "generatedFiles: array expected";
+                for (let i = 0; i < message.generatedFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.generatedFiles[i]);
+                    if (error)
+                        return "generatedFiles." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a GetGeneratedModelsReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GetGeneratedModelsReply} GetGeneratedModelsReply
+         */
+        GetGeneratedModelsReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GetGeneratedModelsReply)
+                return object;
+            let message = new $root.editor.GetGeneratedModelsReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            if (object.generatedFiles) {
+                if (!Array.isArray(object.generatedFiles))
+                    throw TypeError(".editor.GetGeneratedModelsReply.generatedFiles: array expected");
+                message.generatedFiles = [];
+                for (let i = 0; i < object.generatedFiles.length; ++i) {
+                    if (typeof object.generatedFiles[i] !== "object")
+                        throw TypeError(".editor.GetGeneratedModelsReply.generatedFiles: object expected");
+                    message.generatedFiles[i] = $root.editor.SourceFile.fromObject(object.generatedFiles[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GetGeneratedModelsReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {editor.GetGeneratedModelsReply} message GetGeneratedModelsReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GetGeneratedModelsReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.generatedFiles = [];
+            if (options.defaults) {
+                object.success = false;
+                object.errorMessage = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            if (message.generatedFiles && message.generatedFiles.length) {
+                object.generatedFiles = [];
+                for (let j = 0; j < message.generatedFiles.length; ++j)
+                    object.generatedFiles[j] = $root.editor.SourceFile.toObject(message.generatedFiles[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this GetGeneratedModelsReply to JSON.
+         * @function toJSON
+         * @memberof editor.GetGeneratedModelsReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GetGeneratedModelsReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GetGeneratedModelsReply
+         * @function getTypeUrl
+         * @memberof editor.GetGeneratedModelsReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GetGeneratedModelsReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GetGeneratedModelsReply";
+        };
+
+        return GetGeneratedModelsReply;
     })();
 
     return editor;

@@ -25,6 +25,7 @@ service EditorService {
   // Schema & Code Gen
   rpc GetDatabaseSchema (GetDatabaseSchemaRequest) returns (GetDatabaseSchemaReply);
   rpc GenerateModels (GenerateModelsRequest) returns (GenerateModelsReply);      
+  rpc GetGeneratedModels (GetGeneratedModelsRequest) returns (GetGeneratedModelsReply);
   rpc ConnectToDatabase (ConnectRequest) returns (ConnectReply);
 }
 
@@ -182,6 +183,7 @@ message ConnectionInfo {
   string name = 2;
   string provider = 3; // "SqlServer", "PostgreSQL", "Sqlite", "MySql"
   string connectionString = 4;
+  string lastGeneratedDate = 5;
 }
 
 message GetConnectionsRequest { }
@@ -264,6 +266,16 @@ message ConnectRequest {
 }
 
 message ConnectReply {
+  bool success = 1;
+  string errorMessage = 2;
+  repeated SourceFile generatedFiles = 3;
+}
+
+message GetGeneratedModelsRequest {
+  string connectionId = 1;
+}
+
+message GetGeneratedModelsReply {
   bool success = 1;
   string errorMessage = 2;
   repeated SourceFile generatedFiles = 3;

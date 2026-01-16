@@ -382,7 +382,8 @@ namespace SharpPad.GrpcEditor.Services
                         Id = c.Id,
                         Name = c.Name,
                         Provider = c.Provider,
-                        ConnectionString = c.ConnectionString
+                        ConnectionString = c.ConnectionString,
+                        LastGeneratedDate = c.LastGeneratedDate
                     });
                 }
             }
@@ -402,7 +403,8 @@ namespace SharpPad.GrpcEditor.Services
                     Id = request.Connection.Id,
                     Name = request.Connection.Name,
                     Provider = request.Connection.Provider,
-                    ConnectionString = request.Connection.ConnectionString
+                    ConnectionString = request.Connection.ConnectionString,
+                    LastGeneratedDate = request.Connection.LastGeneratedDate
                 };
 
                 var newId = await _connectionService.SaveAsync(info);
@@ -463,6 +465,27 @@ namespace SharpPad.GrpcEditor.Services
             }
         }
 
+        public override async Task<editor.GetGeneratedModelsReply> GetGeneratedModels(editor.GetGeneratedModelsRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var files = await _modelService.GetGeneratedModelsAsync(request.ConnectionId);
+                var generatedFiles = new List<editor.SourceFile>();
+                foreach (var file in files)
+                {
+                    var content = await File.ReadAllTextAsync(file);
+                    var fileName = Path.GetFileName(file);
+                    generatedFiles.Add(new editor.SourceFile { FileName = fileName, Content = content });
+                }
+                return new editor.GetGeneratedModelsReply { Success = true, GeneratedFiles = { generatedFiles } };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetGeneratedModels failed");
+                return new editor.GetGeneratedModelsReply { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
         public override async Task<editor.GenerateModelsReply> GenerateModels(editor.GenerateModelsRequest request, ServerCallContext context)
         {
             try
@@ -474,8 +497,12 @@ namespace SharpPad.GrpcEditor.Services
                     return new editor.GenerateModelsReply { Success = false, ErrorMessage = "Connection not found" };
                 }
 
-                var outputDir = Path.Combine(AppContext.BaseDirectory, "GeneratedModels", request.ConnectionId);
-                var files = await _modelService.GenerateModelsAsync(conn, outputDir, request.Namespace);
+                // Use default cache path (pass null)
+                var files = await _modelService.GenerateModelsAsync(conn, null, request.Namespace);
+                
+                // Update LastGeneratedDate
+                conn.LastGeneratedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                await _connectionService.SaveAsync(conn);
 
                 var reply = new editor.GenerateModelsReply { Success = true };
                 reply.GeneratedFilePaths.AddRange(files);
@@ -499,27 +526,35 @@ namespace SharpPad.GrpcEditor.Services
                     return new editor.ConnectReply { Success = false, ErrorMessage = "Connection not found" };
                 }
 
-                // Generate Project
-                // Use a safe namespace name (replace invalid chars)
-                var safeName = "Conn_" + request.ConnectionId.Replace("-", "_");
-                var outputDir = Path.Combine(AppContext.BaseDirectory, "UserProjects", safeName);
-                
-                _logger.LogInformation("Generating project for connection {Name} at {Path}", conn.Name, outputDir);
-                await _modelService.GenerateModelsAsync(conn, outputDir, "SharpPad.Models." + safeName);
+                // Check if models exist in cache
+                var files = await _modelService.GetGeneratedModelsAsync(request.ConnectionId);
+                if (files.Count == 0)
+                {
+                     // Auto-generate if missing
+                     var safeName = "Conn_" + request.ConnectionId.Replace("-", "_");
+                     files = await _modelService.GenerateModelsAsync(conn, null, "SharpPad.Models." + safeName);
+                     
+                     conn.LastGeneratedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                     await _connectionService.SaveAsync(conn);
+                }
 
-                // Reload Session
-                var projectPath = Path.Combine(outputDir, "UserProject.csproj");
-                await _session.ReloadProjectAsync(projectPath);
+                // Reload Session with the Cached Project
+                if (files.Count > 0)
+                {
+                    var outputDir = Path.GetDirectoryName(files[0]);
+                    var projectPath = Path.Combine(outputDir, "UserProject.csproj");
+                    if (File.Exists(projectPath))
+                    {
+                        await _session.ReloadProjectAsync(projectPath);
+                    }
+                }
 
                 var generatedFiles = new List<editor.SourceFile>();
-                if (Directory.Exists(outputDir))
+                foreach (var file in files)
                 {
-                    foreach (var file in Directory.GetFiles(outputDir, "*.cs", SearchOption.TopDirectoryOnly))
-                    {
-                        var content = await File.ReadAllTextAsync(file);
-                        var fileName = Path.GetFileName(file);
-                        generatedFiles.Add(new editor.SourceFile { FileName = fileName, Content = content });
-                    }
+                    var content = await File.ReadAllTextAsync(file);
+                    var fileName = Path.GetFileName(file);
+                    generatedFiles.Add(new editor.SourceFile { FileName = fileName, Content = content });
                 }
 
                 var reply = new editor.ConnectReply { Success = true };

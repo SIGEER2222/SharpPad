@@ -36,7 +36,7 @@ export function useEditorSetup(
         // Helper to get extra files
         const getExtraFiles = () => filesRef.current
             .filter(f => f.id !== activeFileIdRef.current)
-            .map(f => ({ fileName: f.name, content: f.content }));
+            .map(f => ({ fileName: f.path ? `${f.path}/${f.name}` : f.name, content: f.content }));
 
         // Register custom language
         if (!monaco.languages.getLanguages().some(l => l.id === LANGUAGE_ID)) {

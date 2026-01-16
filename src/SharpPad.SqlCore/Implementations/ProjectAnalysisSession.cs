@@ -223,13 +223,24 @@ global using static DB;
                 {
                     foreach (var file in extraFiles)
                     {
-                        var existingDoc = executionProject.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                        var normalizedFileName = file.FileName.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+                        var simpleName = Path.GetFileName(file.FileName);
+
+                        var existingDoc = executionProject.Documents.FirstOrDefault(d => 
+                            d.Name == file.FileName || 
+                            (d.FilePath != null && d.FilePath.EndsWith(normalizedFileName)) ||
+                            // Handle virtual 'Generated' folder mapping to project root
+                            (file.FileName.StartsWith("Generated") && d.Name == simpleName));
+                        
                         if (existingDoc != null)
-                        {
-                            executionProject = executionProject.RemoveDocument(existingDoc.Id);
-                        }
-                        executionProject = executionProject.AddDocument(file.FileName, file.Content).Project;
-                    }
+                {
+                    executionProject = executionProject.RemoveDocument(existingDoc.Id);
+                }
+
+                // If it's a generated file, add it to the project root to match the expected structure
+                var fileToAddName = file.FileName.StartsWith("Generated") ? simpleName : file.FileName;
+                executionProject = executionProject.AddDocument(fileToAddName, file.Content).Project;
+            }
                 }
 
                 // 3. Compile Code (Every time)
@@ -299,19 +310,33 @@ global using static DB;
                                     Console.WriteLine($"[SQL] {sql}");
                                 };
                                 
-                                var dbClass = assembly.GetTypes().FirstOrDefault(t => t.Name == "DB");
+                                _logger.LogInformation($"[DB Injection] Scanning assembly {assembly.FullName} for DB class...");
+                                var types = assembly.GetTypes();
+                                _logger.LogInformation($"[DB Injection] Found {types.Length} types: {string.Join(", ", types.Select(t => t.Name))}");
+
+                                var dbClass = types.FirstOrDefault(t => t.Name == "DB");
                                 if (dbClass != null)
                                 {
+                                    _logger.LogInformation($"[DB Injection] Found DB class: {dbClass.FullName}");
                                     var prop = dbClass.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
                                     if (prop != null)
                                     {
                                         prop.SetValue(null, dbClient);
+                                        _logger.LogInformation("[DB Injection] DB.Instance initialized successfully.");
                                     }
+                                    else
+                                    {
+                                        _logger.LogWarning("[DB Injection] DB.Instance property NOT found!");
+                                    }
+                                }
+                                else
+                                {
+                                    _logger.LogWarning("[DB Injection] DB class NOT found!");
                                 }
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"[DB Injection Error] {ex.Message}");
+                                _logger.LogError(ex, $"[DB Injection Error] {ex.Message}");
                             }
                         };
                     }
@@ -380,7 +405,11 @@ global using static DB;
             {
                 foreach (var file in extraFiles)
                 {
-                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    var normalizedFileName = file.FileName.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+                    var existingDoc = project.Documents.FirstOrDefault(d => 
+                        d.Name == file.FileName || 
+                        (d.FilePath != null && d.FilePath.EndsWith(normalizedFileName)));
+
                     if (existingDoc != null) project = project.RemoveDocument(existingDoc.Id);
                     project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
                 }

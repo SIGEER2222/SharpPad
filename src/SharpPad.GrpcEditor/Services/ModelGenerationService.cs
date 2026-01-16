@@ -6,16 +6,42 @@ namespace SharpPad.GrpcEditor.Services
 {
     public interface IModelGenerationService
     {
-        Task<List<string>> GenerateModelsAsync(ConnectionInfo connectionInfo, string outputDir, string namespaceName);
+        Task<List<string>> GenerateModelsAsync(ConnectionInfo connectionInfo, string? outputDir = null, string? namespaceName = null);
+        Task<List<string>> GetGeneratedModelsAsync(string connectionId);
     }
 
     public class ModelGenerationService : IModelGenerationService
     {
-        public async Task<List<string>> GenerateModelsAsync(ConnectionInfo connectionInfo, string outputDir, string namespaceName)
+        private string GetCachePath(string connectionId)
+        {
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            return Path.Combine(appData, "SharpPad", "Entities", connectionId);
+        }
+
+        public async Task<List<string>> GetGeneratedModelsAsync(string connectionId)
+        {
+            var path = GetCachePath(connectionId);
+            if (!Directory.Exists(path)) return new List<string>();
+            return await Task.Run(() => Directory.GetFiles(path, "*.cs").ToList());
+        }
+
+        public async Task<List<string>> GenerateModelsAsync(ConnectionInfo connectionInfo, string? outputDir = null, string? namespaceName = null)
         {
             return await Task.Run(() =>
             {
-                if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+                if (string.IsNullOrEmpty(outputDir))
+                {
+                    outputDir = GetCachePath(connectionInfo.Id);
+                }
+
+                if (string.IsNullOrEmpty(namespaceName))
+                {
+                    var safeName = "Conn_" + (connectionInfo.Id ?? "").Replace("-", "_");
+                    namespaceName = "SharpPad.Models." + safeName;
+                }
+
+                if (Directory.Exists(outputDir)) Directory.Delete(outputDir, true);
+                Directory.CreateDirectory(outputDir);
 
                 DbType dbType = DbType.SqlServer;
                 if (Enum.TryParse<DbType>(connectionInfo.Provider, true, out var parsedType))
@@ -34,7 +60,7 @@ namespace SharpPad.GrpcEditor.Services
                 // 1. Generate Entities (DbFirst)
                 // This generates class files for tables in the output directory
                 var generator = db.DbFirst.IsCreateAttribute();
-                if (connectionInfo.Name == "VerifyPG")
+                if (connectionInfo.Name == "VerifyPG" || connectionInfo.Name.StartsWith("Test PG"))
                 {
                      // Get all table names first
                      var allTables = db.DbMaintenance.GetTableInfoList().Select(t => t.Name).ToList();
@@ -147,6 +173,10 @@ public static class DumpExtensions
     }
 }";
                 File.WriteAllText(Path.Combine(outputDir, "DumpExtensions.cs"), dumpExt);
+
+                // 6. Generate Program.cs (Dummy entry point for valid Exe build)
+                Console.WriteLine($"DEBUG: Generating Program.cs in {outputDir}");
+                File.WriteAllText(Path.Combine(outputDir, "Program.cs"), "public partial class Program { public static void Main() {} }");
 
                 return Directory.GetFiles(outputDir, "*.cs").ToList();
             });

@@ -248,6 +248,20 @@ export namespace editor {
         public generateModels(request: editor.IGenerateModelsRequest): Promise<editor.GenerateModelsReply>;
 
         /**
+         * Calls GetGeneratedModels.
+         * @param request GetGeneratedModelsRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and GetGeneratedModelsReply
+         */
+        public getGeneratedModels(request: editor.IGetGeneratedModelsRequest, callback: editor.EditorService.GetGeneratedModelsCallback): void;
+
+        /**
+         * Calls GetGeneratedModels.
+         * @param request GetGeneratedModelsRequest message or plain object
+         * @returns Promise
+         */
+        public getGeneratedModels(request: editor.IGetGeneratedModelsRequest): Promise<editor.GetGeneratedModelsReply>;
+
+        /**
          * Calls ConnectToDatabase.
          * @param request ConnectRequest message or plain object
          * @param callback Node-style callback called with the error, if any, and ConnectReply
@@ -375,6 +389,13 @@ export namespace editor {
          * @param [response] GenerateModelsReply
          */
         type GenerateModelsCallback = (error: (Error|null), response?: editor.GenerateModelsReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#getGeneratedModels}.
+         * @param error Error, if any
+         * @param [response] GetGeneratedModelsReply
+         */
+        type GetGeneratedModelsCallback = (error: (Error|null), response?: editor.GetGeneratedModelsReply) => void;
 
         /**
          * Callback as used by {@link editor.EditorService#connectToDatabase}.
@@ -3190,6 +3211,9 @@ export namespace editor {
 
         /** ConnectionInfo connectionString */
         connectionString?: (string|null);
+
+        /** ConnectionInfo lastGeneratedDate */
+        lastGeneratedDate?: (string|null);
     }
 
     /** Represents a ConnectionInfo. */
@@ -3212,6 +3236,9 @@ export namespace editor {
 
         /** ConnectionInfo connectionString. */
         public connectionString: string;
+
+        /** ConnectionInfo lastGeneratedDate. */
+        public lastGeneratedDate: string;
 
         /**
          * Creates a new ConnectionInfo instance using the specified properties.
@@ -5042,6 +5069,212 @@ export namespace editor {
 
         /**
          * Gets the default type url for ConnectReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GetGeneratedModelsRequest. */
+    interface IGetGeneratedModelsRequest {
+
+        /** GetGeneratedModelsRequest connectionId */
+        connectionId?: (string|null);
+    }
+
+    /** Represents a GetGeneratedModelsRequest. */
+    class GetGeneratedModelsRequest implements IGetGeneratedModelsRequest {
+
+        /**
+         * Constructs a new GetGeneratedModelsRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGetGeneratedModelsRequest);
+
+        /** GetGeneratedModelsRequest connectionId. */
+        public connectionId: string;
+
+        /**
+         * Creates a new GetGeneratedModelsRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GetGeneratedModelsRequest instance
+         */
+        public static create(properties?: editor.IGetGeneratedModelsRequest): editor.GetGeneratedModelsRequest;
+
+        /**
+         * Encodes the specified GetGeneratedModelsRequest message. Does not implicitly {@link editor.GetGeneratedModelsRequest.verify|verify} messages.
+         * @param message GetGeneratedModelsRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGetGeneratedModelsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GetGeneratedModelsRequest message, length delimited. Does not implicitly {@link editor.GetGeneratedModelsRequest.verify|verify} messages.
+         * @param message GetGeneratedModelsRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGetGeneratedModelsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GetGeneratedModelsRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GetGeneratedModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GetGeneratedModelsRequest;
+
+        /**
+         * Decodes a GetGeneratedModelsRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GetGeneratedModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GetGeneratedModelsRequest;
+
+        /**
+         * Verifies a GetGeneratedModelsRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GetGeneratedModelsRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GetGeneratedModelsRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GetGeneratedModelsRequest;
+
+        /**
+         * Creates a plain object from a GetGeneratedModelsRequest message. Also converts values to other types if specified.
+         * @param message GetGeneratedModelsRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GetGeneratedModelsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GetGeneratedModelsRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GetGeneratedModelsRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GetGeneratedModelsReply. */
+    interface IGetGeneratedModelsReply {
+
+        /** GetGeneratedModelsReply success */
+        success?: (boolean|null);
+
+        /** GetGeneratedModelsReply errorMessage */
+        errorMessage?: (string|null);
+
+        /** GetGeneratedModelsReply generatedFiles */
+        generatedFiles?: (editor.ISourceFile[]|null);
+    }
+
+    /** Represents a GetGeneratedModelsReply. */
+    class GetGeneratedModelsReply implements IGetGeneratedModelsReply {
+
+        /**
+         * Constructs a new GetGeneratedModelsReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGetGeneratedModelsReply);
+
+        /** GetGeneratedModelsReply success. */
+        public success: boolean;
+
+        /** GetGeneratedModelsReply errorMessage. */
+        public errorMessage: string;
+
+        /** GetGeneratedModelsReply generatedFiles. */
+        public generatedFiles: editor.ISourceFile[];
+
+        /**
+         * Creates a new GetGeneratedModelsReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GetGeneratedModelsReply instance
+         */
+        public static create(properties?: editor.IGetGeneratedModelsReply): editor.GetGeneratedModelsReply;
+
+        /**
+         * Encodes the specified GetGeneratedModelsReply message. Does not implicitly {@link editor.GetGeneratedModelsReply.verify|verify} messages.
+         * @param message GetGeneratedModelsReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGetGeneratedModelsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GetGeneratedModelsReply message, length delimited. Does not implicitly {@link editor.GetGeneratedModelsReply.verify|verify} messages.
+         * @param message GetGeneratedModelsReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGetGeneratedModelsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GetGeneratedModelsReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GetGeneratedModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GetGeneratedModelsReply;
+
+        /**
+         * Decodes a GetGeneratedModelsReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GetGeneratedModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GetGeneratedModelsReply;
+
+        /**
+         * Verifies a GetGeneratedModelsReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GetGeneratedModelsReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GetGeneratedModelsReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GetGeneratedModelsReply;
+
+        /**
+         * Creates a plain object from a GetGeneratedModelsReply message. Also converts values to other types if specified.
+         * @param message GetGeneratedModelsReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GetGeneratedModelsReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GetGeneratedModelsReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GetGeneratedModelsReply
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

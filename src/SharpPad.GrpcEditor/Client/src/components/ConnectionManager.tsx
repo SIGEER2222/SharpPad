@@ -94,7 +94,29 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({ client, activeCon
         }
     };
 
+    const handleGenerate = async (conn: editor.IConnectionInfo) => {
+        setTestResult({ success: true, message: 'Generating models...' });
+        try {
+            const reply = await client.call(
+                'editor.EditorService',
+                'GenerateModels',
+                { connectionId: conn.id },
+                editor.GenerateModelsRequest,
+                editor.GenerateModelsReply
+            );
+            if (reply.success) {
+                setTestResult({ success: true, message: 'Models generated successfully' });
+                await loadConnections(); // Refresh to see new date
+            } else {
+                setTestResult({ success: false, message: reply.errorMessage || 'Generation failed' });
+            }
+        } catch (e: any) {
+            setTestResult({ success: false, message: e.message });
+        }
+    };
+
     const handleConnect = async (conn: editor.IConnectionInfo) => {
+        // This is now "Create Project from Connection" shortcut
         setIsConnecting(true);
         setTestResult(null);
         try {
@@ -171,7 +193,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({ client, activeCon
             </div>
             
             {testResult && (
-                <div style={{ 
+                <div data-testid="error-message" style={{ 
                     color: testResult.success ? 'var(--success-color)' : 'var(--error-color)', 
                     fontSize: '13px',
                     padding: '8px',
@@ -200,6 +222,19 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({ client, activeCon
             </div>
             
             <div className="flex-1" style={{ overflowY: 'auto', marginBottom: '15px' }}>
+                {testResult && (
+                    <div data-testid="error-message" style={{ 
+                        color: testResult.success ? 'var(--success-color)' : 'var(--error-color)', 
+                        fontSize: '13px',
+                        padding: '8px',
+                        marginBottom: '10px',
+                        background: 'rgba(0,0,0,0.2)',
+                        borderRadius: '4px'
+                    }}>
+                        {testResult.success ? '✅ ' : '❌ '}
+                        {testResult.message}
+                    </div>
+                )}
                 {connections.length === 0 ? (
                     <div style={{ padding: '20px', textAlign: 'center', color: 'var(--fg-tertiary)' }}>
                         No connections defined
@@ -214,16 +249,19 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({ client, activeCon
                                 borderRadius: '4px',
                                 background: activeConnectionId === c.id ? 'rgba(0, 122, 204, 0.2)' : 'var(--bg-tertiary)',
                                 border: activeConnectionId === c.id ? '1px solid var(--focus-border)' : '1px solid transparent',
-                                cursor: 'pointer'
+                                cursor: 'default'
                             }}
-                            onClick={() => handleConnect(c)}
                         >
                             <div className="flex-col">
                                 <span style={{ fontWeight: 600, color: 'var(--fg-primary)' }}>{c.name}</span>
-                                <span style={{ fontSize: '11px', color: 'var(--fg-tertiary)' }}>{c.provider}</span>
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <span style={{ fontSize: '11px', color: 'var(--fg-tertiary)' }}>{c.provider}</span>
+                                    {c.lastGeneratedDate && <span style={{ fontSize: '11px', color: '#4ec9b0' }}>Gen: {new Date(c.lastGeneratedDate).toLocaleDateString()}</span>}
+                                </div>
                             </div>
                             <div className="flex-row" style={{ gap: '5px' }}>
-                                <button className="btn-icon" title="Connect" onClick={(e) => { e.stopPropagation(); handleConnect(c); }}>🔌</button>
+                                <button className="btn-icon" title="Generate Models" onClick={(e) => { e.stopPropagation(); handleGenerate(c); }}>⚙️</button>
+                                <button className="btn-icon" title="Create Project" onClick={(e) => { e.stopPropagation(); handleConnect(c); }}>🔌</button>
                                 <button className="btn-icon" title="Edit" onClick={(e) => { e.stopPropagation(); handleEdit(c); }}>✎</button>
                                 <button className="btn-icon" title="Delete" onClick={(e) => { e.stopPropagation(); handleDelete(c.id!); }}>🗑</button>
                             </div>

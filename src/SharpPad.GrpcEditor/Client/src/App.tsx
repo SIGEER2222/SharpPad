@@ -4,6 +4,7 @@ import { GrpcClient } from './GrpcClient';
 import { editor } from './proto/editor';
 import OutputRenderer from './OutputRenderer';
 import ConnectionManager from './components/ConnectionManager';
+import NewProjectModal from './components/NewProjectModal';
 import { useEditorSetup } from './hooks/useEditorSetup';
 import { updateEditorMarkers } from './utils/monacoHelpers';
 import { useFileSystem, type SourceFile } from './hooks/useFileSystem';
@@ -20,6 +21,7 @@ function App() {
   
   // Connection State
   const [showConnectionManager, setShowConnectionManager] = useState(false);
+  const [showNewProjectModal, setShowNewProjectModal] = useState(false);
   const [activeConnectionId, setActiveConnectionId] = useState<string | null>(null);
 
   // Layout State
@@ -214,11 +216,66 @@ function App() {
       }
   };
 
-  const handleCreateProject = () => {
-      const name = prompt('Enter Project Name:', 'New Project');
-      if (name) {
-          createProject(name);
+  const doCreateProject = async (name: string, connectionId?: string) => {
+      setShowNewProjectModal(false);
+      
+      let template: SourceFile[] | undefined = undefined;
+  
+      if (connectionId) {
+          try {
+              const reply = await client.call(
+                  'editor.EditorService',
+                  'GetGeneratedModels',
+                  { connectionId },
+                  editor.GetGeneratedModelsRequest,
+                  editor.GetGeneratedModelsReply
+              );
+  
+              if (reply.success && reply.generatedFiles) {
+                   const safeName = "Conn_" + connectionId.replace(/-/g, "_");
+                   const namespace = "SharpPad.Models." + safeName;
+                   
+                   template = [
+                      {
+                        id: '1',
+                        name: 'Query.cs',
+                        path: 'Scripts',
+                        type: 'script',
+                        content: `using System;
+using System.Linq;
+using SqlSugar;
+using ${namespace};
+
+// db is auto-injected from connection
+// Try listing tables:
+// db.DbMaintenance.GetTableInfoList().Dump("Tables");
+
+// Example Query:
+// db.Queryable<mom_lot>().Take(20).ToList().Dump("Mom Lot Data");
+`
+                      }
+                   ];
+  
+                   reply.generatedFiles.forEach((f, i) => {
+                      template!.push({
+                          id: 'gen_' + i,
+                          name: f.fileName || `Entity${i}.cs`,
+                          path: 'Generated',
+                          type: 'helper',
+                          content: f.content || ''
+                      });
+                   });
+                   
+                   setActiveConnectionId(connectionId);
+              }
+          } catch (e) {
+              console.error('Failed to load models', e);
+              alert('Failed to load generated models for connection.');
+              return;
+          }
       }
+  
+      createProject(name, template);
   };
 
   const handleDeleteProject = () => {
@@ -248,7 +305,7 @@ function App() {
                         ))}
                     </select>
                     <button 
-                        onClick={handleCreateProject}
+                        onClick={() => setShowNewProjectModal(true)}
                         title="New Project"
                         style={{ background: 'none', border: 'none', color: '#ccc', cursor: 'pointer', fontSize: '16px' }}
                     >
@@ -447,6 +504,14 @@ db.Queryable<mom_lot>().Take(20).ToList().Dump("Mom Lot Data");
 
                     createProject(`DB: ${conn.name}`, dbTemplate);
                 }}
+            />
+        )}
+
+        {showNewProjectModal && (
+            <NewProjectModal
+                client={client}
+                onCreate={doCreateProject}
+                onCancel={() => setShowNewProjectModal(false)}
             />
         )}
     </div>
