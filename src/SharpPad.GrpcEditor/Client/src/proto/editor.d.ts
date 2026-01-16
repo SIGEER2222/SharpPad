@@ -451,6 +451,9 @@ export namespace editor {
 
         /** CompletionRequest position */
         position?: (number|null);
+
+        /** CompletionRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a CompletionRequest. */
@@ -467,6 +470,9 @@ export namespace editor {
 
         /** CompletionRequest position. */
         public position: number;
+
+        /** CompletionRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new CompletionRequest instance using the specified properties.
@@ -760,6 +766,9 @@ export namespace editor {
 
         /** HoverInfoRequest position */
         position?: (number|null);
+
+        /** HoverInfoRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a HoverInfoRequest. */
@@ -776,6 +785,9 @@ export namespace editor {
 
         /** HoverInfoRequest position. */
         public position: number;
+
+        /** HoverInfoRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new HoverInfoRequest instance using the specified properties.
@@ -978,6 +990,9 @@ export namespace editor {
 
         /** SignatureHelpRequest position */
         position?: (number|null);
+
+        /** SignatureHelpRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a SignatureHelpRequest. */
@@ -994,6 +1009,9 @@ export namespace editor {
 
         /** SignatureHelpRequest position. */
         public position: number;
+
+        /** SignatureHelpRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new SignatureHelpRequest instance using the specified properties.
@@ -1408,6 +1426,9 @@ export namespace editor {
 
         /** DefinitionRequest position */
         position?: (number|null);
+
+        /** DefinitionRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a DefinitionRequest. */
@@ -1424,6 +1445,9 @@ export namespace editor {
 
         /** DefinitionRequest position. */
         public position: number;
+
+        /** DefinitionRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new DefinitionRequest instance using the specified properties.
@@ -1623,6 +1647,9 @@ export namespace editor {
 
         /** SemanticTokensRequest code */
         code?: (string|null);
+
+        /** SemanticTokensRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a SemanticTokensRequest. */
@@ -1636,6 +1663,9 @@ export namespace editor {
 
         /** SemanticTokensRequest code. */
         public code: string;
+
+        /** SemanticTokensRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new SemanticTokensRequest instance using the specified properties.
@@ -2011,6 +2041,9 @@ export namespace editor {
 
         /** DiagnosticsRequest code */
         code?: (string|null);
+
+        /** DiagnosticsRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a DiagnosticsRequest. */
@@ -2024,6 +2057,9 @@ export namespace editor {
 
         /** DiagnosticsRequest code. */
         public code: string;
+
+        /** DiagnosticsRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new DiagnosticsRequest instance using the specified properties.
@@ -2208,6 +2244,9 @@ export namespace editor {
 
         /** QuickFixRequest position */
         position?: (number|null);
+
+        /** QuickFixRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents a QuickFixRequest. */
@@ -2224,6 +2263,9 @@ export namespace editor {
 
         /** QuickFixRequest position. */
         public position: number;
+
+        /** QuickFixRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new QuickFixRequest instance using the specified properties.
@@ -2526,6 +2568,9 @@ export namespace editor {
 
         /** ExecuteCodeRequest methodName */
         methodName?: (string|null);
+
+        /** ExecuteCodeRequest extraFiles */
+        extraFiles?: (editor.ISourceFile[]|null);
     }
 
     /** Represents an ExecuteCodeRequest. */
@@ -2545,6 +2590,9 @@ export namespace editor {
 
         /** ExecuteCodeRequest methodName. */
         public methodName: string;
+
+        /** ExecuteCodeRequest extraFiles. */
+        public extraFiles: editor.ISourceFile[];
 
         /**
          * Creates a new ExecuteCodeRequest instance using the specified properties.
@@ -2618,6 +2666,109 @@ export namespace editor {
 
         /**
          * Gets the default type url for ExecuteCodeRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a SourceFile. */
+    interface ISourceFile {
+
+        /** SourceFile fileName */
+        fileName?: (string|null);
+
+        /** SourceFile content */
+        content?: (string|null);
+    }
+
+    /** Represents a SourceFile. */
+    class SourceFile implements ISourceFile {
+
+        /**
+         * Constructs a new SourceFile.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.ISourceFile);
+
+        /** SourceFile fileName. */
+        public fileName: string;
+
+        /** SourceFile content. */
+        public content: string;
+
+        /**
+         * Creates a new SourceFile instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SourceFile instance
+         */
+        public static create(properties?: editor.ISourceFile): editor.SourceFile;
+
+        /**
+         * Encodes the specified SourceFile message. Does not implicitly {@link editor.SourceFile.verify|verify} messages.
+         * @param message SourceFile message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.ISourceFile, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SourceFile message, length delimited. Does not implicitly {@link editor.SourceFile.verify|verify} messages.
+         * @param message SourceFile message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.ISourceFile, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SourceFile message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SourceFile
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.SourceFile;
+
+        /**
+         * Decodes a SourceFile message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SourceFile
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.SourceFile;
+
+        /**
+         * Verifies a SourceFile message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SourceFile message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SourceFile
+         */
+        public static fromObject(object: { [k: string]: any }): editor.SourceFile;
+
+        /**
+         * Creates a plain object from a SourceFile message. Also converts values to other types if specified.
+         * @param message SourceFile
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.SourceFile, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SourceFile to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SourceFile
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

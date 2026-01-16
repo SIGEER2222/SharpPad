@@ -82,7 +82,8 @@ namespace SharpPad.SqlCore.Tests.Base
                 new ProjectAnalyzer(),
                 new CodeCompiler(),
                 new DynamicCodeExecutor(),
-                PerformanceMeasurer
+                PerformanceMeasurer,
+                Microsoft.Extensions.Logging.Abstractions.NullLogger<ProjectAnalysisSession>.Instance
             );
         }
 
@@ -93,8 +94,8 @@ namespace SharpPad.SqlCore.Tests.Base
             long memoryUsed = memoryAfter - _memoryBefore;
             double memoryUsedMB = memoryUsed / (1024.0 * 1024.0);
 
-            Log.Information($"ùù?: {_stopwatch.ElapsedMilliseconds / 1000.0:F3} s");
-            Log.Information($"ù?ù: {memoryUsedMB:F2} MB");
+            Log.Information($"ÔøΩÔøΩ?: {_stopwatch.ElapsedMilliseconds / 1000.0:F3} s");
+            Log.Information($"ÔøΩ?ÔøΩ: {memoryUsedMB:F2} MB");
         }
 
         protected virtual void Initialize()

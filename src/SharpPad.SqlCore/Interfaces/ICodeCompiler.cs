@@ -6,6 +6,6 @@ namespace SharpPad.SqlCore.Interfaces
 {
     public interface ICodeCompiler
     {
-        Task<CompilationResult> CompileAsync(Project project, string documentName, string code);
+        Task<CompilationResult> CompileAsync(Project project, string documentName, string code, OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary);
     }
 }

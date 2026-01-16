@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +14,17 @@
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
     <PackageReference Include="Grpc.AspNetCore.Web" Version="2.64.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.199" GeneratePathProperty="true" />
   </ItemGroup>
+
+  <Target Name="CopySqlSugar" AfterTargets="Build">
+    <Message Text="Copying SqlSugar.dll from $(PkgSqlSugarCore)..." Importance="high" />
+    <Copy SourceFiles="$(PkgSqlSugarCore)\lib\netstandard2.1\SqlSugar.dll" DestinationFolder="$(OutputPath)" Condition="Exists('$(PkgSqlSugarCore)\lib\netstandard2.1\SqlSugar.dll')" />
+  </Target>
 
   <ItemGroup>
     <ProjectReference Include="..\SharpPad.SqlCore\SharpPad.SqlCore.csproj" />

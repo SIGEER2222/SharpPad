@@ -11,7 +11,7 @@ namespace SharpPad.SqlCore.Implementations
 {
     public class CodeCompiler : ICodeCompiler
     {
-        public async Task<CompilationResult> CompileAsync(Project project, string documentName, string code)
+        public async Task<CompilationResult> CompileAsync(Project project, string documentName, string code, OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary)
         {
             var updatedProject = project.AddDocument(documentName, SourceText.From(code, Encoding.UTF8)).Project;
             var compilation = await updatedProject.GetCompilationAsync();
@@ -20,6 +20,8 @@ namespace SharpPad.SqlCore.Implementations
             {
                 return new CompilationResult { Success = false };
             }
+
+            compilation = compilation.WithOptions(compilation.Options.WithOutputKind(outputKind));
 
             // Get referenced DLLs
             var referencedDlls = compilation.ExternalReferences

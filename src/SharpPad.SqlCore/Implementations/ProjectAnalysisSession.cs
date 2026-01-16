@@ -98,6 +98,22 @@ public static class DumpExtensions
 {
     public static T Dump<T>(this T obj, string title = null)
     {
+        Console.WriteLine(""DEBUG: Dump called for "" + (obj?.GetType().Name ?? ""null""));
+        if (obj == null)
+        {
+            var msg = title != null ? $""[{title}] null"" : ""null"";
+            Console.WriteLine(msg);
+            return obj;
+        }
+
+        var type = obj.GetType();
+        if (type.IsPrimitive || type == typeof(string) || type == typeof(decimal) || type == typeof(DateTime) || type == typeof(Guid) || type == typeof(TimeSpan))
+        {
+            var prefix = title != null ? $""[{title}] "" : """";
+            Console.WriteLine($""{prefix}{obj}"");
+            return obj;
+        }
+
         var options = new JsonSerializerOptions 
         { 
             WriteIndented = true, 
@@ -127,7 +143,7 @@ public static class DumpExtensions
             }
         }
 
-        public async Task<CodeExecutionResult> ExecuteCodeAsync(string code, string documentName, string typeName, string methodName, object?[]? parameters = null)
+        public async Task<CodeExecutionResult> ExecuteCodeAsync(string code, string documentName, string typeName, string methodName, IEnumerable<(string FileName, string Content)>? extraFiles = null, object?[]? parameters = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
@@ -137,9 +153,39 @@ public static class DumpExtensions
 
             try
             {
+                _logger.LogInformation("ExecuteCodeAsync called for {MethodName}", methodName);
+                if (extraFiles != null)
+                {
+                     foreach (var f in extraFiles) _logger.LogInformation("ExtraFile: {FileName} (Length: {Length})", f.FileName, f.Content?.Length ?? 0);
+                }
+                else
+                {
+                    _logger.LogWarning("ExtraFiles is null");
+                }
+
+                // Prepare Project Snapshot with extra files
+                var executionProject = _baseProject;
+                if (extraFiles != null)
+                {
+                    foreach (var file in extraFiles)
+                    {
+                        var existingDoc = executionProject.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                        if (existingDoc != null)
+                        {
+                            executionProject = executionProject.RemoveDocument(existingDoc.Id);
+                        }
+                        executionProject = executionProject.AddDocument(file.FileName, file.Content).Project;
+                    }
+                }
+
                 // 3. Compile Code (Every time)
                 var compilationResult = await _performanceMeasurer.MeasureAsync("Execute - Compile Code", async () => {
-                    return await _codeCompiler.CompileAsync(_baseProject, documentName, code);
+                    // Determine OutputKind based on whether we are executing a specific method (DLL) or an Entry Point (ConsoleApp/Top-level)
+                    var outputKind = (!string.IsNullOrEmpty(typeName) && !string.IsNullOrEmpty(methodName)) 
+                        ? OutputKind.DynamicallyLinkedLibrary 
+                        : OutputKind.ConsoleApplication;
+
+                    return await _codeCompiler.CompileAsync(executionProject, documentName, code, outputKind);
                 });
 
                 if (!compilationResult.Success)
@@ -157,8 +203,8 @@ public static class DumpExtensions
                                 Id = d.Id,
                                 Message = d.GetMessage(),
                                 Severity = d.Severity.ToString(),
-                                Line = lineSpan.StartLinePosition.Line + 1,
-                                Column = lineSpan.StartLinePosition.Character + 1
+                                Line = lineSpan.StartLinePosition.Line,
+                                Column = lineSpan.StartLinePosition.Character
                             };
                         })
                         .ToList();
@@ -180,25 +226,46 @@ public static class DumpExtensions
                         parameters);
                 });
 
+                var successDiagnostics = compilationResult.Diagnostics
+                    .Select(d => {
+                        var lineSpan = d.Location.GetLineSpan();
+                        return new DiagnosticResult
+                        {
+                            Id = d.Id,
+                            Message = d.GetMessage(),
+                            Severity = d.Severity.ToString(),
+                            Line = lineSpan.StartLinePosition.Line,
+                            Column = lineSpan.StartLinePosition.Character
+                        };
+                    })
+                    .ToList();
+
                 return new CodeExecutionResult
                 {
                     Success = true,
                     ExecutionResult = resultValue,
                     ExecutionResultType = resultValue?.GetType().FullName,
-                    ConsoleOutput = consoleOutput
+                    ConsoleOutput = consoleOutput,
+                    Diagnostics = successDiagnostics
                 };
             }
             catch (Exception ex)
             {
+                var message = ex.Message;
+                if (ex is System.Reflection.TargetInvocationException tie && tie.InnerException != null)
+                {
+                    message = $"{tie.Message} Inner: {tie.InnerException.Message}\n{tie.InnerException.StackTrace}";
+                }
+
                 return new CodeExecutionResult
                 {
                     Success = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = message
                 };
             }
         }
 
-        public async Task<IEnumerable<CompletionResult>> GetCompletionsAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        public async Task<IEnumerable<CompletionResult>> GetCompletionsAsync(string code, int position, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
@@ -206,8 +273,19 @@ public static class DumpExtensions
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ProjectAnalysisSession));
 
+            var project = _baseProject;
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null) project = project.RemoveDocument(existingDoc.Id);
+                    project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
+                }
+            }
+
             // Add document to project (creates new solution snapshot)
-            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var document = project.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
 
             var completionService = CompletionService.GetService(document);
             if (completionService == null)
@@ -229,12 +307,23 @@ public static class DumpExtensions
             });
         }
 
-        public async Task<IEnumerable<CodeFixResult>> GetQuickFixesAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        public async Task<IEnumerable<CodeFixResult>> GetQuickFixesAsync(string code, int position, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
-            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var project = _baseProject;
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null) project = project.RemoveDocument(existingDoc.Id);
+                    project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
+                }
+            }
+
+            var document = project.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
             var semanticModel = await document.GetSemanticModelAsync();
             if (semanticModel == null) return Enumerable.Empty<CodeFixResult>();
 
@@ -249,12 +338,23 @@ public static class DumpExtensions
             return Enumerable.Empty<CodeFixResult>();
         }
 
-        public async Task<HoverInfoResult?> GetHoverInfoAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        public async Task<HoverInfoResult?> GetHoverInfoAsync(string code, int position, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
-            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var project = _baseProject;
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null) project = project.RemoveDocument(existingDoc.Id);
+                    project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
+                }
+            }
+
+            var document = project.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
             var semanticModel = await document.GetSemanticModelAsync();
             if (semanticModel == null) return null;
 
@@ -296,12 +396,23 @@ public static class DumpExtensions
             };
         }
 
-        public async Task<SignatureHelpResult?> GetSignatureHelpAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        public async Task<SignatureHelpResult?> GetSignatureHelpAsync(string code, int position, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
-            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var project = _baseProject;
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null) project = project.RemoveDocument(existingDoc.Id);
+                    project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
+                }
+            }
+
+            var document = project.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
             
             var invocation = await InvocationContext.GetInvocation(document, position);
             if (invocation == null) return null;
@@ -373,12 +484,28 @@ public static class DumpExtensions
             };
         }
 
-        public async Task<DefinitionResult?> GetDefinitionAsync(string code, int position, string documentName = "GeneratedDocument.cs")
+        public async Task<DefinitionResult?> GetDefinitionAsync(string code, int position, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
             var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    if (file.FileName == documentName) continue;
+
+                    var existingDoc = document.Project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null)
+                    {
+                        document = document.Project.RemoveDocument(existingDoc.Id).GetDocument(document.Id);
+                    }
+                    document = document.Project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project.GetDocument(document.Id);
+                }
+            }
+
             var symbol = await SymbolFinder.FindSymbolAtPositionAsync(document, position);
 
             if (symbol == null) return null;
@@ -401,12 +528,23 @@ public static class DumpExtensions
             return null;
         }
 
-        public async Task<SemanticTokensResult> GetSemanticTokensAsync(string code, string documentName = "GeneratedDocument.cs")
+        public async Task<SemanticTokensResult> GetSemanticTokensAsync(string code, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
-            var document = _baseProject.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
+            var project = _baseProject;
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null) project = project.RemoveDocument(existingDoc.Id);
+                    project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
+                }
+            }
+
+            var document = project.AddDocument(documentName, SourceText.From(code, Encoding.UTF8));
             var semanticModel = await document.GetSemanticModelAsync();
             var root = await document.GetSyntaxRootAsync();
 
@@ -417,12 +555,26 @@ public static class DumpExtensions
             return new SemanticTokensResult { Data = data };
         }
 
-        public async Task<IEnumerable<DiagnosticResult>> GetDiagnosticsAsync(string code, string documentName = "GeneratedDocument.cs")
+        public async Task<IEnumerable<DiagnosticResult>> GetDiagnosticsAsync(string code, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
-            var compilationResult = await _codeCompiler.CompileAsync(_baseProject, documentName, code);
+            var project = _baseProject;
+            if (extraFiles != null)
+            {
+                foreach (var file in extraFiles)
+                {
+                    var existingDoc = project.Documents.FirstOrDefault(d => d.Name == file.FileName);
+                    if (existingDoc != null)
+                    {
+                        project = project.RemoveDocument(existingDoc.Id);
+                    }
+                    project = project.AddDocument(file.FileName, SourceText.From(file.Content, Encoding.UTF8)).Project;
+                }
+            }
+
+            var compilationResult = await _codeCompiler.CompileAsync(project, documentName, code);
             
             return compilationResult.Diagnostics.Select(d => {
                 var lineSpan = d.Location.GetLineSpan();

@@ -48,6 +48,33 @@ export const Monarch: monaco.languages.IMonarchLanguage = {
     tokenizer: {
         root: [
             // identifiers and keywords
+            
+            // 1. Method Calls (Identifier followed by '(')
+            [/\@?[a-zA-Z_]\w*(?=\s*\()/, {
+                cases: {
+                    '@keywords': 'keyword',
+                    '@default': 'method'
+                }
+            }],
+
+            // 2. Generic Types Container (Identifier followed by '<')
+            [/\@?[a-zA-Z_]\w*(?=\s*<)/, {
+                cases: {
+                    '@keywords': 'keyword',
+                    '@default': 'class'
+                }
+            }],
+
+            // 3. PascalCase Identifiers (Heuristic for Types/Classes)
+            [/\@?[A-Z]\w*/, {
+                cases: {
+                    '@typeKeywords': 'keyword',
+                    '@keywords': 'keyword',
+                    '@default': 'class'
+                }
+            }],
+
+            // 4. Other Identifiers
             [/\@?[a-zA-Z_]\w*/, {
                 cases: {
                     '@typeKeywords': 'keyword',
@@ -58,6 +85,9 @@ export const Monarch: monaco.languages.IMonarchLanguage = {
 
             // whitespace
             { include: '@whitespace' },
+
+            // Member Access (Dot) - Triggers state to distinguish Properties from Classes
+            [/\./, { token: 'delimiter', next: '@memberAccess' }],
 
             // delimiters and operators
             [/}/, {
@@ -143,6 +173,47 @@ export const Monarch: monaco.languages.IMonarchLanguage = {
             [/[ \t\v\f\r\n]+/, ''],
             [/\/\*/, 'comment', '@comment'],
             [/\/\/.*$/, 'comment'],
+        ],
+
+        memberAccess: [
+            // 1. Method Calls after dot: .Select(
+            [/\@?[a-zA-Z_]\w*(?=\s*\()/, { 
+                cases: { 
+                    '@keywords': 'keyword', 
+                    '@default': 'method' 
+                } 
+            }, '@pop'],
+            
+            // 2. Generic Methods after dot: .Select<T>
+            // Note: After dot, Identifier<... is usually a generic method, not a class
+            [/\@?[a-zA-Z_]\w*(?=\s*<)/, { 
+                cases: { 
+                    '@keywords': 'keyword', 
+                    '@default': 'method' 
+                } 
+            }, '@pop'],
+            
+            // 3. Properties (PascalCase after dot)
+            [/\@?[A-Z]\w*/, { 
+                cases: { 
+                    '@keywords': 'keyword', 
+                    '@default': 'property' 
+                } 
+            }, '@pop'],
+            
+            // 4. Fields/Identifiers (camelCase after dot)
+            [/\@?[a-zA-Z_]\w*/, { 
+                cases: { 
+                    '@keywords': 'keyword', 
+                    '@default': 'identifier' 
+                } 
+            }, '@pop'],
+            
+            // Whitespace (stay in state)
+            { include: '@whitespace' },
+            
+            // Fallback: If we hit something else (like double dot .. or operator), pop back
+            [/[^a-zA-Z0-9_]/, { token: '@rematch', next: '@pop' }]
         ],
     },
 };

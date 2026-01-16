@@ -3,8 +3,28 @@ using Serilog;
 using SharpPad.GrpcEditor.Services;
 using SharpPad.SqlCore.Implementations;
 using SharpPad.SqlCore.Interfaces;
+using System.Reflection;
+using SQLitePCL;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Pre-load dependencies to ensure they are available in Default Context
+try
+{
+    Assembly.Load("Microsoft.Data.Sqlite");
+    Assembly.Load("SqlSugar");
+    Assembly.Load("Newtonsoft.Json");
+    Assembly.Load("SQLitePCLRaw.core");
+    Assembly.Load("SQLitePCLRaw.batteries_v2");
+    Assembly.Load("SQLitePCLRaw.provider.e_sqlite3");
+
+    // Initialize SQLitePCL
+    SQLitePCL.Batteries.Init();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[Startup] Failed to preload assemblies: {ex.Message}");
+}
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
@@ -39,6 +59,7 @@ builder.Services.AddSingleton<ICodeCompiler, CodeCompiler>();
 builder.Services.AddSingleton<IDynamicCodeExecutor, DynamicCodeExecutor>();
 builder.Services.AddSingleton<IPerformanceMeasurer, PerformanceMeasurer>();
 builder.Services.AddSingleton<IProjectAnalysisSession, ProjectAnalysisSession>();
+builder.Services.AddHostedService<SessionInitializationService>();
 
 var app = builder.Build();
 

@@ -8,57 +8,116 @@ interface OutputRendererProps {
 const OutputRenderer: React.FC<OutputRendererProps> = ({ content }) => {
     if (!content) return null;
 
-    const lines = content.split(/\r?\n/);
     const elements: React.ReactNode[] = [];
-    
-    let currentText = '';
-    
-    lines.forEach((line, i) => {
-        const trimmed = line.trim();
-        // Check if line looks like a dump command
-        // Note: Backend might output $$DUMP$${...}
-        const dumpIndex = line.indexOf('$$DUMP$$');
-        
-        if (dumpIndex !== -1) {
-            // Push text before the dump marker if any
-            const prefix = line.substring(0, dumpIndex);
-            if (prefix || currentText) {
-                elements.push(
-                    <div key={`text-pre-${i}`} style={{ whiteSpace: 'pre-wrap' }}>
-                        {currentText + prefix}
-                    </div>
-                );
-                currentText = '';
-            }
+    let remaining = content;
+    let keyCounter = 0;
 
+    while (remaining) {
+        const dumpIdx = remaining.indexOf('$$DUMP$$');
+        
+        if (dumpIdx === -1) {
+            // No more dumps, render rest as text
+            elements.push(
+                <div key={`text-${keyCounter++}`} style={{ whiteSpace: 'pre-wrap' }}>
+                    {remaining}
+                </div>
+            );
+            break;
+        }
+
+        // Render text before dump
+        if (dumpIdx > 0) {
+            elements.push(
+                <div key={`text-${keyCounter++}`} style={{ whiteSpace: 'pre-wrap' }}>
+                    {remaining.substring(0, dumpIdx)}
+                </div>
+            );
+        }
+
+        // Try to extract JSON
+        const jsonStart = dumpIdx + 8; // Length of $$DUMP$$
+        const extraction = extractJson(remaining, jsonStart);
+
+        if (extraction) {
             try {
-                const jsonStr = line.substring(dumpIndex + 8);
-                const payload = JSON.parse(jsonStr);
+                const payload = JSON.parse(extraction.json);
                 elements.push(
                     <DumpTable 
-                        key={`dump-${i}`} 
+                        key={`dump-${keyCounter++}`} 
                         data={payload.data} 
                         title={payload.title} 
                     />
                 );
+                remaining = remaining.substring(jsonStart + extraction.length);
             } catch (e) {
-                // Fallback: render as text if parse fails
+                // Parse failed, treat as text
                 elements.push(
-                    <div key={`err-${i}`} style={{ whiteSpace: 'pre-wrap', color: '#ce9178' }}>
-                        {line}
+                    <div key={`err-${keyCounter++}`} style={{ whiteSpace: 'pre-wrap', color: '#ce9178' }}>
+                        $$DUMP$$
                     </div>
                 );
+                remaining = remaining.substring(jsonStart);
             }
         } else {
-            currentText += line + '\n';
+            // Extraction failed (no valid JSON found), treat marker as text
+            elements.push(
+                <div key={`text-${keyCounter++}`} style={{ whiteSpace: 'pre-wrap' }}>
+                    $$DUMP$$
+                </div>
+            );
+            remaining = remaining.substring(jsonStart);
         }
-    });
-    
-    if (currentText) {
-        elements.push(<div key="text-end" style={{ whiteSpace: 'pre-wrap' }}>{currentText}</div>);
     }
 
     return <>{elements}</>;
 };
+
+// Helper to extract a balanced JSON object string
+export function extractJson(str: string, start: number): { json: string, length: number } | null {
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    let started = false;
+
+    for (let i = start; i < str.length; i++) {
+        const char = str[i];
+
+        if (!started) {
+            if (char.trim() === '') continue; // Skip whitespace
+            if (char === '{') {
+                started = true;
+                depth = 1;
+                continue;
+            }
+            // If strictly starts with non-brace (and not whitespace), it's not a JSON object
+            return null; 
+        }
+
+        if (inString) {
+            if (escape) {
+                escape = false;
+            } else if (char === '\\') {
+                escape = true;
+            } else if (char === '"') {
+                inString = false;
+            }
+        } else {
+            if (char === '"') {
+                inString = true;
+            } else if (char === '{') {
+                depth++;
+            } else if (char === '}') {
+                depth--;
+                if (depth === 0) {
+                    // Found end
+                    const length = i - start + 1;
+                    return { json: str.substring(start, i + 1), length };
+                }
+            }
+        }
+    }
+
+    return null; // Unbalanced
+}
 
 export default OutputRenderer;

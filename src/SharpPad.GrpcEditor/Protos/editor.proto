@@ -30,6 +30,7 @@ message InitializeReply {
 message CompletionRequest {
   string code = 1;
   int32 position = 2;
+  repeated SourceFile extraFiles = 3;
 }
 
 message CompletionReply {
@@ -45,6 +46,7 @@ message CompletionItem {
 message HoverInfoRequest {
   string code = 1;
   int32 position = 2;
+  repeated SourceFile extraFiles = 3;
 }
 
 message HoverInfoReply {
@@ -57,6 +59,7 @@ message HoverInfoReply {
 message SignatureHelpRequest {
   string code = 1;
   int32 position = 2;
+  repeated SourceFile extraFiles = 3;
 }
 
 message SignatureHelpReply {
@@ -80,6 +83,7 @@ message ParameterItem {
 message DefinitionRequest {
   string code = 1;
   int32 position = 2;
+  repeated SourceFile extraFiles = 3;
 }
 
 message DefinitionReply {
@@ -91,6 +95,7 @@ message DefinitionReply {
 
 message SemanticTokensRequest {
   string code = 1;
+  repeated SourceFile extraFiles = 2;
 }
 
 message SemanticTokensReply {
@@ -107,6 +112,7 @@ message FormatCodeReply {
 
 message DiagnosticsRequest {
   string code = 1;
+  repeated SourceFile extraFiles = 2;
 }
 
 message DiagnosticsReply {
@@ -116,6 +122,7 @@ message DiagnosticsReply {
 message QuickFixRequest {
   string code = 1;
   int32 position = 2;
+  repeated SourceFile extraFiles = 3;
 }
 
 message QuickFixReply {
@@ -133,6 +140,12 @@ message ExecuteCodeRequest {
   string code = 1;
   string typeName = 2;
   string methodName = 3;
+  repeated SourceFile extraFiles = 4;
+}
+
+message SourceFile {
+  string fileName = 1;
+  string content = 2;
 }
 
 message ExecuteCodeReply {

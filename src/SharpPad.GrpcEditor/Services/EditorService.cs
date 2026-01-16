@@ -66,7 +66,8 @@ namespace SharpPad.GrpcEditor.Services
             try
             {
                 if (!_session.IsInitialized) await EnsureSessionInitializedAsync();
-                var completions = await _session.GetCompletionsAsync(request.Code, request.Position);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var completions = await _session.GetCompletionsAsync(request.Code, request.Position, "GeneratedDocument.cs", extraFiles);
                 foreach (var item in completions)
                 {
                     reply.Items.Add(new editor.CompletionItem
@@ -89,7 +90,8 @@ namespace SharpPad.GrpcEditor.Services
             try
             {
                 if (!_session.IsInitialized) await EnsureSessionInitializedAsync();
-                var info = await _session.GetHoverInfoAsync(request.Code, request.Position);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var info = await _session.GetHoverInfoAsync(request.Code, request.Position, "GeneratedDocument.cs", extraFiles);
                 if (info != null)
                 {
                     return new editor.HoverInfoReply
@@ -113,7 +115,8 @@ namespace SharpPad.GrpcEditor.Services
             try
             {
                 if (!_session.IsInitialized) await EnsureSessionInitializedAsync();
-                var help = await _session.GetSignatureHelpAsync(request.Code, request.Position);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var help = await _session.GetSignatureHelpAsync(request.Code, request.Position, "GeneratedDocument.cs", extraFiles);
                 if (help != null)
                 {
                     var reply = new editor.SignatureHelpReply
@@ -155,7 +158,8 @@ namespace SharpPad.GrpcEditor.Services
             try
             {
                 if (!_session.IsInitialized) await EnsureSessionInitializedAsync();
-                var def = await _session.GetDefinitionAsync(request.Code, request.Position);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var def = await _session.GetDefinitionAsync(request.Code, request.Position, "GeneratedDocument.cs", extraFiles);
                 if (def != null)
                 {
                     return new editor.DefinitionReply
@@ -179,7 +183,11 @@ namespace SharpPad.GrpcEditor.Services
             var reply = new editor.SemanticTokensReply();
             try
             {
-                var tokens = await _session.GetSemanticTokensAsync(request.Code);
+                if (!_session.IsInitialized)
+                    await EnsureSessionInitializedAsync();
+
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var tokens = await _session.GetSemanticTokensAsync(request.Code, "GeneratedDocument.cs", extraFiles);
                 reply.Data.AddRange(tokens.Data);
             }
             catch (Exception ex)
@@ -210,7 +218,8 @@ namespace SharpPad.GrpcEditor.Services
             try
             {
                 if (!_session.IsInitialized) await EnsureSessionInitializedAsync();
-                var fixes = await _session.GetQuickFixesAsync(request.Code, request.Position);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var fixes = await _session.GetQuickFixesAsync(request.Code, request.Position, "GeneratedDocument.cs", extraFiles);
                 foreach (var fix in fixes)
                 {
                     reply.Fixes.Add(new editor.QuickFixItem
@@ -235,7 +244,8 @@ namespace SharpPad.GrpcEditor.Services
             try
             {
                 if (!_session.IsInitialized) await EnsureSessionInitializedAsync();
-                var diagnostics = await _session.GetDiagnosticsAsync(request.Code);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+                var diagnostics = await _session.GetDiagnosticsAsync(request.Code, "GeneratedDocument.cs", extraFiles);
                 foreach (var d in diagnostics)
                 {
                     reply.Diagnostics.Add(new editor.DiagnosticItem
@@ -264,7 +274,9 @@ namespace SharpPad.GrpcEditor.Services
                     await EnsureSessionInitializedAsync();
                 }
 
-                var result = await _session.ExecuteCodeAsync(request.Code, "GeneratedDocument.cs", request.TypeName, request.MethodName);
+                var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
+
+                var result = await _session.ExecuteCodeAsync(request.Code, "GeneratedDocument.cs", request.TypeName, request.MethodName, extraFiles);
                 
                 var outputBuilder = new System.Text.StringBuilder();
                 if (!string.IsNullOrEmpty(result.ConsoleOutput))
@@ -303,9 +315,12 @@ namespace SharpPad.GrpcEditor.Services
 
                 if (!result.Success && result.CompilationErrors != null)
                 {
+                    var errors = string.Join("\n", result.CompilationErrors);
+                    _logger.LogWarning("Compilation Errors:\n{Errors}", errors);
+
                     if (string.IsNullOrEmpty(reply.ErrorMessage))
                     {
-                        reply.ErrorMessage = string.Join("\n", result.CompilationErrors);
+                        reply.ErrorMessage = errors;
                     }
                 }
 

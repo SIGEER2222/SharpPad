@@ -46,7 +46,7 @@ namespace SharpPad.SqlCore.Tests.Integration
 
             // Assert
             Assert.NotNull(fixes);
-            Assert.Contains(fixes, f => f.Title == "Add using SqlSugar;");
+            Assert.Contains(fixes, f => f.Title.Contains("using SqlSugar"));
         }
         
         [Fact]

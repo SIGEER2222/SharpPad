@@ -1,20 +1,22 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+"use strict";
+
 import * as $protobuf from "protobufjs/minimal";
 
 // Common aliases
-const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-export const editor = $root.editor = (() => {
+$root.editor = (function() {
 
     /**
      * Namespace editor.
      * @exports editor
      * @namespace
      */
-    const editor = {};
+    var editor = {};
 
     editor.EditorService = (function() {
 
@@ -402,7 +404,7 @@ export const editor = $root.editor = (() => {
         function InitializeRequest(properties) {
             this.assemblyPaths = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -450,7 +452,7 @@ export const editor = $root.editor = (() => {
             if (message.projectPath != null && Object.hasOwnProperty.call(message, "projectPath"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.projectPath);
             if (message.assemblyPaths != null && message.assemblyPaths.length)
-                for (let i = 0; i < message.assemblyPaths.length; ++i)
+                for (var i = 0; i < message.assemblyPaths.length; ++i)
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.assemblyPaths[i]);
             return writer;
         };
@@ -482,9 +484,9 @@ export const editor = $root.editor = (() => {
         InitializeRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -539,7 +541,7 @@ export const editor = $root.editor = (() => {
             if (message.assemblyPaths != null && message.hasOwnProperty("assemblyPaths")) {
                 if (!Array.isArray(message.assemblyPaths))
                     return "assemblyPaths: array expected";
-                for (let i = 0; i < message.assemblyPaths.length; ++i)
+                for (var i = 0; i < message.assemblyPaths.length; ++i)
                     if (!$util.isString(message.assemblyPaths[i]))
                         return "assemblyPaths: string[] expected";
             }
@@ -557,14 +559,14 @@ export const editor = $root.editor = (() => {
         InitializeRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.InitializeRequest)
                 return object;
-            let message = new $root.editor.InitializeRequest();
+            var message = new $root.editor.InitializeRequest();
             if (object.projectPath != null)
                 message.projectPath = String(object.projectPath);
             if (object.assemblyPaths) {
                 if (!Array.isArray(object.assemblyPaths))
                     throw TypeError(".editor.InitializeRequest.assemblyPaths: array expected");
                 message.assemblyPaths = [];
-                for (let i = 0; i < object.assemblyPaths.length; ++i)
+                for (var i = 0; i < object.assemblyPaths.length; ++i)
                     message.assemblyPaths[i] = String(object.assemblyPaths[i]);
             }
             return message;
@@ -582,7 +584,7 @@ export const editor = $root.editor = (() => {
         InitializeRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.assemblyPaths = [];
             if (options.defaults)
@@ -591,7 +593,7 @@ export const editor = $root.editor = (() => {
                 object.projectPath = message.projectPath;
             if (message.assemblyPaths && message.assemblyPaths.length) {
                 object.assemblyPaths = [];
-                for (let j = 0; j < message.assemblyPaths.length; ++j)
+                for (var j = 0; j < message.assemblyPaths.length; ++j)
                     object.assemblyPaths[j] = message.assemblyPaths[j];
             }
             return object;
@@ -646,7 +648,7 @@ export const editor = $root.editor = (() => {
          */
         function InitializeReply(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -725,9 +727,9 @@ export const editor = $root.editor = (() => {
         InitializeReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -794,7 +796,7 @@ export const editor = $root.editor = (() => {
         InitializeReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.InitializeReply)
                 return object;
-            let message = new $root.editor.InitializeReply();
+            var message = new $root.editor.InitializeReply();
             if (object.success != null)
                 message.success = Boolean(object.success);
             if (object.errorMessage != null)
@@ -814,7 +816,7 @@ export const editor = $root.editor = (() => {
         InitializeReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.success = false;
                 object.errorMessage = "";
@@ -863,6 +865,7 @@ export const editor = $root.editor = (() => {
          * @interface ICompletionRequest
          * @property {string|null} [code] CompletionRequest code
          * @property {number|null} [position] CompletionRequest position
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] CompletionRequest extraFiles
          */
 
         /**
@@ -874,8 +877,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.ICompletionRequest=} [properties] Properties to set
          */
         function CompletionRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -895,6 +899,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         CompletionRequest.prototype.position = 0;
+
+        /**
+         * CompletionRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.CompletionRequest
+         * @instance
+         */
+        CompletionRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new CompletionRequest instance using the specified properties.
@@ -924,6 +936,9 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -954,9 +969,9 @@ export const editor = $root.editor = (() => {
         CompletionRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -966,6 +981,12 @@ export const editor = $root.editor = (() => {
                     }
                 case 2: {
                         message.position = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -1009,6 +1030,15 @@ export const editor = $root.editor = (() => {
             if (message.position != null && message.hasOwnProperty("position"))
                 if (!$util.isInteger(message.position))
                     return "position: integer expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -1023,11 +1053,21 @@ export const editor = $root.editor = (() => {
         CompletionRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.CompletionRequest)
                 return object;
-            let message = new $root.editor.CompletionRequest();
+            var message = new $root.editor.CompletionRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
                 message.position = object.position | 0;
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.CompletionRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.CompletionRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -1043,7 +1083,9 @@ export const editor = $root.editor = (() => {
         CompletionRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.position = 0;
@@ -1052,6 +1094,11 @@ export const editor = $root.editor = (() => {
                 object.code = message.code;
             if (message.position != null && message.hasOwnProperty("position"))
                 object.position = message.position;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -1104,7 +1151,7 @@ export const editor = $root.editor = (() => {
         function CompletionReply(properties) {
             this.items = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1142,7 +1189,7 @@ export const editor = $root.editor = (() => {
             if (!writer)
                 writer = $Writer.create();
             if (message.items != null && message.items.length)
-                for (let i = 0; i < message.items.length; ++i)
+                for (var i = 0; i < message.items.length; ++i)
                     $root.editor.CompletionItem.encode(message.items[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -1174,9 +1221,9 @@ export const editor = $root.editor = (() => {
         CompletionReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1224,8 +1271,8 @@ export const editor = $root.editor = (() => {
             if (message.items != null && message.hasOwnProperty("items")) {
                 if (!Array.isArray(message.items))
                     return "items: array expected";
-                for (let i = 0; i < message.items.length; ++i) {
-                    let error = $root.editor.CompletionItem.verify(message.items[i]);
+                for (var i = 0; i < message.items.length; ++i) {
+                    var error = $root.editor.CompletionItem.verify(message.items[i]);
                     if (error)
                         return "items." + error;
                 }
@@ -1244,12 +1291,12 @@ export const editor = $root.editor = (() => {
         CompletionReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.CompletionReply)
                 return object;
-            let message = new $root.editor.CompletionReply();
+            var message = new $root.editor.CompletionReply();
             if (object.items) {
                 if (!Array.isArray(object.items))
                     throw TypeError(".editor.CompletionReply.items: array expected");
                 message.items = [];
-                for (let i = 0; i < object.items.length; ++i) {
+                for (var i = 0; i < object.items.length; ++i) {
                     if (typeof object.items[i] !== "object")
                         throw TypeError(".editor.CompletionReply.items: object expected");
                     message.items[i] = $root.editor.CompletionItem.fromObject(object.items[i]);
@@ -1270,12 +1317,12 @@ export const editor = $root.editor = (() => {
         CompletionReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.items = [];
             if (message.items && message.items.length) {
                 object.items = [];
-                for (let j = 0; j < message.items.length; ++j)
+                for (var j = 0; j < message.items.length; ++j)
                     object.items[j] = $root.editor.CompletionItem.toObject(message.items[j], options);
             }
             return object;
@@ -1331,7 +1378,7 @@ export const editor = $root.editor = (() => {
          */
         function CompletionItem(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1420,9 +1467,9 @@ export const editor = $root.editor = (() => {
         CompletionItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionItem();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionItem();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1496,7 +1543,7 @@ export const editor = $root.editor = (() => {
         CompletionItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.CompletionItem)
                 return object;
-            let message = new $root.editor.CompletionItem();
+            var message = new $root.editor.CompletionItem();
             if (object.displayText != null)
                 message.displayText = String(object.displayText);
             if (object.insertText != null)
@@ -1518,7 +1565,7 @@ export const editor = $root.editor = (() => {
         CompletionItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.displayText = "";
                 object.insertText = "";
@@ -1570,6 +1617,7 @@ export const editor = $root.editor = (() => {
          * @interface IHoverInfoRequest
          * @property {string|null} [code] HoverInfoRequest code
          * @property {number|null} [position] HoverInfoRequest position
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] HoverInfoRequest extraFiles
          */
 
         /**
@@ -1581,8 +1629,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.IHoverInfoRequest=} [properties] Properties to set
          */
         function HoverInfoRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1602,6 +1651,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         HoverInfoRequest.prototype.position = 0;
+
+        /**
+         * HoverInfoRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.HoverInfoRequest
+         * @instance
+         */
+        HoverInfoRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new HoverInfoRequest instance using the specified properties.
@@ -1631,6 +1688,9 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -1661,9 +1721,9 @@ export const editor = $root.editor = (() => {
         HoverInfoRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1673,6 +1733,12 @@ export const editor = $root.editor = (() => {
                     }
                 case 2: {
                         message.position = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -1716,6 +1782,15 @@ export const editor = $root.editor = (() => {
             if (message.position != null && message.hasOwnProperty("position"))
                 if (!$util.isInteger(message.position))
                     return "position: integer expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -1730,11 +1805,21 @@ export const editor = $root.editor = (() => {
         HoverInfoRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.HoverInfoRequest)
                 return object;
-            let message = new $root.editor.HoverInfoRequest();
+            var message = new $root.editor.HoverInfoRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
                 message.position = object.position | 0;
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.HoverInfoRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.HoverInfoRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -1750,7 +1835,9 @@ export const editor = $root.editor = (() => {
         HoverInfoRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.position = 0;
@@ -1759,6 +1846,11 @@ export const editor = $root.editor = (() => {
                 object.code = message.code;
             if (message.position != null && message.hasOwnProperty("position"))
                 object.position = message.position;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -1813,7 +1905,7 @@ export const editor = $root.editor = (() => {
          */
         function HoverInfoReply(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1912,9 +2004,9 @@ export const editor = $root.editor = (() => {
         HoverInfoReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1995,7 +2087,7 @@ export const editor = $root.editor = (() => {
         HoverInfoReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.HoverInfoReply)
                 return object;
-            let message = new $root.editor.HoverInfoReply();
+            var message = new $root.editor.HoverInfoReply();
             if (object.hasInfo != null)
                 message.hasInfo = Boolean(object.hasInfo);
             if (object.information != null)
@@ -2019,7 +2111,7 @@ export const editor = $root.editor = (() => {
         HoverInfoReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.hasInfo = false;
                 object.information = "";
@@ -2074,6 +2166,7 @@ export const editor = $root.editor = (() => {
          * @interface ISignatureHelpRequest
          * @property {string|null} [code] SignatureHelpRequest code
          * @property {number|null} [position] SignatureHelpRequest position
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] SignatureHelpRequest extraFiles
          */
 
         /**
@@ -2085,8 +2178,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.ISignatureHelpRequest=} [properties] Properties to set
          */
         function SignatureHelpRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2106,6 +2200,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         SignatureHelpRequest.prototype.position = 0;
+
+        /**
+         * SignatureHelpRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.SignatureHelpRequest
+         * @instance
+         */
+        SignatureHelpRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new SignatureHelpRequest instance using the specified properties.
@@ -2135,6 +2237,9 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -2165,9 +2270,9 @@ export const editor = $root.editor = (() => {
         SignatureHelpRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2177,6 +2282,12 @@ export const editor = $root.editor = (() => {
                     }
                 case 2: {
                         message.position = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -2220,6 +2331,15 @@ export const editor = $root.editor = (() => {
             if (message.position != null && message.hasOwnProperty("position"))
                 if (!$util.isInteger(message.position))
                     return "position: integer expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -2234,11 +2354,21 @@ export const editor = $root.editor = (() => {
         SignatureHelpRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SignatureHelpRequest)
                 return object;
-            let message = new $root.editor.SignatureHelpRequest();
+            var message = new $root.editor.SignatureHelpRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
                 message.position = object.position | 0;
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.SignatureHelpRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.SignatureHelpRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -2254,7 +2384,9 @@ export const editor = $root.editor = (() => {
         SignatureHelpRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.position = 0;
@@ -2263,6 +2395,11 @@ export const editor = $root.editor = (() => {
                 object.code = message.code;
             if (message.position != null && message.hasOwnProperty("position"))
                 object.position = message.position;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -2318,7 +2455,7 @@ export const editor = $root.editor = (() => {
         function SignatureHelpReply(properties) {
             this.signatures = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2382,7 +2519,7 @@ export const editor = $root.editor = (() => {
             if (message.hasHelp != null && Object.hasOwnProperty.call(message, "hasHelp"))
                 writer.uint32(/* id 1, wireType 0 =*/8).bool(message.hasHelp);
             if (message.signatures != null && message.signatures.length)
-                for (let i = 0; i < message.signatures.length; ++i)
+                for (var i = 0; i < message.signatures.length; ++i)
                     $root.editor.SignatureItem.encode(message.signatures[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.activeParameter != null && Object.hasOwnProperty.call(message, "activeParameter"))
                 writer.uint32(/* id 3, wireType 0 =*/24).int32(message.activeParameter);
@@ -2418,9 +2555,9 @@ export const editor = $root.editor = (() => {
         SignatureHelpReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2483,8 +2620,8 @@ export const editor = $root.editor = (() => {
             if (message.signatures != null && message.hasOwnProperty("signatures")) {
                 if (!Array.isArray(message.signatures))
                     return "signatures: array expected";
-                for (let i = 0; i < message.signatures.length; ++i) {
-                    let error = $root.editor.SignatureItem.verify(message.signatures[i]);
+                for (var i = 0; i < message.signatures.length; ++i) {
+                    var error = $root.editor.SignatureItem.verify(message.signatures[i]);
                     if (error)
                         return "signatures." + error;
                 }
@@ -2509,14 +2646,14 @@ export const editor = $root.editor = (() => {
         SignatureHelpReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SignatureHelpReply)
                 return object;
-            let message = new $root.editor.SignatureHelpReply();
+            var message = new $root.editor.SignatureHelpReply();
             if (object.hasHelp != null)
                 message.hasHelp = Boolean(object.hasHelp);
             if (object.signatures) {
                 if (!Array.isArray(object.signatures))
                     throw TypeError(".editor.SignatureHelpReply.signatures: array expected");
                 message.signatures = [];
-                for (let i = 0; i < object.signatures.length; ++i) {
+                for (var i = 0; i < object.signatures.length; ++i) {
                     if (typeof object.signatures[i] !== "object")
                         throw TypeError(".editor.SignatureHelpReply.signatures: object expected");
                     message.signatures[i] = $root.editor.SignatureItem.fromObject(object.signatures[i]);
@@ -2541,7 +2678,7 @@ export const editor = $root.editor = (() => {
         SignatureHelpReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.signatures = [];
             if (options.defaults) {
@@ -2553,7 +2690,7 @@ export const editor = $root.editor = (() => {
                 object.hasHelp = message.hasHelp;
             if (message.signatures && message.signatures.length) {
                 object.signatures = [];
-                for (let j = 0; j < message.signatures.length; ++j)
+                for (var j = 0; j < message.signatures.length; ++j)
                     object.signatures[j] = $root.editor.SignatureItem.toObject(message.signatures[j], options);
             }
             if (message.activeParameter != null && message.hasOwnProperty("activeParameter"))
@@ -2614,7 +2751,7 @@ export const editor = $root.editor = (() => {
         function SignatureItem(properties) {
             this.parameters = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2672,7 +2809,7 @@ export const editor = $root.editor = (() => {
             if (message.documentation != null && Object.hasOwnProperty.call(message, "documentation"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.documentation);
             if (message.parameters != null && message.parameters.length)
-                for (let i = 0; i < message.parameters.length; ++i)
+                for (var i = 0; i < message.parameters.length; ++i)
                     $root.editor.ParameterItem.encode(message.parameters[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -2704,9 +2841,9 @@ export const editor = $root.editor = (() => {
         SignatureItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureItem();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureItem();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2768,8 +2905,8 @@ export const editor = $root.editor = (() => {
             if (message.parameters != null && message.hasOwnProperty("parameters")) {
                 if (!Array.isArray(message.parameters))
                     return "parameters: array expected";
-                for (let i = 0; i < message.parameters.length; ++i) {
-                    let error = $root.editor.ParameterItem.verify(message.parameters[i]);
+                for (var i = 0; i < message.parameters.length; ++i) {
+                    var error = $root.editor.ParameterItem.verify(message.parameters[i]);
                     if (error)
                         return "parameters." + error;
                 }
@@ -2788,7 +2925,7 @@ export const editor = $root.editor = (() => {
         SignatureItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SignatureItem)
                 return object;
-            let message = new $root.editor.SignatureItem();
+            var message = new $root.editor.SignatureItem();
             if (object.label != null)
                 message.label = String(object.label);
             if (object.documentation != null)
@@ -2797,7 +2934,7 @@ export const editor = $root.editor = (() => {
                 if (!Array.isArray(object.parameters))
                     throw TypeError(".editor.SignatureItem.parameters: array expected");
                 message.parameters = [];
-                for (let i = 0; i < object.parameters.length; ++i) {
+                for (var i = 0; i < object.parameters.length; ++i) {
                     if (typeof object.parameters[i] !== "object")
                         throw TypeError(".editor.SignatureItem.parameters: object expected");
                     message.parameters[i] = $root.editor.ParameterItem.fromObject(object.parameters[i]);
@@ -2818,7 +2955,7 @@ export const editor = $root.editor = (() => {
         SignatureItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.parameters = [];
             if (options.defaults) {
@@ -2831,7 +2968,7 @@ export const editor = $root.editor = (() => {
                 object.documentation = message.documentation;
             if (message.parameters && message.parameters.length) {
                 object.parameters = [];
-                for (let j = 0; j < message.parameters.length; ++j)
+                for (var j = 0; j < message.parameters.length; ++j)
                     object.parameters[j] = $root.editor.ParameterItem.toObject(message.parameters[j], options);
             }
             return object;
@@ -2886,7 +3023,7 @@ export const editor = $root.editor = (() => {
          */
         function ParameterItem(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2965,9 +3102,9 @@ export const editor = $root.editor = (() => {
         ParameterItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ParameterItem();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ParameterItem();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3034,7 +3171,7 @@ export const editor = $root.editor = (() => {
         ParameterItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.ParameterItem)
                 return object;
-            let message = new $root.editor.ParameterItem();
+            var message = new $root.editor.ParameterItem();
             if (object.label != null)
                 message.label = String(object.label);
             if (object.documentation != null)
@@ -3054,7 +3191,7 @@ export const editor = $root.editor = (() => {
         ParameterItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.label = "";
                 object.documentation = "";
@@ -3103,6 +3240,7 @@ export const editor = $root.editor = (() => {
          * @interface IDefinitionRequest
          * @property {string|null} [code] DefinitionRequest code
          * @property {number|null} [position] DefinitionRequest position
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] DefinitionRequest extraFiles
          */
 
         /**
@@ -3114,8 +3252,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.IDefinitionRequest=} [properties] Properties to set
          */
         function DefinitionRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3135,6 +3274,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         DefinitionRequest.prototype.position = 0;
+
+        /**
+         * DefinitionRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.DefinitionRequest
+         * @instance
+         */
+        DefinitionRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new DefinitionRequest instance using the specified properties.
@@ -3164,6 +3311,9 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -3194,9 +3344,9 @@ export const editor = $root.editor = (() => {
         DefinitionRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3206,6 +3356,12 @@ export const editor = $root.editor = (() => {
                     }
                 case 2: {
                         message.position = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -3249,6 +3405,15 @@ export const editor = $root.editor = (() => {
             if (message.position != null && message.hasOwnProperty("position"))
                 if (!$util.isInteger(message.position))
                     return "position: integer expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -3263,11 +3428,21 @@ export const editor = $root.editor = (() => {
         DefinitionRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DefinitionRequest)
                 return object;
-            let message = new $root.editor.DefinitionRequest();
+            var message = new $root.editor.DefinitionRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
                 message.position = object.position | 0;
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.DefinitionRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.DefinitionRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -3283,7 +3458,9 @@ export const editor = $root.editor = (() => {
         DefinitionRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.position = 0;
@@ -3292,6 +3469,11 @@ export const editor = $root.editor = (() => {
                 object.code = message.code;
             if (message.position != null && message.hasOwnProperty("position"))
                 object.position = message.position;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -3346,7 +3528,7 @@ export const editor = $root.editor = (() => {
          */
         function DefinitionReply(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3445,9 +3627,9 @@ export const editor = $root.editor = (() => {
         DefinitionReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3528,7 +3710,7 @@ export const editor = $root.editor = (() => {
         DefinitionReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DefinitionReply)
                 return object;
-            let message = new $root.editor.DefinitionReply();
+            var message = new $root.editor.DefinitionReply();
             if (object.hasDefinition != null)
                 message.hasDefinition = Boolean(object.hasDefinition);
             if (object.filePath != null)
@@ -3552,7 +3734,7 @@ export const editor = $root.editor = (() => {
         DefinitionReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.hasDefinition = false;
                 object.filePath = "";
@@ -3606,6 +3788,7 @@ export const editor = $root.editor = (() => {
          * @memberof editor
          * @interface ISemanticTokensRequest
          * @property {string|null} [code] SemanticTokensRequest code
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] SemanticTokensRequest extraFiles
          */
 
         /**
@@ -3617,8 +3800,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.ISemanticTokensRequest=} [properties] Properties to set
          */
         function SemanticTokensRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3630,6 +3814,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         SemanticTokensRequest.prototype.code = "";
+
+        /**
+         * SemanticTokensRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.SemanticTokensRequest
+         * @instance
+         */
+        SemanticTokensRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new SemanticTokensRequest instance using the specified properties.
@@ -3657,6 +3849,9 @@ export const editor = $root.editor = (() => {
                 writer = $Writer.create();
             if (message.code != null && Object.hasOwnProperty.call(message, "code"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
 
@@ -3687,14 +3882,20 @@ export const editor = $root.editor = (() => {
         SemanticTokensRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.code = reader.string();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -3735,6 +3936,15 @@ export const editor = $root.editor = (() => {
             if (message.code != null && message.hasOwnProperty("code"))
                 if (!$util.isString(message.code))
                     return "code: string expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -3749,9 +3959,19 @@ export const editor = $root.editor = (() => {
         SemanticTokensRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SemanticTokensRequest)
                 return object;
-            let message = new $root.editor.SemanticTokensRequest();
+            var message = new $root.editor.SemanticTokensRequest();
             if (object.code != null)
                 message.code = String(object.code);
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.SemanticTokensRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.SemanticTokensRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -3767,11 +3987,18 @@ export const editor = $root.editor = (() => {
         SemanticTokensRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults)
                 object.code = "";
             if (message.code != null && message.hasOwnProperty("code"))
                 object.code = message.code;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -3824,7 +4051,7 @@ export const editor = $root.editor = (() => {
         function SemanticTokensReply(properties) {
             this.data = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3863,7 +4090,7 @@ export const editor = $root.editor = (() => {
                 writer = $Writer.create();
             if (message.data != null && message.data.length) {
                 writer.uint32(/* id 1, wireType 2 =*/10).fork();
-                for (let i = 0; i < message.data.length; ++i)
+                for (var i = 0; i < message.data.length; ++i)
                     writer.int32(message.data[i]);
                 writer.ldelim();
             }
@@ -3897,9 +4124,9 @@ export const editor = $root.editor = (() => {
         SemanticTokensReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3907,7 +4134,7 @@ export const editor = $root.editor = (() => {
                         if (!(message.data && message.data.length))
                             message.data = [];
                         if ((tag & 7) === 2) {
-                            let end2 = reader.uint32() + reader.pos;
+                            var end2 = reader.uint32() + reader.pos;
                             while (reader.pos < end2)
                                 message.data.push(reader.int32());
                         } else
@@ -3952,7 +4179,7 @@ export const editor = $root.editor = (() => {
             if (message.data != null && message.hasOwnProperty("data")) {
                 if (!Array.isArray(message.data))
                     return "data: array expected";
-                for (let i = 0; i < message.data.length; ++i)
+                for (var i = 0; i < message.data.length; ++i)
                     if (!$util.isInteger(message.data[i]))
                         return "data: integer[] expected";
             }
@@ -3970,12 +4197,12 @@ export const editor = $root.editor = (() => {
         SemanticTokensReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SemanticTokensReply)
                 return object;
-            let message = new $root.editor.SemanticTokensReply();
+            var message = new $root.editor.SemanticTokensReply();
             if (object.data) {
                 if (!Array.isArray(object.data))
                     throw TypeError(".editor.SemanticTokensReply.data: array expected");
                 message.data = [];
-                for (let i = 0; i < object.data.length; ++i)
+                for (var i = 0; i < object.data.length; ++i)
                     message.data[i] = object.data[i] | 0;
             }
             return message;
@@ -3993,12 +4220,12 @@ export const editor = $root.editor = (() => {
         SemanticTokensReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.data = [];
             if (message.data && message.data.length) {
                 object.data = [];
-                for (let j = 0; j < message.data.length; ++j)
+                for (var j = 0; j < message.data.length; ++j)
                     object.data[j] = message.data[j];
             }
             return object;
@@ -4052,7 +4279,7 @@ export const editor = $root.editor = (() => {
          */
         function FormatCodeRequest(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4121,9 +4348,9 @@ export const editor = $root.editor = (() => {
         FormatCodeRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4183,7 +4410,7 @@ export const editor = $root.editor = (() => {
         FormatCodeRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.FormatCodeRequest)
                 return object;
-            let message = new $root.editor.FormatCodeRequest();
+            var message = new $root.editor.FormatCodeRequest();
             if (object.code != null)
                 message.code = String(object.code);
             return message;
@@ -4201,7 +4428,7 @@ export const editor = $root.editor = (() => {
         FormatCodeRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults)
                 object.code = "";
             if (message.code != null && message.hasOwnProperty("code"))
@@ -4257,7 +4484,7 @@ export const editor = $root.editor = (() => {
          */
         function FormatCodeReply(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4326,9 +4553,9 @@ export const editor = $root.editor = (() => {
         FormatCodeReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4388,7 +4615,7 @@ export const editor = $root.editor = (() => {
         FormatCodeReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.FormatCodeReply)
                 return object;
-            let message = new $root.editor.FormatCodeReply();
+            var message = new $root.editor.FormatCodeReply();
             if (object.formattedCode != null)
                 message.formattedCode = String(object.formattedCode);
             return message;
@@ -4406,7 +4633,7 @@ export const editor = $root.editor = (() => {
         FormatCodeReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults)
                 object.formattedCode = "";
             if (message.formattedCode != null && message.hasOwnProperty("formattedCode"))
@@ -4450,6 +4677,7 @@ export const editor = $root.editor = (() => {
          * @memberof editor
          * @interface IDiagnosticsRequest
          * @property {string|null} [code] DiagnosticsRequest code
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] DiagnosticsRequest extraFiles
          */
 
         /**
@@ -4461,8 +4689,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.IDiagnosticsRequest=} [properties] Properties to set
          */
         function DiagnosticsRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4474,6 +4703,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         DiagnosticsRequest.prototype.code = "";
+
+        /**
+         * DiagnosticsRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.DiagnosticsRequest
+         * @instance
+         */
+        DiagnosticsRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new DiagnosticsRequest instance using the specified properties.
@@ -4501,6 +4738,9 @@ export const editor = $root.editor = (() => {
                 writer = $Writer.create();
             if (message.code != null && Object.hasOwnProperty.call(message, "code"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
 
@@ -4531,14 +4771,20 @@ export const editor = $root.editor = (() => {
         DiagnosticsRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.code = reader.string();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -4579,6 +4825,15 @@ export const editor = $root.editor = (() => {
             if (message.code != null && message.hasOwnProperty("code"))
                 if (!$util.isString(message.code))
                     return "code: string expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -4593,9 +4848,19 @@ export const editor = $root.editor = (() => {
         DiagnosticsRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DiagnosticsRequest)
                 return object;
-            let message = new $root.editor.DiagnosticsRequest();
+            var message = new $root.editor.DiagnosticsRequest();
             if (object.code != null)
                 message.code = String(object.code);
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.DiagnosticsRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.DiagnosticsRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -4611,11 +4876,18 @@ export const editor = $root.editor = (() => {
         DiagnosticsRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults)
                 object.code = "";
             if (message.code != null && message.hasOwnProperty("code"))
                 object.code = message.code;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -4668,7 +4940,7 @@ export const editor = $root.editor = (() => {
         function DiagnosticsReply(properties) {
             this.diagnostics = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4706,7 +4978,7 @@ export const editor = $root.editor = (() => {
             if (!writer)
                 writer = $Writer.create();
             if (message.diagnostics != null && message.diagnostics.length)
-                for (let i = 0; i < message.diagnostics.length; ++i)
+                for (var i = 0; i < message.diagnostics.length; ++i)
                     $root.editor.DiagnosticItem.encode(message.diagnostics[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -4738,9 +5010,9 @@ export const editor = $root.editor = (() => {
         DiagnosticsReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4788,8 +5060,8 @@ export const editor = $root.editor = (() => {
             if (message.diagnostics != null && message.hasOwnProperty("diagnostics")) {
                 if (!Array.isArray(message.diagnostics))
                     return "diagnostics: array expected";
-                for (let i = 0; i < message.diagnostics.length; ++i) {
-                    let error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
+                for (var i = 0; i < message.diagnostics.length; ++i) {
+                    var error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
                     if (error)
                         return "diagnostics." + error;
                 }
@@ -4808,12 +5080,12 @@ export const editor = $root.editor = (() => {
         DiagnosticsReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DiagnosticsReply)
                 return object;
-            let message = new $root.editor.DiagnosticsReply();
+            var message = new $root.editor.DiagnosticsReply();
             if (object.diagnostics) {
                 if (!Array.isArray(object.diagnostics))
                     throw TypeError(".editor.DiagnosticsReply.diagnostics: array expected");
                 message.diagnostics = [];
-                for (let i = 0; i < object.diagnostics.length; ++i) {
+                for (var i = 0; i < object.diagnostics.length; ++i) {
                     if (typeof object.diagnostics[i] !== "object")
                         throw TypeError(".editor.DiagnosticsReply.diagnostics: object expected");
                     message.diagnostics[i] = $root.editor.DiagnosticItem.fromObject(object.diagnostics[i]);
@@ -4834,12 +5106,12 @@ export const editor = $root.editor = (() => {
         DiagnosticsReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.diagnostics = [];
             if (message.diagnostics && message.diagnostics.length) {
                 object.diagnostics = [];
-                for (let j = 0; j < message.diagnostics.length; ++j)
+                for (var j = 0; j < message.diagnostics.length; ++j)
                     object.diagnostics[j] = $root.editor.DiagnosticItem.toObject(message.diagnostics[j], options);
             }
             return object;
@@ -4882,6 +5154,7 @@ export const editor = $root.editor = (() => {
          * @interface IQuickFixRequest
          * @property {string|null} [code] QuickFixRequest code
          * @property {number|null} [position] QuickFixRequest position
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] QuickFixRequest extraFiles
          */
 
         /**
@@ -4893,8 +5166,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.IQuickFixRequest=} [properties] Properties to set
          */
         function QuickFixRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4914,6 +5188,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         QuickFixRequest.prototype.position = 0;
+
+        /**
+         * QuickFixRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.QuickFixRequest
+         * @instance
+         */
+        QuickFixRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new QuickFixRequest instance using the specified properties.
@@ -4943,6 +5225,9 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -4973,9 +5258,9 @@ export const editor = $root.editor = (() => {
         QuickFixRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4985,6 +5270,12 @@ export const editor = $root.editor = (() => {
                     }
                 case 2: {
                         message.position = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -5028,6 +5319,15 @@ export const editor = $root.editor = (() => {
             if (message.position != null && message.hasOwnProperty("position"))
                 if (!$util.isInteger(message.position))
                     return "position: integer expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -5042,11 +5342,21 @@ export const editor = $root.editor = (() => {
         QuickFixRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.QuickFixRequest)
                 return object;
-            let message = new $root.editor.QuickFixRequest();
+            var message = new $root.editor.QuickFixRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
                 message.position = object.position | 0;
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.QuickFixRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.QuickFixRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -5062,7 +5372,9 @@ export const editor = $root.editor = (() => {
         QuickFixRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.position = 0;
@@ -5071,6 +5383,11 @@ export const editor = $root.editor = (() => {
                 object.code = message.code;
             if (message.position != null && message.hasOwnProperty("position"))
                 object.position = message.position;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -5123,7 +5440,7 @@ export const editor = $root.editor = (() => {
         function QuickFixReply(properties) {
             this.fixes = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5161,7 +5478,7 @@ export const editor = $root.editor = (() => {
             if (!writer)
                 writer = $Writer.create();
             if (message.fixes != null && message.fixes.length)
-                for (let i = 0; i < message.fixes.length; ++i)
+                for (var i = 0; i < message.fixes.length; ++i)
                     $root.editor.QuickFixItem.encode(message.fixes[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -5193,9 +5510,9 @@ export const editor = $root.editor = (() => {
         QuickFixReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5243,8 +5560,8 @@ export const editor = $root.editor = (() => {
             if (message.fixes != null && message.hasOwnProperty("fixes")) {
                 if (!Array.isArray(message.fixes))
                     return "fixes: array expected";
-                for (let i = 0; i < message.fixes.length; ++i) {
-                    let error = $root.editor.QuickFixItem.verify(message.fixes[i]);
+                for (var i = 0; i < message.fixes.length; ++i) {
+                    var error = $root.editor.QuickFixItem.verify(message.fixes[i]);
                     if (error)
                         return "fixes." + error;
                 }
@@ -5263,12 +5580,12 @@ export const editor = $root.editor = (() => {
         QuickFixReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.QuickFixReply)
                 return object;
-            let message = new $root.editor.QuickFixReply();
+            var message = new $root.editor.QuickFixReply();
             if (object.fixes) {
                 if (!Array.isArray(object.fixes))
                     throw TypeError(".editor.QuickFixReply.fixes: array expected");
                 message.fixes = [];
-                for (let i = 0; i < object.fixes.length; ++i) {
+                for (var i = 0; i < object.fixes.length; ++i) {
                     if (typeof object.fixes[i] !== "object")
                         throw TypeError(".editor.QuickFixReply.fixes: object expected");
                     message.fixes[i] = $root.editor.QuickFixItem.fromObject(object.fixes[i]);
@@ -5289,12 +5606,12 @@ export const editor = $root.editor = (() => {
         QuickFixReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.fixes = [];
             if (message.fixes && message.fixes.length) {
                 object.fixes = [];
-                for (let j = 0; j < message.fixes.length; ++j)
+                for (var j = 0; j < message.fixes.length; ++j)
                     object.fixes[j] = $root.editor.QuickFixItem.toObject(message.fixes[j], options);
             }
             return object;
@@ -5351,7 +5668,7 @@ export const editor = $root.editor = (() => {
          */
         function QuickFixItem(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5450,9 +5767,9 @@ export const editor = $root.editor = (() => {
         QuickFixItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixItem();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixItem();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5533,7 +5850,7 @@ export const editor = $root.editor = (() => {
         QuickFixItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.QuickFixItem)
                 return object;
-            let message = new $root.editor.QuickFixItem();
+            var message = new $root.editor.QuickFixItem();
             if (object.title != null)
                 message.title = String(object.title);
             if (object.newText != null)
@@ -5557,7 +5874,7 @@ export const editor = $root.editor = (() => {
         QuickFixItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.title = "";
                 object.newText = "";
@@ -5613,6 +5930,7 @@ export const editor = $root.editor = (() => {
          * @property {string|null} [code] ExecuteCodeRequest code
          * @property {string|null} [typeName] ExecuteCodeRequest typeName
          * @property {string|null} [methodName] ExecuteCodeRequest methodName
+         * @property {Array.<editor.ISourceFile>|null} [extraFiles] ExecuteCodeRequest extraFiles
          */
 
         /**
@@ -5624,8 +5942,9 @@ export const editor = $root.editor = (() => {
          * @param {editor.IExecuteCodeRequest=} [properties] Properties to set
          */
         function ExecuteCodeRequest(properties) {
+            this.extraFiles = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5653,6 +5972,14 @@ export const editor = $root.editor = (() => {
          * @instance
          */
         ExecuteCodeRequest.prototype.methodName = "";
+
+        /**
+         * ExecuteCodeRequest extraFiles.
+         * @member {Array.<editor.ISourceFile>} extraFiles
+         * @memberof editor.ExecuteCodeRequest
+         * @instance
+         */
+        ExecuteCodeRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
          * Creates a new ExecuteCodeRequest instance using the specified properties.
@@ -5684,6 +6011,9 @@ export const editor = $root.editor = (() => {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.typeName);
             if (message.methodName != null && Object.hasOwnProperty.call(message, "methodName"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.methodName);
+            if (message.extraFiles != null && message.extraFiles.length)
+                for (var i = 0; i < message.extraFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -5714,9 +6044,9 @@ export const editor = $root.editor = (() => {
         ExecuteCodeRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeRequest();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeRequest();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5730,6 +6060,12 @@ export const editor = $root.editor = (() => {
                     }
                 case 3: {
                         message.methodName = reader.string();
+                        break;
+                    }
+                case 4: {
+                        if (!(message.extraFiles && message.extraFiles.length))
+                            message.extraFiles = [];
+                        message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -5776,6 +6112,15 @@ export const editor = $root.editor = (() => {
             if (message.methodName != null && message.hasOwnProperty("methodName"))
                 if (!$util.isString(message.methodName))
                     return "methodName: string expected";
+            if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
+                if (!Array.isArray(message.extraFiles))
+                    return "extraFiles: array expected";
+                for (var i = 0; i < message.extraFiles.length; ++i) {
+                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                    if (error)
+                        return "extraFiles." + error;
+                }
+            }
             return null;
         };
 
@@ -5790,13 +6135,23 @@ export const editor = $root.editor = (() => {
         ExecuteCodeRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.ExecuteCodeRequest)
                 return object;
-            let message = new $root.editor.ExecuteCodeRequest();
+            var message = new $root.editor.ExecuteCodeRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.typeName != null)
                 message.typeName = String(object.typeName);
             if (object.methodName != null)
                 message.methodName = String(object.methodName);
+            if (object.extraFiles) {
+                if (!Array.isArray(object.extraFiles))
+                    throw TypeError(".editor.ExecuteCodeRequest.extraFiles: array expected");
+                message.extraFiles = [];
+                for (var i = 0; i < object.extraFiles.length; ++i) {
+                    if (typeof object.extraFiles[i] !== "object")
+                        throw TypeError(".editor.ExecuteCodeRequest.extraFiles: object expected");
+                    message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
+                }
+            }
             return message;
         };
 
@@ -5812,7 +6167,9 @@ export const editor = $root.editor = (() => {
         ExecuteCodeRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.typeName = "";
@@ -5824,6 +6181,11 @@ export const editor = $root.editor = (() => {
                 object.typeName = message.typeName;
             if (message.methodName != null && message.hasOwnProperty("methodName"))
                 object.methodName = message.methodName;
+            if (message.extraFiles && message.extraFiles.length) {
+                object.extraFiles = [];
+                for (var j = 0; j < message.extraFiles.length; ++j)
+                    object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
+            }
             return object;
         };
 
@@ -5856,6 +6218,235 @@ export const editor = $root.editor = (() => {
         return ExecuteCodeRequest;
     })();
 
+    editor.SourceFile = (function() {
+
+        /**
+         * Properties of a SourceFile.
+         * @memberof editor
+         * @interface ISourceFile
+         * @property {string|null} [fileName] SourceFile fileName
+         * @property {string|null} [content] SourceFile content
+         */
+
+        /**
+         * Constructs a new SourceFile.
+         * @memberof editor
+         * @classdesc Represents a SourceFile.
+         * @implements ISourceFile
+         * @constructor
+         * @param {editor.ISourceFile=} [properties] Properties to set
+         */
+        function SourceFile(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SourceFile fileName.
+         * @member {string} fileName
+         * @memberof editor.SourceFile
+         * @instance
+         */
+        SourceFile.prototype.fileName = "";
+
+        /**
+         * SourceFile content.
+         * @member {string} content
+         * @memberof editor.SourceFile
+         * @instance
+         */
+        SourceFile.prototype.content = "";
+
+        /**
+         * Creates a new SourceFile instance using the specified properties.
+         * @function create
+         * @memberof editor.SourceFile
+         * @static
+         * @param {editor.ISourceFile=} [properties] Properties to set
+         * @returns {editor.SourceFile} SourceFile instance
+         */
+        SourceFile.create = function create(properties) {
+            return new SourceFile(properties);
+        };
+
+        /**
+         * Encodes the specified SourceFile message. Does not implicitly {@link editor.SourceFile.verify|verify} messages.
+         * @function encode
+         * @memberof editor.SourceFile
+         * @static
+         * @param {editor.ISourceFile} message SourceFile message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SourceFile.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.fileName != null && Object.hasOwnProperty.call(message, "fileName"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.fileName);
+            if (message.content != null && Object.hasOwnProperty.call(message, "content"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.content);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SourceFile message, length delimited. Does not implicitly {@link editor.SourceFile.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.SourceFile
+         * @static
+         * @param {editor.ISourceFile} message SourceFile message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SourceFile.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SourceFile message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.SourceFile
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.SourceFile} SourceFile
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SourceFile.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SourceFile();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.fileName = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.content = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SourceFile message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.SourceFile
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.SourceFile} SourceFile
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SourceFile.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SourceFile message.
+         * @function verify
+         * @memberof editor.SourceFile
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SourceFile.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.fileName != null && message.hasOwnProperty("fileName"))
+                if (!$util.isString(message.fileName))
+                    return "fileName: string expected";
+            if (message.content != null && message.hasOwnProperty("content"))
+                if (!$util.isString(message.content))
+                    return "content: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a SourceFile message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.SourceFile
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.SourceFile} SourceFile
+         */
+        SourceFile.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.SourceFile)
+                return object;
+            var message = new $root.editor.SourceFile();
+            if (object.fileName != null)
+                message.fileName = String(object.fileName);
+            if (object.content != null)
+                message.content = String(object.content);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SourceFile message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.SourceFile
+         * @static
+         * @param {editor.SourceFile} message SourceFile
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SourceFile.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.fileName = "";
+                object.content = "";
+            }
+            if (message.fileName != null && message.hasOwnProperty("fileName"))
+                object.fileName = message.fileName;
+            if (message.content != null && message.hasOwnProperty("content"))
+                object.content = message.content;
+            return object;
+        };
+
+        /**
+         * Converts this SourceFile to JSON.
+         * @function toJSON
+         * @memberof editor.SourceFile
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SourceFile.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SourceFile
+         * @function getTypeUrl
+         * @memberof editor.SourceFile
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SourceFile.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.SourceFile";
+        };
+
+        return SourceFile;
+    })();
+
     editor.ExecuteCodeReply = (function() {
 
         /**
@@ -5880,7 +6471,7 @@ export const editor = $root.editor = (() => {
         function ExecuteCodeReply(properties) {
             this.diagnostics = [];
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5956,7 +6547,7 @@ export const editor = $root.editor = (() => {
             if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.errorMessage);
             if (message.diagnostics != null && message.diagnostics.length)
-                for (let i = 0; i < message.diagnostics.length; ++i)
+                for (var i = 0; i < message.diagnostics.length; ++i)
                     $root.editor.DiagnosticItem.encode(message.diagnostics[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             if (message.consoleOutput != null && Object.hasOwnProperty.call(message, "consoleOutput"))
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.consoleOutput);
@@ -5990,9 +6581,9 @@ export const editor = $root.editor = (() => {
         ExecuteCodeReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeReply();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeReply();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -6065,8 +6656,8 @@ export const editor = $root.editor = (() => {
             if (message.diagnostics != null && message.hasOwnProperty("diagnostics")) {
                 if (!Array.isArray(message.diagnostics))
                     return "diagnostics: array expected";
-                for (let i = 0; i < message.diagnostics.length; ++i) {
-                    let error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
+                for (var i = 0; i < message.diagnostics.length; ++i) {
+                    var error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
                     if (error)
                         return "diagnostics." + error;
                 }
@@ -6088,7 +6679,7 @@ export const editor = $root.editor = (() => {
         ExecuteCodeReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.ExecuteCodeReply)
                 return object;
-            let message = new $root.editor.ExecuteCodeReply();
+            var message = new $root.editor.ExecuteCodeReply();
             if (object.success != null)
                 message.success = Boolean(object.success);
             if (object.output != null)
@@ -6099,7 +6690,7 @@ export const editor = $root.editor = (() => {
                 if (!Array.isArray(object.diagnostics))
                     throw TypeError(".editor.ExecuteCodeReply.diagnostics: array expected");
                 message.diagnostics = [];
-                for (let i = 0; i < object.diagnostics.length; ++i) {
+                for (var i = 0; i < object.diagnostics.length; ++i) {
                     if (typeof object.diagnostics[i] !== "object")
                         throw TypeError(".editor.ExecuteCodeReply.diagnostics: object expected");
                     message.diagnostics[i] = $root.editor.DiagnosticItem.fromObject(object.diagnostics[i]);
@@ -6122,7 +6713,7 @@ export const editor = $root.editor = (() => {
         ExecuteCodeReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.arrays || options.defaults)
                 object.diagnostics = [];
             if (options.defaults) {
@@ -6139,7 +6730,7 @@ export const editor = $root.editor = (() => {
                 object.errorMessage = message.errorMessage;
             if (message.diagnostics && message.diagnostics.length) {
                 object.diagnostics = [];
-                for (let j = 0; j < message.diagnostics.length; ++j)
+                for (var j = 0; j < message.diagnostics.length; ++j)
                     object.diagnostics[j] = $root.editor.DiagnosticItem.toObject(message.diagnostics[j], options);
             }
             if (message.consoleOutput != null && message.hasOwnProperty("consoleOutput"))
@@ -6199,7 +6790,7 @@ export const editor = $root.editor = (() => {
          */
         function DiagnosticItem(properties) {
             if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6308,9 +6899,9 @@ export const editor = $root.editor = (() => {
         DiagnosticItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticItem();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticItem();
             while (reader.pos < end) {
-                let tag = reader.uint32();
+                var tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -6398,7 +6989,7 @@ export const editor = $root.editor = (() => {
         DiagnosticItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DiagnosticItem)
                 return object;
-            let message = new $root.editor.DiagnosticItem();
+            var message = new $root.editor.DiagnosticItem();
             if (object.id != null)
                 message.id = String(object.id);
             if (object.message != null)
@@ -6424,7 +7015,7 @@ export const editor = $root.editor = (() => {
         DiagnosticItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            let object = {};
+            var object = {};
             if (options.defaults) {
                 object.id = "";
                 object.message = "";
@@ -6477,4 +7068,5 @@ export const editor = $root.editor = (() => {
     return editor;
 })();
 
-export { $root as default };
+export const editor = $root.editor;
+export default $root;

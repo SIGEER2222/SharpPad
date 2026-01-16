@@ -9,6 +9,8 @@ const DumpTable: React.FC<DumpTableProps> = ({ data, title }) => {
     const [filter, setFilter] = useState('');
     const [sortCol, setSortCol] = useState<string | null>(null);
     const [sortAsc, setSortAsc] = useState(true);
+    const [page, setPage] = useState(1);
+    const pageSize = 50; // Fixed page size for simplicity, can be made adjustable
 
     const rawList = Array.isArray(data) ? data : [data];
     
@@ -52,6 +54,18 @@ const DumpTable: React.FC<DumpTableProps> = ({ data, title }) => {
         return res;
     }, [list, filter, sortCol, sortAsc]);
 
+    const totalPages = Math.ceil(processedData.length / pageSize);
+
+    const paginatedData = useMemo(() => {
+        const start = (page - 1) * pageSize;
+        return processedData.slice(start, start + pageSize);
+    }, [processedData, page, pageSize]);
+
+    // Reset page when filter changes
+    React.useEffect(() => {
+        setPage(1);
+    }, [filter, list]);
+
     const handleHeaderClick = (col: string) => {
         if (sortCol === col) {
             setSortAsc(!sortAsc);
@@ -81,6 +95,8 @@ const DumpTable: React.FC<DumpTableProps> = ({ data, title }) => {
             }}>
                 <span style={{ fontWeight: 'bold', color: '#fff' }}>{title || 'Dump Result'}</span>
                 <input 
+                    id={`filter-${title || 'dump'}`}
+                    name="filter"
                     type="text" 
                     placeholder="Filter..." 
                     value={filter}
@@ -117,7 +133,7 @@ const DumpTable: React.FC<DumpTableProps> = ({ data, title }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {processedData.map((row, i) => (
+                        {paginatedData.map((row, i) => (
                             <tr key={i} style={{ borderBottom: '1px solid #3a3a3a', backgroundColor: i % 2 === 0 ? 'transparent' : '#2a2a2a' }}>
                                 {columns.map(col => (
                                     <td key={col} style={{ padding: '6px 8px', verticalAlign: 'top' }}>
@@ -136,8 +152,37 @@ const DumpTable: React.FC<DumpTableProps> = ({ data, title }) => {
                     </tbody>
                 </table>
             </div>
-            <div style={{ padding: '4px 8px', color: '#888', fontSize: '11px', textAlign: 'right' }}>
-                {processedData.length} items
+            <div style={{ 
+                padding: '4px 8px', 
+                color: '#888', 
+                fontSize: '11px', 
+                borderTop: '1px solid #454545',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}>
+                <div>
+                    <button 
+                        onClick={() => setPage(p => Math.max(1, p - 1))} 
+                        disabled={page === 1}
+                        style={{ background: 'none', border: 'none', color: page === 1 ? '#555' : '#0e639c', cursor: page === 1 ? 'default' : 'pointer' }}
+                    >
+                        ◀ Prev
+                    </button>
+                    <span style={{ margin: '0 8px' }}>
+                        Page {page} of {Math.max(1, totalPages)}
+                    </span>
+                    <button 
+                        onClick={() => setPage(p => Math.min(totalPages, p + 1))} 
+                        disabled={page >= totalPages}
+                        style={{ background: 'none', border: 'none', color: page >= totalPages ? '#555' : '#0e639c', cursor: page >= totalPages ? 'default' : 'pointer' }}
+                    >
+                        Next ▶
+                    </button>
+                </div>
+                <div>
+                    Total: {processedData.length} items
+                </div>
             </div>
         </div>
     );
