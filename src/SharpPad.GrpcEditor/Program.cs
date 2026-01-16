@@ -17,9 +17,29 @@ try
     Assembly.Load("SQLitePCLRaw.core");
     Assembly.Load("SQLitePCLRaw.batteries_v2");
     Assembly.Load("SQLitePCLRaw.provider.e_sqlite3");
+    // Load other DB drivers
+    try { Assembly.Load("Npgsql"); } catch { Console.WriteLine("Warning: Npgsql not loaded"); }
+    try { Assembly.Load("Microsoft.Data.SqlClient"); } catch { Console.WriteLine("Warning: Microsoft.Data.SqlClient not loaded"); }
+    try { Assembly.Load("MySql.Data"); } catch { Console.WriteLine("Warning: MySql.Data not loaded"); }
 
     // Initialize SQLitePCL
     SQLitePCL.Batteries.Init();
+
+    // Load Core System Assemblies explicitly to ensure they are available for Roslyn
+    try 
+    {
+        Assembly.Load("System.Runtime");
+        Assembly.Load("System.Collections");
+        Assembly.Load("System.Linq");
+        Assembly.Load("System.Linq.Expressions");
+        Assembly.Load("System.Data.Common");
+        Assembly.Load("System.ComponentModel.Primitives");
+        Console.WriteLine("[Startup] Core assemblies loaded successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Startup] Failed to load core assemblies: {ex.Message}");
+    }
 }
 catch (Exception ex)
 {
@@ -63,6 +83,8 @@ builder.Services.AddSingleton<ICodeCompiler, CodeCompiler>();
 builder.Services.AddSingleton<IDynamicCodeExecutor, DynamicCodeExecutor>();
 builder.Services.AddSingleton<IPerformanceMeasurer, PerformanceMeasurer>();
 builder.Services.AddSingleton<IConnectionStorageService, ConnectionStorageService>();
+builder.Services.AddSingleton<IDbSchemaService, DbSchemaService>();
+builder.Services.AddSingleton<IModelGenerationService, ModelGenerationService>();
 builder.Services.AddSingleton<IProjectAnalysisSession, ProjectAnalysisSession>();
 builder.Services.AddHostedService<SessionInitializationService>();
 

@@ -218,6 +218,48 @@ export namespace editor {
          * @returns Promise
          */
         public testConnection(request: editor.ITestConnectionRequest): Promise<editor.TestConnectionReply>;
+
+        /**
+         * Calls GetDatabaseSchema.
+         * @param request GetDatabaseSchemaRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and GetDatabaseSchemaReply
+         */
+        public getDatabaseSchema(request: editor.IGetDatabaseSchemaRequest, callback: editor.EditorService.GetDatabaseSchemaCallback): void;
+
+        /**
+         * Calls GetDatabaseSchema.
+         * @param request GetDatabaseSchemaRequest message or plain object
+         * @returns Promise
+         */
+        public getDatabaseSchema(request: editor.IGetDatabaseSchemaRequest): Promise<editor.GetDatabaseSchemaReply>;
+
+        /**
+         * Calls GenerateModels.
+         * @param request GenerateModelsRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and GenerateModelsReply
+         */
+        public generateModels(request: editor.IGenerateModelsRequest, callback: editor.EditorService.GenerateModelsCallback): void;
+
+        /**
+         * Calls GenerateModels.
+         * @param request GenerateModelsRequest message or plain object
+         * @returns Promise
+         */
+        public generateModels(request: editor.IGenerateModelsRequest): Promise<editor.GenerateModelsReply>;
+
+        /**
+         * Calls ConnectToDatabase.
+         * @param request ConnectRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and ConnectReply
+         */
+        public connectToDatabase(request: editor.IConnectRequest, callback: editor.EditorService.ConnectToDatabaseCallback): void;
+
+        /**
+         * Calls ConnectToDatabase.
+         * @param request ConnectRequest message or plain object
+         * @returns Promise
+         */
+        public connectToDatabase(request: editor.IConnectRequest): Promise<editor.ConnectReply>;
     }
 
     namespace EditorService {
@@ -319,6 +361,27 @@ export namespace editor {
          * @param [response] TestConnectionReply
          */
         type TestConnectionCallback = (error: (Error|null), response?: editor.TestConnectionReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#getDatabaseSchema}.
+         * @param error Error, if any
+         * @param [response] GetDatabaseSchemaReply
+         */
+        type GetDatabaseSchemaCallback = (error: (Error|null), response?: editor.GetDatabaseSchemaReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#generateModels}.
+         * @param error Error, if any
+         * @param [response] GenerateModelsReply
+         */
+        type GenerateModelsCallback = (error: (Error|null), response?: editor.GenerateModelsReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#connectToDatabase}.
+         * @param error Error, if any
+         * @param [response] ConnectReply
+         */
+        type ConnectToDatabaseCallback = (error: (Error|null), response?: editor.ConnectReply) => void;
     }
 
     /** Properties of an InitializeRequest. */
@@ -4022,6 +4085,963 @@ export namespace editor {
 
         /**
          * Gets the default type url for TestConnectionReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GetDatabaseSchemaRequest. */
+    interface IGetDatabaseSchemaRequest {
+
+        /** GetDatabaseSchemaRequest connectionId */
+        connectionId?: (string|null);
+
+        /** GetDatabaseSchemaRequest tableName */
+        tableName?: (string|null);
+
+        /** GetDatabaseSchemaRequest tablesOnly */
+        tablesOnly?: (boolean|null);
+    }
+
+    /** Represents a GetDatabaseSchemaRequest. */
+    class GetDatabaseSchemaRequest implements IGetDatabaseSchemaRequest {
+
+        /**
+         * Constructs a new GetDatabaseSchemaRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGetDatabaseSchemaRequest);
+
+        /** GetDatabaseSchemaRequest connectionId. */
+        public connectionId: string;
+
+        /** GetDatabaseSchemaRequest tableName. */
+        public tableName: string;
+
+        /** GetDatabaseSchemaRequest tablesOnly. */
+        public tablesOnly: boolean;
+
+        /**
+         * Creates a new GetDatabaseSchemaRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GetDatabaseSchemaRequest instance
+         */
+        public static create(properties?: editor.IGetDatabaseSchemaRequest): editor.GetDatabaseSchemaRequest;
+
+        /**
+         * Encodes the specified GetDatabaseSchemaRequest message. Does not implicitly {@link editor.GetDatabaseSchemaRequest.verify|verify} messages.
+         * @param message GetDatabaseSchemaRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGetDatabaseSchemaRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GetDatabaseSchemaRequest message, length delimited. Does not implicitly {@link editor.GetDatabaseSchemaRequest.verify|verify} messages.
+         * @param message GetDatabaseSchemaRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGetDatabaseSchemaRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GetDatabaseSchemaRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GetDatabaseSchemaRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GetDatabaseSchemaRequest;
+
+        /**
+         * Decodes a GetDatabaseSchemaRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GetDatabaseSchemaRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GetDatabaseSchemaRequest;
+
+        /**
+         * Verifies a GetDatabaseSchemaRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GetDatabaseSchemaRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GetDatabaseSchemaRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GetDatabaseSchemaRequest;
+
+        /**
+         * Creates a plain object from a GetDatabaseSchemaRequest message. Also converts values to other types if specified.
+         * @param message GetDatabaseSchemaRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GetDatabaseSchemaRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GetDatabaseSchemaRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GetDatabaseSchemaRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GetDatabaseSchemaReply. */
+    interface IGetDatabaseSchemaReply {
+
+        /** GetDatabaseSchemaReply success */
+        success?: (boolean|null);
+
+        /** GetDatabaseSchemaReply errorMessage */
+        errorMessage?: (string|null);
+
+        /** GetDatabaseSchemaReply schema */
+        schema?: (editor.IDatabaseSchema|null);
+    }
+
+    /** Represents a GetDatabaseSchemaReply. */
+    class GetDatabaseSchemaReply implements IGetDatabaseSchemaReply {
+
+        /**
+         * Constructs a new GetDatabaseSchemaReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGetDatabaseSchemaReply);
+
+        /** GetDatabaseSchemaReply success. */
+        public success: boolean;
+
+        /** GetDatabaseSchemaReply errorMessage. */
+        public errorMessage: string;
+
+        /** GetDatabaseSchemaReply schema. */
+        public schema?: (editor.IDatabaseSchema|null);
+
+        /**
+         * Creates a new GetDatabaseSchemaReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GetDatabaseSchemaReply instance
+         */
+        public static create(properties?: editor.IGetDatabaseSchemaReply): editor.GetDatabaseSchemaReply;
+
+        /**
+         * Encodes the specified GetDatabaseSchemaReply message. Does not implicitly {@link editor.GetDatabaseSchemaReply.verify|verify} messages.
+         * @param message GetDatabaseSchemaReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGetDatabaseSchemaReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GetDatabaseSchemaReply message, length delimited. Does not implicitly {@link editor.GetDatabaseSchemaReply.verify|verify} messages.
+         * @param message GetDatabaseSchemaReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGetDatabaseSchemaReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GetDatabaseSchemaReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GetDatabaseSchemaReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GetDatabaseSchemaReply;
+
+        /**
+         * Decodes a GetDatabaseSchemaReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GetDatabaseSchemaReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GetDatabaseSchemaReply;
+
+        /**
+         * Verifies a GetDatabaseSchemaReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GetDatabaseSchemaReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GetDatabaseSchemaReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GetDatabaseSchemaReply;
+
+        /**
+         * Creates a plain object from a GetDatabaseSchemaReply message. Also converts values to other types if specified.
+         * @param message GetDatabaseSchemaReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GetDatabaseSchemaReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GetDatabaseSchemaReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GetDatabaseSchemaReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DatabaseSchema. */
+    interface IDatabaseSchema {
+
+        /** DatabaseSchema name */
+        name?: (string|null);
+
+        /** DatabaseSchema tables */
+        tables?: (editor.ITableSchema[]|null);
+    }
+
+    /** Represents a DatabaseSchema. */
+    class DatabaseSchema implements IDatabaseSchema {
+
+        /**
+         * Constructs a new DatabaseSchema.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IDatabaseSchema);
+
+        /** DatabaseSchema name. */
+        public name: string;
+
+        /** DatabaseSchema tables. */
+        public tables: editor.ITableSchema[];
+
+        /**
+         * Creates a new DatabaseSchema instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DatabaseSchema instance
+         */
+        public static create(properties?: editor.IDatabaseSchema): editor.DatabaseSchema;
+
+        /**
+         * Encodes the specified DatabaseSchema message. Does not implicitly {@link editor.DatabaseSchema.verify|verify} messages.
+         * @param message DatabaseSchema message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IDatabaseSchema, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DatabaseSchema message, length delimited. Does not implicitly {@link editor.DatabaseSchema.verify|verify} messages.
+         * @param message DatabaseSchema message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IDatabaseSchema, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DatabaseSchema message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DatabaseSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.DatabaseSchema;
+
+        /**
+         * Decodes a DatabaseSchema message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DatabaseSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.DatabaseSchema;
+
+        /**
+         * Verifies a DatabaseSchema message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DatabaseSchema message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DatabaseSchema
+         */
+        public static fromObject(object: { [k: string]: any }): editor.DatabaseSchema;
+
+        /**
+         * Creates a plain object from a DatabaseSchema message. Also converts values to other types if specified.
+         * @param message DatabaseSchema
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.DatabaseSchema, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DatabaseSchema to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DatabaseSchema
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a TableSchema. */
+    interface ITableSchema {
+
+        /** TableSchema name */
+        name?: (string|null);
+
+        /** TableSchema columns */
+        columns?: (editor.IColumnSchema[]|null);
+    }
+
+    /** Represents a TableSchema. */
+    class TableSchema implements ITableSchema {
+
+        /**
+         * Constructs a new TableSchema.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.ITableSchema);
+
+        /** TableSchema name. */
+        public name: string;
+
+        /** TableSchema columns. */
+        public columns: editor.IColumnSchema[];
+
+        /**
+         * Creates a new TableSchema instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns TableSchema instance
+         */
+        public static create(properties?: editor.ITableSchema): editor.TableSchema;
+
+        /**
+         * Encodes the specified TableSchema message. Does not implicitly {@link editor.TableSchema.verify|verify} messages.
+         * @param message TableSchema message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.ITableSchema, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified TableSchema message, length delimited. Does not implicitly {@link editor.TableSchema.verify|verify} messages.
+         * @param message TableSchema message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.ITableSchema, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a TableSchema message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns TableSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.TableSchema;
+
+        /**
+         * Decodes a TableSchema message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns TableSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.TableSchema;
+
+        /**
+         * Verifies a TableSchema message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a TableSchema message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns TableSchema
+         */
+        public static fromObject(object: { [k: string]: any }): editor.TableSchema;
+
+        /**
+         * Creates a plain object from a TableSchema message. Also converts values to other types if specified.
+         * @param message TableSchema
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.TableSchema, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this TableSchema to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for TableSchema
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ColumnSchema. */
+    interface IColumnSchema {
+
+        /** ColumnSchema name */
+        name?: (string|null);
+
+        /** ColumnSchema dataType */
+        dataType?: (string|null);
+
+        /** ColumnSchema isNullable */
+        isNullable?: (boolean|null);
+
+        /** ColumnSchema isPrimaryKey */
+        isPrimaryKey?: (boolean|null);
+    }
+
+    /** Represents a ColumnSchema. */
+    class ColumnSchema implements IColumnSchema {
+
+        /**
+         * Constructs a new ColumnSchema.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IColumnSchema);
+
+        /** ColumnSchema name. */
+        public name: string;
+
+        /** ColumnSchema dataType. */
+        public dataType: string;
+
+        /** ColumnSchema isNullable. */
+        public isNullable: boolean;
+
+        /** ColumnSchema isPrimaryKey. */
+        public isPrimaryKey: boolean;
+
+        /**
+         * Creates a new ColumnSchema instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ColumnSchema instance
+         */
+        public static create(properties?: editor.IColumnSchema): editor.ColumnSchema;
+
+        /**
+         * Encodes the specified ColumnSchema message. Does not implicitly {@link editor.ColumnSchema.verify|verify} messages.
+         * @param message ColumnSchema message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IColumnSchema, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ColumnSchema message, length delimited. Does not implicitly {@link editor.ColumnSchema.verify|verify} messages.
+         * @param message ColumnSchema message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IColumnSchema, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ColumnSchema message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ColumnSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.ColumnSchema;
+
+        /**
+         * Decodes a ColumnSchema message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ColumnSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.ColumnSchema;
+
+        /**
+         * Verifies a ColumnSchema message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ColumnSchema message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ColumnSchema
+         */
+        public static fromObject(object: { [k: string]: any }): editor.ColumnSchema;
+
+        /**
+         * Creates a plain object from a ColumnSchema message. Also converts values to other types if specified.
+         * @param message ColumnSchema
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.ColumnSchema, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ColumnSchema to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ColumnSchema
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GenerateModelsRequest. */
+    interface IGenerateModelsRequest {
+
+        /** GenerateModelsRequest connectionId */
+        connectionId?: (string|null);
+
+        /** GenerateModelsRequest namespace */
+        namespace?: (string|null);
+    }
+
+    /** Represents a GenerateModelsRequest. */
+    class GenerateModelsRequest implements IGenerateModelsRequest {
+
+        /**
+         * Constructs a new GenerateModelsRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGenerateModelsRequest);
+
+        /** GenerateModelsRequest connectionId. */
+        public connectionId: string;
+
+        /** GenerateModelsRequest namespace. */
+        public namespace: string;
+
+        /**
+         * Creates a new GenerateModelsRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GenerateModelsRequest instance
+         */
+        public static create(properties?: editor.IGenerateModelsRequest): editor.GenerateModelsRequest;
+
+        /**
+         * Encodes the specified GenerateModelsRequest message. Does not implicitly {@link editor.GenerateModelsRequest.verify|verify} messages.
+         * @param message GenerateModelsRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGenerateModelsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GenerateModelsRequest message, length delimited. Does not implicitly {@link editor.GenerateModelsRequest.verify|verify} messages.
+         * @param message GenerateModelsRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGenerateModelsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GenerateModelsRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GenerateModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GenerateModelsRequest;
+
+        /**
+         * Decodes a GenerateModelsRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GenerateModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GenerateModelsRequest;
+
+        /**
+         * Verifies a GenerateModelsRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GenerateModelsRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GenerateModelsRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GenerateModelsRequest;
+
+        /**
+         * Creates a plain object from a GenerateModelsRequest message. Also converts values to other types if specified.
+         * @param message GenerateModelsRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GenerateModelsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GenerateModelsRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GenerateModelsRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GenerateModelsReply. */
+    interface IGenerateModelsReply {
+
+        /** GenerateModelsReply success */
+        success?: (boolean|null);
+
+        /** GenerateModelsReply errorMessage */
+        errorMessage?: (string|null);
+
+        /** GenerateModelsReply generatedFilePaths */
+        generatedFilePaths?: (string[]|null);
+    }
+
+    /** Represents a GenerateModelsReply. */
+    class GenerateModelsReply implements IGenerateModelsReply {
+
+        /**
+         * Constructs a new GenerateModelsReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGenerateModelsReply);
+
+        /** GenerateModelsReply success. */
+        public success: boolean;
+
+        /** GenerateModelsReply errorMessage. */
+        public errorMessage: string;
+
+        /** GenerateModelsReply generatedFilePaths. */
+        public generatedFilePaths: string[];
+
+        /**
+         * Creates a new GenerateModelsReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GenerateModelsReply instance
+         */
+        public static create(properties?: editor.IGenerateModelsReply): editor.GenerateModelsReply;
+
+        /**
+         * Encodes the specified GenerateModelsReply message. Does not implicitly {@link editor.GenerateModelsReply.verify|verify} messages.
+         * @param message GenerateModelsReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGenerateModelsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GenerateModelsReply message, length delimited. Does not implicitly {@link editor.GenerateModelsReply.verify|verify} messages.
+         * @param message GenerateModelsReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGenerateModelsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GenerateModelsReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GenerateModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GenerateModelsReply;
+
+        /**
+         * Decodes a GenerateModelsReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GenerateModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GenerateModelsReply;
+
+        /**
+         * Verifies a GenerateModelsReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GenerateModelsReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GenerateModelsReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GenerateModelsReply;
+
+        /**
+         * Creates a plain object from a GenerateModelsReply message. Also converts values to other types if specified.
+         * @param message GenerateModelsReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GenerateModelsReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GenerateModelsReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GenerateModelsReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ConnectRequest. */
+    interface IConnectRequest {
+
+        /** ConnectRequest connectionId */
+        connectionId?: (string|null);
+    }
+
+    /** Represents a ConnectRequest. */
+    class ConnectRequest implements IConnectRequest {
+
+        /**
+         * Constructs a new ConnectRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IConnectRequest);
+
+        /** ConnectRequest connectionId. */
+        public connectionId: string;
+
+        /**
+         * Creates a new ConnectRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ConnectRequest instance
+         */
+        public static create(properties?: editor.IConnectRequest): editor.ConnectRequest;
+
+        /**
+         * Encodes the specified ConnectRequest message. Does not implicitly {@link editor.ConnectRequest.verify|verify} messages.
+         * @param message ConnectRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IConnectRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ConnectRequest message, length delimited. Does not implicitly {@link editor.ConnectRequest.verify|verify} messages.
+         * @param message ConnectRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IConnectRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ConnectRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ConnectRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.ConnectRequest;
+
+        /**
+         * Decodes a ConnectRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ConnectRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.ConnectRequest;
+
+        /**
+         * Verifies a ConnectRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ConnectRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ConnectRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.ConnectRequest;
+
+        /**
+         * Creates a plain object from a ConnectRequest message. Also converts values to other types if specified.
+         * @param message ConnectRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.ConnectRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ConnectRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ConnectRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ConnectReply. */
+    interface IConnectReply {
+
+        /** ConnectReply success */
+        success?: (boolean|null);
+
+        /** ConnectReply errorMessage */
+        errorMessage?: (string|null);
+
+        /** ConnectReply generatedFiles */
+        generatedFiles?: (editor.ISourceFile[]|null);
+    }
+
+    /** Represents a ConnectReply. */
+    class ConnectReply implements IConnectReply {
+
+        /**
+         * Constructs a new ConnectReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IConnectReply);
+
+        /** ConnectReply success. */
+        public success: boolean;
+
+        /** ConnectReply errorMessage. */
+        public errorMessage: string;
+
+        /** ConnectReply generatedFiles. */
+        public generatedFiles: editor.ISourceFile[];
+
+        /**
+         * Creates a new ConnectReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ConnectReply instance
+         */
+        public static create(properties?: editor.IConnectReply): editor.ConnectReply;
+
+        /**
+         * Encodes the specified ConnectReply message. Does not implicitly {@link editor.ConnectReply.verify|verify} messages.
+         * @param message ConnectReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IConnectReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ConnectReply message, length delimited. Does not implicitly {@link editor.ConnectReply.verify|verify} messages.
+         * @param message ConnectReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IConnectReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ConnectReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ConnectReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.ConnectReply;
+
+        /**
+         * Decodes a ConnectReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ConnectReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.ConnectReply;
+
+        /**
+         * Verifies a ConnectReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ConnectReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ConnectReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.ConnectReply;
+
+        /**
+         * Creates a plain object from a ConnectReply message. Also converts values to other types if specified.
+         * @param message ConnectReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.ConnectReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ConnectReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ConnectReply
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

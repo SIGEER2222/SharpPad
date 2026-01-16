@@ -28,6 +28,7 @@ namespace SharpPad.SqlCore.Implementations
                 projectName, 
                 projectName, 
                 LanguageNames.CSharp,
+                parseOptions: new CSharpParseOptions(LanguageVersion.Latest),
                 compilationOptions: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
                     .WithUsings("System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Threading", "System.Threading.Tasks"));
                 
@@ -45,9 +46,12 @@ namespace SharpPad.SqlCore.Implementations
             var projectDir = Path.GetDirectoryName(projectPath);
             if (!string.IsNullOrEmpty(projectDir))
             {
+                var binDir = Path.Combine(projectDir, "bin");
+                var objDir = Path.Combine(projectDir, "obj");
+
                 var csFiles = Directory.GetFiles(projectDir, "*.cs", SearchOption.AllDirectories)
-                    .Where(f => !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar) 
-                             && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar)
+                    .Where(f => !f.StartsWith(binDir, StringComparison.OrdinalIgnoreCase) 
+                             && !f.StartsWith(objDir, StringComparison.OrdinalIgnoreCase)
                              && !f.Contains(Path.DirectorySeparatorChar + "Services" + Path.DirectorySeparatorChar)
                              && !f.Contains(Path.DirectorySeparatorChar + "Controllers" + Path.DirectorySeparatorChar)
                              && !f.EndsWith("Program.cs"));

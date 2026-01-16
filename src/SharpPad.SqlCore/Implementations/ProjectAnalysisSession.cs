@@ -137,8 +137,21 @@ using System;
 public static class DB
 {
     public static SqlSugarClient Instance { get; set; }
+    public static SqlSugarClient db => Instance;
 }";
                     _baseProject = _baseProject.AddDocument("DB.cs", dbSource).Project;
+
+                    // Inject Global Usings
+                    var globalUsingsSource = @"
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
+global using System.Threading.Tasks;
+global using SqlSugar;
+global using static DB;
+";
+                    _baseProject = _baseProject.AddDocument("GlobalUsings.cs", globalUsingsSource).Project;
                 }
 
                 _initialized = true;
@@ -148,6 +161,32 @@ public static class DB
             {
                 _logger.LogError(ex, "Session initialization failed.");
                 _initialized = false;
+                throw;
+            }
+            finally
+            {
+                _initLock.Release();
+            }
+        }
+
+        public async Task ReloadProjectAsync(string projectPath)
+        {
+            await _initLock.WaitAsync();
+            try
+            {
+                _logger.LogInformation("ReloadProjectAsync called for {ProjectPath}", projectPath);
+                
+                // Analyze Project
+                _baseProject = await _performanceMeasurer.MeasureAsync("Reload - Analyze Project", async () => {
+                    return await _projectAnalyzer.AnalyzeProjectAsync(projectPath);
+                });
+
+                _initialized = true;
+                _logger.LogInformation("Session reloaded successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Session reload failed.");
                 throw;
             }
             finally
@@ -259,8 +298,8 @@ public static class DB
                                 {
                                     Console.WriteLine($"[SQL] {sql}");
                                 };
-
-                                var dbClass = assembly.GetType("DB");
+                                
+                                var dbClass = assembly.GetTypes().FirstOrDefault(t => t.Name == "DB");
                                 if (dbClass != null)
                                 {
                                     var prop = dbClass.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);

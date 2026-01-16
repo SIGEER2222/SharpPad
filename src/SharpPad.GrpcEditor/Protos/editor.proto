@@ -8,19 +8,24 @@ service EditorService {
   rpc Initialize (InitializeRequest) returns (InitializeReply);
   rpc GetCompletions (CompletionRequest) returns (CompletionReply);
   rpc GetHoverInfo (HoverInfoRequest) returns (HoverInfoReply);
-  rpc GetSignatureHelp (SignatureHelpRequest) returns (SignatureHelpReply);
+  rpc GetSignatureHelp (SignatureHelpRequest) returns (SignatureHelpReply);      
   rpc GetDefinition (DefinitionRequest) returns (DefinitionReply);
-  rpc GetSemanticTokens (SemanticTokensRequest) returns (SemanticTokensReply);
+  rpc GetSemanticTokens (SemanticTokensRequest) returns (SemanticTokensReply);   
   rpc FormatCode (FormatCodeRequest) returns (FormatCodeReply);
   rpc GetDiagnostics (DiagnosticsRequest) returns (DiagnosticsReply);
   rpc GetQuickFixes (QuickFixRequest) returns (QuickFixReply);
   rpc ExecuteCode (ExecuteCodeRequest) returns (ExecuteCodeReply);
-  
+
   // Connection Management
-  rpc GetConnections (GetConnectionsRequest) returns (GetConnectionsReply);
-  rpc SaveConnection (SaveConnectionRequest) returns (SaveConnectionReply);
+  rpc GetConnections (GetConnectionsRequest) returns (GetConnectionsReply);      
+  rpc SaveConnection (SaveConnectionRequest) returns (SaveConnectionReply);      
   rpc DeleteConnection (DeleteConnectionRequest) returns (DeleteConnectionReply);
-  rpc TestConnection (TestConnectionRequest) returns (TestConnectionReply);
+  rpc TestConnection (TestConnectionRequest) returns (TestConnectionReply);      
+
+  // Schema & Code Gen
+  rpc GetDatabaseSchema (GetDatabaseSchemaRequest) returns (GetDatabaseSchemaReply);
+  rpc GenerateModels (GenerateModelsRequest) returns (GenerateModelsReply);      
+  rpc ConnectToDatabase (ConnectRequest) returns (ConnectReply);
 }
 
 message InitializeRequest {
@@ -212,4 +217,54 @@ message TestConnectionRequest {
 message TestConnectionReply {
   bool success = 1;
   string message = 2;
+}
+
+message GetDatabaseSchemaRequest {
+  string connectionId = 1;
+  string tableName = 2;
+  bool tablesOnly = 3;
+}
+
+message GetDatabaseSchemaReply {
+  bool success = 1;
+  string errorMessage = 2;
+  DatabaseSchema schema = 3;
+}
+
+message DatabaseSchema {
+  string name = 1;
+  repeated TableSchema tables = 2;
+}
+
+message TableSchema {
+  string name = 1;
+  repeated ColumnSchema columns = 2;
+}
+
+message ColumnSchema {
+  string name = 1;
+  string dataType = 2;
+  bool isNullable = 3;
+  bool isPrimaryKey = 4;
+}
+
+message GenerateModelsRequest {
+  string connectionId = 1;
+  string namespace = 2; // e.g. "SharpPad.Models.ConnId"
+}
+
+message GenerateModelsReply {
+  bool success = 1;
+  string errorMessage = 2;
+  repeated string generatedFilePaths = 3;
+}
+
+message ConnectRequest {
+  string connectionId = 1;
+}
+
+message ConnectReply {
+  bool success = 1;
+  string errorMessage = 2;
+  repeated SourceFile generatedFiles = 3;
 }

@@ -279,12 +279,12 @@ export function useFileSystem() {
     const activeFile = files.find(f => f.id === activeFileId) || files[0];
 
     // Project Actions
-    const createProject = (name: string) => {
+    const createProject = (name: string, templateFiles?: SourceFile[]) => {
         const newProject: Project = {
             id: Date.now().toString(),
             name,
-            files: DEFAULT_FILES, // Start with template
-            lastActiveFileId: '1'
+            files: templateFiles || DEFAULT_FILES, // Start with template
+            lastActiveFileId: templateFiles && templateFiles.length > 0 ? templateFiles[0].id : '1'
         };
         setProjects(prev => [...prev, newProject]);
         setActiveProjectId(newProject.id);

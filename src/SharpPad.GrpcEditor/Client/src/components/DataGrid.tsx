@@ -34,7 +34,17 @@ const DataGrid: React.FC<DataGridProps> = ({ data, title }) => {
                 filter: true,
                 sortable: true,
                 resizable: true,
-                flex: 1
+                width: 150, // Default width to prevent squeezing
+                valueFormatter: (params: any) => {
+                    if (params.value && typeof params.value === 'object') {
+                        try {
+                            return JSON.stringify(params.value);
+                        } catch {
+                            return String(params.value);
+                        }
+                    }
+                    return params.value;
+                }
             }));
         }
 
@@ -67,8 +77,9 @@ const DataGrid: React.FC<DataGridProps> = ({ data, title }) => {
                         filter: true,
                         resizable: true
                     }}
-                    pagination={data?.length > 1000}
-                    paginationPageSize={100}
+                    pagination={true}
+                    paginationPageSize={20}
+                    paginationPageSizeSelector={[10, 20, 50, 100, 500, 1000]}
                 />
             </div>
         </div>

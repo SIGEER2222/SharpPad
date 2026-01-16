@@ -510,6 +510,105 @@ export const editor = $root.editor = (() => {
          * @variation 2
          */
 
+        /**
+         * Callback as used by {@link editor.EditorService#getDatabaseSchema}.
+         * @memberof editor.EditorService
+         * @typedef GetDatabaseSchemaCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.GetDatabaseSchemaReply} [response] GetDatabaseSchemaReply
+         */
+
+        /**
+         * Calls GetDatabaseSchema.
+         * @function getDatabaseSchema
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGetDatabaseSchemaRequest} request GetDatabaseSchemaRequest message or plain object
+         * @param {editor.EditorService.GetDatabaseSchemaCallback} callback Node-style callback called with the error, if any, and GetDatabaseSchemaReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.getDatabaseSchema = function getDatabaseSchema(request, callback) {
+            return this.rpcCall(getDatabaseSchema, $root.editor.GetDatabaseSchemaRequest, $root.editor.GetDatabaseSchemaReply, request, callback);
+        }, "name", { value: "GetDatabaseSchema" });
+
+        /**
+         * Calls GetDatabaseSchema.
+         * @function getDatabaseSchema
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGetDatabaseSchemaRequest} request GetDatabaseSchemaRequest message or plain object
+         * @returns {Promise<editor.GetDatabaseSchemaReply>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link editor.EditorService#generateModels}.
+         * @memberof editor.EditorService
+         * @typedef GenerateModelsCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.GenerateModelsReply} [response] GenerateModelsReply
+         */
+
+        /**
+         * Calls GenerateModels.
+         * @function generateModels
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGenerateModelsRequest} request GenerateModelsRequest message or plain object
+         * @param {editor.EditorService.GenerateModelsCallback} callback Node-style callback called with the error, if any, and GenerateModelsReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.generateModels = function generateModels(request, callback) {
+            return this.rpcCall(generateModels, $root.editor.GenerateModelsRequest, $root.editor.GenerateModelsReply, request, callback);
+        }, "name", { value: "GenerateModels" });
+
+        /**
+         * Calls GenerateModels.
+         * @function generateModels
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGenerateModelsRequest} request GenerateModelsRequest message or plain object
+         * @returns {Promise<editor.GenerateModelsReply>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link editor.EditorService#connectToDatabase}.
+         * @memberof editor.EditorService
+         * @typedef ConnectToDatabaseCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.ConnectReply} [response] ConnectReply
+         */
+
+        /**
+         * Calls ConnectToDatabase.
+         * @function connectToDatabase
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IConnectRequest} request ConnectRequest message or plain object
+         * @param {editor.EditorService.ConnectToDatabaseCallback} callback Node-style callback called with the error, if any, and ConnectReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.connectToDatabase = function connectToDatabase(request, callback) {
+            return this.rpcCall(connectToDatabase, $root.editor.ConnectRequest, $root.editor.ConnectReply, request, callback);
+        }, "name", { value: "ConnectToDatabase" });
+
+        /**
+         * Calls ConnectToDatabase.
+         * @function connectToDatabase
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IConnectRequest} request ConnectRequest message or plain object
+         * @returns {Promise<editor.ConnectReply>} Promise
+         * @variation 2
+         */
+
         return EditorService;
     })();
 
@@ -9271,6 +9370,2267 @@ export const editor = $root.editor = (() => {
         };
 
         return TestConnectionReply;
+    })();
+
+    editor.GetDatabaseSchemaRequest = (function() {
+
+        /**
+         * Properties of a GetDatabaseSchemaRequest.
+         * @memberof editor
+         * @interface IGetDatabaseSchemaRequest
+         * @property {string|null} [connectionId] GetDatabaseSchemaRequest connectionId
+         * @property {string|null} [tableName] GetDatabaseSchemaRequest tableName
+         * @property {boolean|null} [tablesOnly] GetDatabaseSchemaRequest tablesOnly
+         */
+
+        /**
+         * Constructs a new GetDatabaseSchemaRequest.
+         * @memberof editor
+         * @classdesc Represents a GetDatabaseSchemaRequest.
+         * @implements IGetDatabaseSchemaRequest
+         * @constructor
+         * @param {editor.IGetDatabaseSchemaRequest=} [properties] Properties to set
+         */
+        function GetDatabaseSchemaRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GetDatabaseSchemaRequest connectionId.
+         * @member {string} connectionId
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @instance
+         */
+        GetDatabaseSchemaRequest.prototype.connectionId = "";
+
+        /**
+         * GetDatabaseSchemaRequest tableName.
+         * @member {string} tableName
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @instance
+         */
+        GetDatabaseSchemaRequest.prototype.tableName = "";
+
+        /**
+         * GetDatabaseSchemaRequest tablesOnly.
+         * @member {boolean} tablesOnly
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @instance
+         */
+        GetDatabaseSchemaRequest.prototype.tablesOnly = false;
+
+        /**
+         * Creates a new GetDatabaseSchemaRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {editor.IGetDatabaseSchemaRequest=} [properties] Properties to set
+         * @returns {editor.GetDatabaseSchemaRequest} GetDatabaseSchemaRequest instance
+         */
+        GetDatabaseSchemaRequest.create = function create(properties) {
+            return new GetDatabaseSchemaRequest(properties);
+        };
+
+        /**
+         * Encodes the specified GetDatabaseSchemaRequest message. Does not implicitly {@link editor.GetDatabaseSchemaRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {editor.IGetDatabaseSchemaRequest} message GetDatabaseSchemaRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetDatabaseSchemaRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connectionId != null && Object.hasOwnProperty.call(message, "connectionId"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.connectionId);
+            if (message.tableName != null && Object.hasOwnProperty.call(message, "tableName"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.tableName);
+            if (message.tablesOnly != null && Object.hasOwnProperty.call(message, "tablesOnly"))
+                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.tablesOnly);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GetDatabaseSchemaRequest message, length delimited. Does not implicitly {@link editor.GetDatabaseSchemaRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {editor.IGetDatabaseSchemaRequest} message GetDatabaseSchemaRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetDatabaseSchemaRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GetDatabaseSchemaRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GetDatabaseSchemaRequest} GetDatabaseSchemaRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetDatabaseSchemaRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GetDatabaseSchemaRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.connectionId = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.tableName = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.tablesOnly = reader.bool();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GetDatabaseSchemaRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GetDatabaseSchemaRequest} GetDatabaseSchemaRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetDatabaseSchemaRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GetDatabaseSchemaRequest message.
+         * @function verify
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GetDatabaseSchemaRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                if (!$util.isString(message.connectionId))
+                    return "connectionId: string expected";
+            if (message.tableName != null && message.hasOwnProperty("tableName"))
+                if (!$util.isString(message.tableName))
+                    return "tableName: string expected";
+            if (message.tablesOnly != null && message.hasOwnProperty("tablesOnly"))
+                if (typeof message.tablesOnly !== "boolean")
+                    return "tablesOnly: boolean expected";
+            return null;
+        };
+
+        /**
+         * Creates a GetDatabaseSchemaRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GetDatabaseSchemaRequest} GetDatabaseSchemaRequest
+         */
+        GetDatabaseSchemaRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GetDatabaseSchemaRequest)
+                return object;
+            let message = new $root.editor.GetDatabaseSchemaRequest();
+            if (object.connectionId != null)
+                message.connectionId = String(object.connectionId);
+            if (object.tableName != null)
+                message.tableName = String(object.tableName);
+            if (object.tablesOnly != null)
+                message.tablesOnly = Boolean(object.tablesOnly);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GetDatabaseSchemaRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {editor.GetDatabaseSchemaRequest} message GetDatabaseSchemaRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GetDatabaseSchemaRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.connectionId = "";
+                object.tableName = "";
+                object.tablesOnly = false;
+            }
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                object.connectionId = message.connectionId;
+            if (message.tableName != null && message.hasOwnProperty("tableName"))
+                object.tableName = message.tableName;
+            if (message.tablesOnly != null && message.hasOwnProperty("tablesOnly"))
+                object.tablesOnly = message.tablesOnly;
+            return object;
+        };
+
+        /**
+         * Converts this GetDatabaseSchemaRequest to JSON.
+         * @function toJSON
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GetDatabaseSchemaRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GetDatabaseSchemaRequest
+         * @function getTypeUrl
+         * @memberof editor.GetDatabaseSchemaRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GetDatabaseSchemaRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GetDatabaseSchemaRequest";
+        };
+
+        return GetDatabaseSchemaRequest;
+    })();
+
+    editor.GetDatabaseSchemaReply = (function() {
+
+        /**
+         * Properties of a GetDatabaseSchemaReply.
+         * @memberof editor
+         * @interface IGetDatabaseSchemaReply
+         * @property {boolean|null} [success] GetDatabaseSchemaReply success
+         * @property {string|null} [errorMessage] GetDatabaseSchemaReply errorMessage
+         * @property {editor.IDatabaseSchema|null} [schema] GetDatabaseSchemaReply schema
+         */
+
+        /**
+         * Constructs a new GetDatabaseSchemaReply.
+         * @memberof editor
+         * @classdesc Represents a GetDatabaseSchemaReply.
+         * @implements IGetDatabaseSchemaReply
+         * @constructor
+         * @param {editor.IGetDatabaseSchemaReply=} [properties] Properties to set
+         */
+        function GetDatabaseSchemaReply(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GetDatabaseSchemaReply success.
+         * @member {boolean} success
+         * @memberof editor.GetDatabaseSchemaReply
+         * @instance
+         */
+        GetDatabaseSchemaReply.prototype.success = false;
+
+        /**
+         * GetDatabaseSchemaReply errorMessage.
+         * @member {string} errorMessage
+         * @memberof editor.GetDatabaseSchemaReply
+         * @instance
+         */
+        GetDatabaseSchemaReply.prototype.errorMessage = "";
+
+        /**
+         * GetDatabaseSchemaReply schema.
+         * @member {editor.IDatabaseSchema|null|undefined} schema
+         * @memberof editor.GetDatabaseSchemaReply
+         * @instance
+         */
+        GetDatabaseSchemaReply.prototype.schema = null;
+
+        /**
+         * Creates a new GetDatabaseSchemaReply instance using the specified properties.
+         * @function create
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {editor.IGetDatabaseSchemaReply=} [properties] Properties to set
+         * @returns {editor.GetDatabaseSchemaReply} GetDatabaseSchemaReply instance
+         */
+        GetDatabaseSchemaReply.create = function create(properties) {
+            return new GetDatabaseSchemaReply(properties);
+        };
+
+        /**
+         * Encodes the specified GetDatabaseSchemaReply message. Does not implicitly {@link editor.GetDatabaseSchemaReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {editor.IGetDatabaseSchemaReply} message GetDatabaseSchemaReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetDatabaseSchemaReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.errorMessage);
+            if (message.schema != null && Object.hasOwnProperty.call(message, "schema"))
+                $root.editor.DatabaseSchema.encode(message.schema, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GetDatabaseSchemaReply message, length delimited. Does not implicitly {@link editor.GetDatabaseSchemaReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {editor.IGetDatabaseSchemaReply} message GetDatabaseSchemaReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetDatabaseSchemaReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GetDatabaseSchemaReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GetDatabaseSchemaReply} GetDatabaseSchemaReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetDatabaseSchemaReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GetDatabaseSchemaReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.schema = $root.editor.DatabaseSchema.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GetDatabaseSchemaReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GetDatabaseSchemaReply} GetDatabaseSchemaReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetDatabaseSchemaReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GetDatabaseSchemaReply message.
+         * @function verify
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GetDatabaseSchemaReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            if (message.schema != null && message.hasOwnProperty("schema")) {
+                let error = $root.editor.DatabaseSchema.verify(message.schema);
+                if (error)
+                    return "schema." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a GetDatabaseSchemaReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GetDatabaseSchemaReply} GetDatabaseSchemaReply
+         */
+        GetDatabaseSchemaReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GetDatabaseSchemaReply)
+                return object;
+            let message = new $root.editor.GetDatabaseSchemaReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            if (object.schema != null) {
+                if (typeof object.schema !== "object")
+                    throw TypeError(".editor.GetDatabaseSchemaReply.schema: object expected");
+                message.schema = $root.editor.DatabaseSchema.fromObject(object.schema);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GetDatabaseSchemaReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {editor.GetDatabaseSchemaReply} message GetDatabaseSchemaReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GetDatabaseSchemaReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.errorMessage = "";
+                object.schema = null;
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            if (message.schema != null && message.hasOwnProperty("schema"))
+                object.schema = $root.editor.DatabaseSchema.toObject(message.schema, options);
+            return object;
+        };
+
+        /**
+         * Converts this GetDatabaseSchemaReply to JSON.
+         * @function toJSON
+         * @memberof editor.GetDatabaseSchemaReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GetDatabaseSchemaReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GetDatabaseSchemaReply
+         * @function getTypeUrl
+         * @memberof editor.GetDatabaseSchemaReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GetDatabaseSchemaReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GetDatabaseSchemaReply";
+        };
+
+        return GetDatabaseSchemaReply;
+    })();
+
+    editor.DatabaseSchema = (function() {
+
+        /**
+         * Properties of a DatabaseSchema.
+         * @memberof editor
+         * @interface IDatabaseSchema
+         * @property {string|null} [name] DatabaseSchema name
+         * @property {Array.<editor.ITableSchema>|null} [tables] DatabaseSchema tables
+         */
+
+        /**
+         * Constructs a new DatabaseSchema.
+         * @memberof editor
+         * @classdesc Represents a DatabaseSchema.
+         * @implements IDatabaseSchema
+         * @constructor
+         * @param {editor.IDatabaseSchema=} [properties] Properties to set
+         */
+        function DatabaseSchema(properties) {
+            this.tables = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * DatabaseSchema name.
+         * @member {string} name
+         * @memberof editor.DatabaseSchema
+         * @instance
+         */
+        DatabaseSchema.prototype.name = "";
+
+        /**
+         * DatabaseSchema tables.
+         * @member {Array.<editor.ITableSchema>} tables
+         * @memberof editor.DatabaseSchema
+         * @instance
+         */
+        DatabaseSchema.prototype.tables = $util.emptyArray;
+
+        /**
+         * Creates a new DatabaseSchema instance using the specified properties.
+         * @function create
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {editor.IDatabaseSchema=} [properties] Properties to set
+         * @returns {editor.DatabaseSchema} DatabaseSchema instance
+         */
+        DatabaseSchema.create = function create(properties) {
+            return new DatabaseSchema(properties);
+        };
+
+        /**
+         * Encodes the specified DatabaseSchema message. Does not implicitly {@link editor.DatabaseSchema.verify|verify} messages.
+         * @function encode
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {editor.IDatabaseSchema} message DatabaseSchema message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DatabaseSchema.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.tables != null && message.tables.length)
+                for (let i = 0; i < message.tables.length; ++i)
+                    $root.editor.TableSchema.encode(message.tables[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified DatabaseSchema message, length delimited. Does not implicitly {@link editor.DatabaseSchema.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {editor.IDatabaseSchema} message DatabaseSchema message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DatabaseSchema.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a DatabaseSchema message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.DatabaseSchema} DatabaseSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DatabaseSchema.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DatabaseSchema();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.tables && message.tables.length))
+                            message.tables = [];
+                        message.tables.push($root.editor.TableSchema.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a DatabaseSchema message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.DatabaseSchema} DatabaseSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DatabaseSchema.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a DatabaseSchema message.
+         * @function verify
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        DatabaseSchema.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.tables != null && message.hasOwnProperty("tables")) {
+                if (!Array.isArray(message.tables))
+                    return "tables: array expected";
+                for (let i = 0; i < message.tables.length; ++i) {
+                    let error = $root.editor.TableSchema.verify(message.tables[i]);
+                    if (error)
+                        return "tables." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a DatabaseSchema message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.DatabaseSchema} DatabaseSchema
+         */
+        DatabaseSchema.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.DatabaseSchema)
+                return object;
+            let message = new $root.editor.DatabaseSchema();
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.tables) {
+                if (!Array.isArray(object.tables))
+                    throw TypeError(".editor.DatabaseSchema.tables: array expected");
+                message.tables = [];
+                for (let i = 0; i < object.tables.length; ++i) {
+                    if (typeof object.tables[i] !== "object")
+                        throw TypeError(".editor.DatabaseSchema.tables: object expected");
+                    message.tables[i] = $root.editor.TableSchema.fromObject(object.tables[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a DatabaseSchema message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {editor.DatabaseSchema} message DatabaseSchema
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        DatabaseSchema.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.tables = [];
+            if (options.defaults)
+                object.name = "";
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.tables && message.tables.length) {
+                object.tables = [];
+                for (let j = 0; j < message.tables.length; ++j)
+                    object.tables[j] = $root.editor.TableSchema.toObject(message.tables[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this DatabaseSchema to JSON.
+         * @function toJSON
+         * @memberof editor.DatabaseSchema
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        DatabaseSchema.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DatabaseSchema
+         * @function getTypeUrl
+         * @memberof editor.DatabaseSchema
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DatabaseSchema.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.DatabaseSchema";
+        };
+
+        return DatabaseSchema;
+    })();
+
+    editor.TableSchema = (function() {
+
+        /**
+         * Properties of a TableSchema.
+         * @memberof editor
+         * @interface ITableSchema
+         * @property {string|null} [name] TableSchema name
+         * @property {Array.<editor.IColumnSchema>|null} [columns] TableSchema columns
+         */
+
+        /**
+         * Constructs a new TableSchema.
+         * @memberof editor
+         * @classdesc Represents a TableSchema.
+         * @implements ITableSchema
+         * @constructor
+         * @param {editor.ITableSchema=} [properties] Properties to set
+         */
+        function TableSchema(properties) {
+            this.columns = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TableSchema name.
+         * @member {string} name
+         * @memberof editor.TableSchema
+         * @instance
+         */
+        TableSchema.prototype.name = "";
+
+        /**
+         * TableSchema columns.
+         * @member {Array.<editor.IColumnSchema>} columns
+         * @memberof editor.TableSchema
+         * @instance
+         */
+        TableSchema.prototype.columns = $util.emptyArray;
+
+        /**
+         * Creates a new TableSchema instance using the specified properties.
+         * @function create
+         * @memberof editor.TableSchema
+         * @static
+         * @param {editor.ITableSchema=} [properties] Properties to set
+         * @returns {editor.TableSchema} TableSchema instance
+         */
+        TableSchema.create = function create(properties) {
+            return new TableSchema(properties);
+        };
+
+        /**
+         * Encodes the specified TableSchema message. Does not implicitly {@link editor.TableSchema.verify|verify} messages.
+         * @function encode
+         * @memberof editor.TableSchema
+         * @static
+         * @param {editor.ITableSchema} message TableSchema message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TableSchema.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.columns != null && message.columns.length)
+                for (let i = 0; i < message.columns.length; ++i)
+                    $root.editor.ColumnSchema.encode(message.columns[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TableSchema message, length delimited. Does not implicitly {@link editor.TableSchema.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.TableSchema
+         * @static
+         * @param {editor.ITableSchema} message TableSchema message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TableSchema.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TableSchema message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.TableSchema
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.TableSchema} TableSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TableSchema.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.TableSchema();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.columns && message.columns.length))
+                            message.columns = [];
+                        message.columns.push($root.editor.ColumnSchema.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a TableSchema message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.TableSchema
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.TableSchema} TableSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TableSchema.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TableSchema message.
+         * @function verify
+         * @memberof editor.TableSchema
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TableSchema.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.columns != null && message.hasOwnProperty("columns")) {
+                if (!Array.isArray(message.columns))
+                    return "columns: array expected";
+                for (let i = 0; i < message.columns.length; ++i) {
+                    let error = $root.editor.ColumnSchema.verify(message.columns[i]);
+                    if (error)
+                        return "columns." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a TableSchema message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.TableSchema
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.TableSchema} TableSchema
+         */
+        TableSchema.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.TableSchema)
+                return object;
+            let message = new $root.editor.TableSchema();
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.columns) {
+                if (!Array.isArray(object.columns))
+                    throw TypeError(".editor.TableSchema.columns: array expected");
+                message.columns = [];
+                for (let i = 0; i < object.columns.length; ++i) {
+                    if (typeof object.columns[i] !== "object")
+                        throw TypeError(".editor.TableSchema.columns: object expected");
+                    message.columns[i] = $root.editor.ColumnSchema.fromObject(object.columns[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TableSchema message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.TableSchema
+         * @static
+         * @param {editor.TableSchema} message TableSchema
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TableSchema.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.columns = [];
+            if (options.defaults)
+                object.name = "";
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.columns && message.columns.length) {
+                object.columns = [];
+                for (let j = 0; j < message.columns.length; ++j)
+                    object.columns[j] = $root.editor.ColumnSchema.toObject(message.columns[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this TableSchema to JSON.
+         * @function toJSON
+         * @memberof editor.TableSchema
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TableSchema.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for TableSchema
+         * @function getTypeUrl
+         * @memberof editor.TableSchema
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        TableSchema.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.TableSchema";
+        };
+
+        return TableSchema;
+    })();
+
+    editor.ColumnSchema = (function() {
+
+        /**
+         * Properties of a ColumnSchema.
+         * @memberof editor
+         * @interface IColumnSchema
+         * @property {string|null} [name] ColumnSchema name
+         * @property {string|null} [dataType] ColumnSchema dataType
+         * @property {boolean|null} [isNullable] ColumnSchema isNullable
+         * @property {boolean|null} [isPrimaryKey] ColumnSchema isPrimaryKey
+         */
+
+        /**
+         * Constructs a new ColumnSchema.
+         * @memberof editor
+         * @classdesc Represents a ColumnSchema.
+         * @implements IColumnSchema
+         * @constructor
+         * @param {editor.IColumnSchema=} [properties] Properties to set
+         */
+        function ColumnSchema(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ColumnSchema name.
+         * @member {string} name
+         * @memberof editor.ColumnSchema
+         * @instance
+         */
+        ColumnSchema.prototype.name = "";
+
+        /**
+         * ColumnSchema dataType.
+         * @member {string} dataType
+         * @memberof editor.ColumnSchema
+         * @instance
+         */
+        ColumnSchema.prototype.dataType = "";
+
+        /**
+         * ColumnSchema isNullable.
+         * @member {boolean} isNullable
+         * @memberof editor.ColumnSchema
+         * @instance
+         */
+        ColumnSchema.prototype.isNullable = false;
+
+        /**
+         * ColumnSchema isPrimaryKey.
+         * @member {boolean} isPrimaryKey
+         * @memberof editor.ColumnSchema
+         * @instance
+         */
+        ColumnSchema.prototype.isPrimaryKey = false;
+
+        /**
+         * Creates a new ColumnSchema instance using the specified properties.
+         * @function create
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {editor.IColumnSchema=} [properties] Properties to set
+         * @returns {editor.ColumnSchema} ColumnSchema instance
+         */
+        ColumnSchema.create = function create(properties) {
+            return new ColumnSchema(properties);
+        };
+
+        /**
+         * Encodes the specified ColumnSchema message. Does not implicitly {@link editor.ColumnSchema.verify|verify} messages.
+         * @function encode
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {editor.IColumnSchema} message ColumnSchema message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ColumnSchema.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            if (message.dataType != null && Object.hasOwnProperty.call(message, "dataType"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.dataType);
+            if (message.isNullable != null && Object.hasOwnProperty.call(message, "isNullable"))
+                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.isNullable);
+            if (message.isPrimaryKey != null && Object.hasOwnProperty.call(message, "isPrimaryKey"))
+                writer.uint32(/* id 4, wireType 0 =*/32).bool(message.isPrimaryKey);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ColumnSchema message, length delimited. Does not implicitly {@link editor.ColumnSchema.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {editor.IColumnSchema} message ColumnSchema message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ColumnSchema.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ColumnSchema message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.ColumnSchema} ColumnSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ColumnSchema.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ColumnSchema();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.dataType = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.isNullable = reader.bool();
+                        break;
+                    }
+                case 4: {
+                        message.isPrimaryKey = reader.bool();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ColumnSchema message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.ColumnSchema} ColumnSchema
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ColumnSchema.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ColumnSchema message.
+         * @function verify
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ColumnSchema.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.dataType != null && message.hasOwnProperty("dataType"))
+                if (!$util.isString(message.dataType))
+                    return "dataType: string expected";
+            if (message.isNullable != null && message.hasOwnProperty("isNullable"))
+                if (typeof message.isNullable !== "boolean")
+                    return "isNullable: boolean expected";
+            if (message.isPrimaryKey != null && message.hasOwnProperty("isPrimaryKey"))
+                if (typeof message.isPrimaryKey !== "boolean")
+                    return "isPrimaryKey: boolean expected";
+            return null;
+        };
+
+        /**
+         * Creates a ColumnSchema message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.ColumnSchema} ColumnSchema
+         */
+        ColumnSchema.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.ColumnSchema)
+                return object;
+            let message = new $root.editor.ColumnSchema();
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.dataType != null)
+                message.dataType = String(object.dataType);
+            if (object.isNullable != null)
+                message.isNullable = Boolean(object.isNullable);
+            if (object.isPrimaryKey != null)
+                message.isPrimaryKey = Boolean(object.isPrimaryKey);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ColumnSchema message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {editor.ColumnSchema} message ColumnSchema
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ColumnSchema.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.name = "";
+                object.dataType = "";
+                object.isNullable = false;
+                object.isPrimaryKey = false;
+            }
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.dataType != null && message.hasOwnProperty("dataType"))
+                object.dataType = message.dataType;
+            if (message.isNullable != null && message.hasOwnProperty("isNullable"))
+                object.isNullable = message.isNullable;
+            if (message.isPrimaryKey != null && message.hasOwnProperty("isPrimaryKey"))
+                object.isPrimaryKey = message.isPrimaryKey;
+            return object;
+        };
+
+        /**
+         * Converts this ColumnSchema to JSON.
+         * @function toJSON
+         * @memberof editor.ColumnSchema
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ColumnSchema.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ColumnSchema
+         * @function getTypeUrl
+         * @memberof editor.ColumnSchema
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ColumnSchema.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.ColumnSchema";
+        };
+
+        return ColumnSchema;
+    })();
+
+    editor.GenerateModelsRequest = (function() {
+
+        /**
+         * Properties of a GenerateModelsRequest.
+         * @memberof editor
+         * @interface IGenerateModelsRequest
+         * @property {string|null} [connectionId] GenerateModelsRequest connectionId
+         * @property {string|null} [namespace] GenerateModelsRequest namespace
+         */
+
+        /**
+         * Constructs a new GenerateModelsRequest.
+         * @memberof editor
+         * @classdesc Represents a GenerateModelsRequest.
+         * @implements IGenerateModelsRequest
+         * @constructor
+         * @param {editor.IGenerateModelsRequest=} [properties] Properties to set
+         */
+        function GenerateModelsRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GenerateModelsRequest connectionId.
+         * @member {string} connectionId
+         * @memberof editor.GenerateModelsRequest
+         * @instance
+         */
+        GenerateModelsRequest.prototype.connectionId = "";
+
+        /**
+         * GenerateModelsRequest namespace.
+         * @member {string} namespace
+         * @memberof editor.GenerateModelsRequest
+         * @instance
+         */
+        GenerateModelsRequest.prototype.namespace = "";
+
+        /**
+         * Creates a new GenerateModelsRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {editor.IGenerateModelsRequest=} [properties] Properties to set
+         * @returns {editor.GenerateModelsRequest} GenerateModelsRequest instance
+         */
+        GenerateModelsRequest.create = function create(properties) {
+            return new GenerateModelsRequest(properties);
+        };
+
+        /**
+         * Encodes the specified GenerateModelsRequest message. Does not implicitly {@link editor.GenerateModelsRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {editor.IGenerateModelsRequest} message GenerateModelsRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GenerateModelsRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connectionId != null && Object.hasOwnProperty.call(message, "connectionId"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.connectionId);
+            if (message.namespace != null && Object.hasOwnProperty.call(message, "namespace"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.namespace);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GenerateModelsRequest message, length delimited. Does not implicitly {@link editor.GenerateModelsRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {editor.IGenerateModelsRequest} message GenerateModelsRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GenerateModelsRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GenerateModelsRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GenerateModelsRequest} GenerateModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GenerateModelsRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GenerateModelsRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.connectionId = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.namespace = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GenerateModelsRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GenerateModelsRequest} GenerateModelsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GenerateModelsRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GenerateModelsRequest message.
+         * @function verify
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GenerateModelsRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                if (!$util.isString(message.connectionId))
+                    return "connectionId: string expected";
+            if (message.namespace != null && message.hasOwnProperty("namespace"))
+                if (!$util.isString(message.namespace))
+                    return "namespace: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GenerateModelsRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GenerateModelsRequest} GenerateModelsRequest
+         */
+        GenerateModelsRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GenerateModelsRequest)
+                return object;
+            let message = new $root.editor.GenerateModelsRequest();
+            if (object.connectionId != null)
+                message.connectionId = String(object.connectionId);
+            if (object.namespace != null)
+                message.namespace = String(object.namespace);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GenerateModelsRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {editor.GenerateModelsRequest} message GenerateModelsRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GenerateModelsRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.connectionId = "";
+                object.namespace = "";
+            }
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                object.connectionId = message.connectionId;
+            if (message.namespace != null && message.hasOwnProperty("namespace"))
+                object.namespace = message.namespace;
+            return object;
+        };
+
+        /**
+         * Converts this GenerateModelsRequest to JSON.
+         * @function toJSON
+         * @memberof editor.GenerateModelsRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GenerateModelsRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GenerateModelsRequest
+         * @function getTypeUrl
+         * @memberof editor.GenerateModelsRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GenerateModelsRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GenerateModelsRequest";
+        };
+
+        return GenerateModelsRequest;
+    })();
+
+    editor.GenerateModelsReply = (function() {
+
+        /**
+         * Properties of a GenerateModelsReply.
+         * @memberof editor
+         * @interface IGenerateModelsReply
+         * @property {boolean|null} [success] GenerateModelsReply success
+         * @property {string|null} [errorMessage] GenerateModelsReply errorMessage
+         * @property {Array.<string>|null} [generatedFilePaths] GenerateModelsReply generatedFilePaths
+         */
+
+        /**
+         * Constructs a new GenerateModelsReply.
+         * @memberof editor
+         * @classdesc Represents a GenerateModelsReply.
+         * @implements IGenerateModelsReply
+         * @constructor
+         * @param {editor.IGenerateModelsReply=} [properties] Properties to set
+         */
+        function GenerateModelsReply(properties) {
+            this.generatedFilePaths = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GenerateModelsReply success.
+         * @member {boolean} success
+         * @memberof editor.GenerateModelsReply
+         * @instance
+         */
+        GenerateModelsReply.prototype.success = false;
+
+        /**
+         * GenerateModelsReply errorMessage.
+         * @member {string} errorMessage
+         * @memberof editor.GenerateModelsReply
+         * @instance
+         */
+        GenerateModelsReply.prototype.errorMessage = "";
+
+        /**
+         * GenerateModelsReply generatedFilePaths.
+         * @member {Array.<string>} generatedFilePaths
+         * @memberof editor.GenerateModelsReply
+         * @instance
+         */
+        GenerateModelsReply.prototype.generatedFilePaths = $util.emptyArray;
+
+        /**
+         * Creates a new GenerateModelsReply instance using the specified properties.
+         * @function create
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {editor.IGenerateModelsReply=} [properties] Properties to set
+         * @returns {editor.GenerateModelsReply} GenerateModelsReply instance
+         */
+        GenerateModelsReply.create = function create(properties) {
+            return new GenerateModelsReply(properties);
+        };
+
+        /**
+         * Encodes the specified GenerateModelsReply message. Does not implicitly {@link editor.GenerateModelsReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {editor.IGenerateModelsReply} message GenerateModelsReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GenerateModelsReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.errorMessage);
+            if (message.generatedFilePaths != null && message.generatedFilePaths.length)
+                for (let i = 0; i < message.generatedFilePaths.length; ++i)
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.generatedFilePaths[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GenerateModelsReply message, length delimited. Does not implicitly {@link editor.GenerateModelsReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {editor.IGenerateModelsReply} message GenerateModelsReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GenerateModelsReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GenerateModelsReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GenerateModelsReply} GenerateModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GenerateModelsReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GenerateModelsReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.generatedFilePaths && message.generatedFilePaths.length))
+                            message.generatedFilePaths = [];
+                        message.generatedFilePaths.push(reader.string());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GenerateModelsReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GenerateModelsReply} GenerateModelsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GenerateModelsReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GenerateModelsReply message.
+         * @function verify
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GenerateModelsReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            if (message.generatedFilePaths != null && message.hasOwnProperty("generatedFilePaths")) {
+                if (!Array.isArray(message.generatedFilePaths))
+                    return "generatedFilePaths: array expected";
+                for (let i = 0; i < message.generatedFilePaths.length; ++i)
+                    if (!$util.isString(message.generatedFilePaths[i]))
+                        return "generatedFilePaths: string[] expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a GenerateModelsReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GenerateModelsReply} GenerateModelsReply
+         */
+        GenerateModelsReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GenerateModelsReply)
+                return object;
+            let message = new $root.editor.GenerateModelsReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            if (object.generatedFilePaths) {
+                if (!Array.isArray(object.generatedFilePaths))
+                    throw TypeError(".editor.GenerateModelsReply.generatedFilePaths: array expected");
+                message.generatedFilePaths = [];
+                for (let i = 0; i < object.generatedFilePaths.length; ++i)
+                    message.generatedFilePaths[i] = String(object.generatedFilePaths[i]);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GenerateModelsReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {editor.GenerateModelsReply} message GenerateModelsReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GenerateModelsReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.generatedFilePaths = [];
+            if (options.defaults) {
+                object.success = false;
+                object.errorMessage = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            if (message.generatedFilePaths && message.generatedFilePaths.length) {
+                object.generatedFilePaths = [];
+                for (let j = 0; j < message.generatedFilePaths.length; ++j)
+                    object.generatedFilePaths[j] = message.generatedFilePaths[j];
+            }
+            return object;
+        };
+
+        /**
+         * Converts this GenerateModelsReply to JSON.
+         * @function toJSON
+         * @memberof editor.GenerateModelsReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GenerateModelsReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GenerateModelsReply
+         * @function getTypeUrl
+         * @memberof editor.GenerateModelsReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GenerateModelsReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GenerateModelsReply";
+        };
+
+        return GenerateModelsReply;
+    })();
+
+    editor.ConnectRequest = (function() {
+
+        /**
+         * Properties of a ConnectRequest.
+         * @memberof editor
+         * @interface IConnectRequest
+         * @property {string|null} [connectionId] ConnectRequest connectionId
+         */
+
+        /**
+         * Constructs a new ConnectRequest.
+         * @memberof editor
+         * @classdesc Represents a ConnectRequest.
+         * @implements IConnectRequest
+         * @constructor
+         * @param {editor.IConnectRequest=} [properties] Properties to set
+         */
+        function ConnectRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ConnectRequest connectionId.
+         * @member {string} connectionId
+         * @memberof editor.ConnectRequest
+         * @instance
+         */
+        ConnectRequest.prototype.connectionId = "";
+
+        /**
+         * Creates a new ConnectRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {editor.IConnectRequest=} [properties] Properties to set
+         * @returns {editor.ConnectRequest} ConnectRequest instance
+         */
+        ConnectRequest.create = function create(properties) {
+            return new ConnectRequest(properties);
+        };
+
+        /**
+         * Encodes the specified ConnectRequest message. Does not implicitly {@link editor.ConnectRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {editor.IConnectRequest} message ConnectRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connectionId != null && Object.hasOwnProperty.call(message, "connectionId"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.connectionId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ConnectRequest message, length delimited. Does not implicitly {@link editor.ConnectRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {editor.IConnectRequest} message ConnectRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ConnectRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.ConnectRequest} ConnectRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ConnectRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.connectionId = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ConnectRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.ConnectRequest} ConnectRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ConnectRequest message.
+         * @function verify
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ConnectRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                if (!$util.isString(message.connectionId))
+                    return "connectionId: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a ConnectRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.ConnectRequest} ConnectRequest
+         */
+        ConnectRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.ConnectRequest)
+                return object;
+            let message = new $root.editor.ConnectRequest();
+            if (object.connectionId != null)
+                message.connectionId = String(object.connectionId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ConnectRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {editor.ConnectRequest} message ConnectRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ConnectRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.connectionId = "";
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                object.connectionId = message.connectionId;
+            return object;
+        };
+
+        /**
+         * Converts this ConnectRequest to JSON.
+         * @function toJSON
+         * @memberof editor.ConnectRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ConnectRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ConnectRequest
+         * @function getTypeUrl
+         * @memberof editor.ConnectRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ConnectRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.ConnectRequest";
+        };
+
+        return ConnectRequest;
+    })();
+
+    editor.ConnectReply = (function() {
+
+        /**
+         * Properties of a ConnectReply.
+         * @memberof editor
+         * @interface IConnectReply
+         * @property {boolean|null} [success] ConnectReply success
+         * @property {string|null} [errorMessage] ConnectReply errorMessage
+         * @property {Array.<editor.ISourceFile>|null} [generatedFiles] ConnectReply generatedFiles
+         */
+
+        /**
+         * Constructs a new ConnectReply.
+         * @memberof editor
+         * @classdesc Represents a ConnectReply.
+         * @implements IConnectReply
+         * @constructor
+         * @param {editor.IConnectReply=} [properties] Properties to set
+         */
+        function ConnectReply(properties) {
+            this.generatedFiles = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ConnectReply success.
+         * @member {boolean} success
+         * @memberof editor.ConnectReply
+         * @instance
+         */
+        ConnectReply.prototype.success = false;
+
+        /**
+         * ConnectReply errorMessage.
+         * @member {string} errorMessage
+         * @memberof editor.ConnectReply
+         * @instance
+         */
+        ConnectReply.prototype.errorMessage = "";
+
+        /**
+         * ConnectReply generatedFiles.
+         * @member {Array.<editor.ISourceFile>} generatedFiles
+         * @memberof editor.ConnectReply
+         * @instance
+         */
+        ConnectReply.prototype.generatedFiles = $util.emptyArray;
+
+        /**
+         * Creates a new ConnectReply instance using the specified properties.
+         * @function create
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {editor.IConnectReply=} [properties] Properties to set
+         * @returns {editor.ConnectReply} ConnectReply instance
+         */
+        ConnectReply.create = function create(properties) {
+            return new ConnectReply(properties);
+        };
+
+        /**
+         * Encodes the specified ConnectReply message. Does not implicitly {@link editor.ConnectReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {editor.IConnectReply} message ConnectReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.errorMessage);
+            if (message.generatedFiles != null && message.generatedFiles.length)
+                for (let i = 0; i < message.generatedFiles.length; ++i)
+                    $root.editor.SourceFile.encode(message.generatedFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ConnectReply message, length delimited. Does not implicitly {@link editor.ConnectReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {editor.IConnectReply} message ConnectReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ConnectReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.ConnectReply} ConnectReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ConnectReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                case 3: {
+                        if (!(message.generatedFiles && message.generatedFiles.length))
+                            message.generatedFiles = [];
+                        message.generatedFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ConnectReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.ConnectReply} ConnectReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ConnectReply message.
+         * @function verify
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ConnectReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            if (message.generatedFiles != null && message.hasOwnProperty("generatedFiles")) {
+                if (!Array.isArray(message.generatedFiles))
+                    return "generatedFiles: array expected";
+                for (let i = 0; i < message.generatedFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.generatedFiles[i]);
+                    if (error)
+                        return "generatedFiles." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ConnectReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.ConnectReply} ConnectReply
+         */
+        ConnectReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.ConnectReply)
+                return object;
+            let message = new $root.editor.ConnectReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            if (object.generatedFiles) {
+                if (!Array.isArray(object.generatedFiles))
+                    throw TypeError(".editor.ConnectReply.generatedFiles: array expected");
+                message.generatedFiles = [];
+                for (let i = 0; i < object.generatedFiles.length; ++i) {
+                    if (typeof object.generatedFiles[i] !== "object")
+                        throw TypeError(".editor.ConnectReply.generatedFiles: object expected");
+                    message.generatedFiles[i] = $root.editor.SourceFile.fromObject(object.generatedFiles[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ConnectReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {editor.ConnectReply} message ConnectReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ConnectReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.generatedFiles = [];
+            if (options.defaults) {
+                object.success = false;
+                object.errorMessage = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            if (message.generatedFiles && message.generatedFiles.length) {
+                object.generatedFiles = [];
+                for (let j = 0; j < message.generatedFiles.length; ++j)
+                    object.generatedFiles[j] = $root.editor.SourceFile.toObject(message.generatedFiles[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this ConnectReply to JSON.
+         * @function toJSON
+         * @memberof editor.ConnectReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ConnectReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ConnectReply
+         * @function getTypeUrl
+         * @memberof editor.ConnectReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ConnectReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.ConnectReply";
+        };
+
+        return ConnectReply;
     })();
 
     return editor;

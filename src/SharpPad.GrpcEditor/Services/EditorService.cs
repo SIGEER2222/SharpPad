@@ -3,6 +3,7 @@ using SharpPad.SqlCore.Interfaces;
 using SharpPad.SqlCore.Models;
 using editor = SharpPad.GrpcEditor.Protos;
 using ConnectionInfo = SharpPad.GrpcEditor.Protos.ConnectionInfo;
+using SqlSugar;
 
 namespace SharpPad.GrpcEditor.Services
 {
@@ -10,12 +11,21 @@ namespace SharpPad.GrpcEditor.Services
     {
         private readonly IProjectAnalysisSession _session;
         private readonly IConnectionStorageService _connectionService;
+        private readonly IDbSchemaService _schemaService;
+        private readonly IModelGenerationService _modelService;
         private readonly ILogger<EditorService> _logger;
 
-        public EditorService(IProjectAnalysisSession session, IConnectionStorageService connectionService, ILogger<EditorService> logger)
+        public EditorService(
+            IProjectAnalysisSession session, 
+            IConnectionStorageService connectionService, 
+            IDbSchemaService schemaService,
+            IModelGenerationService modelService,
+            ILogger<EditorService> logger)
         {
             _session = session;
             _connectionService = connectionService;
+            _schemaService = schemaService;
+            _modelService = modelService;
             _logger = logger;
         }
 
@@ -432,5 +442,95 @@ namespace SharpPad.GrpcEditor.Services
             }
         }
 
+        public override async Task<editor.GetDatabaseSchemaReply> GetDatabaseSchema(editor.GetDatabaseSchemaRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var connections = await _connectionService.GetAllAsync();
+                var conn = connections.FirstOrDefault(c => c.Id == request.ConnectionId);
+                if (conn == null)
+                {
+                    return new editor.GetDatabaseSchemaReply { Success = false, ErrorMessage = "Connection not found" };
+                }
+
+                var schema = await _schemaService.GetSchemaAsync(conn, request.TableName, request.TablesOnly);
+                    return new editor.GetDatabaseSchemaReply { Success = true, Schema = schema };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetDatabaseSchema failed");
+                return new editor.GetDatabaseSchemaReply { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        public override async Task<editor.GenerateModelsReply> GenerateModels(editor.GenerateModelsRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var connections = await _connectionService.GetAllAsync();
+                var conn = connections.FirstOrDefault(c => c.Id == request.ConnectionId);
+                if (conn == null)
+                {
+                    return new editor.GenerateModelsReply { Success = false, ErrorMessage = "Connection not found" };
+                }
+
+                var outputDir = Path.Combine(AppContext.BaseDirectory, "GeneratedModels", request.ConnectionId);
+                var files = await _modelService.GenerateModelsAsync(conn, outputDir, request.Namespace);
+
+                var reply = new editor.GenerateModelsReply { Success = true };
+                reply.GeneratedFilePaths.AddRange(files);
+                return reply;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GenerateModels failed");
+                return new editor.GenerateModelsReply { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        public override async Task<editor.ConnectReply> ConnectToDatabase(editor.ConnectRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var connections = await _connectionService.GetAllAsync();
+                var conn = connections.FirstOrDefault(c => c.Id == request.ConnectionId);
+                if (conn == null)
+                {
+                    return new editor.ConnectReply { Success = false, ErrorMessage = "Connection not found" };
+                }
+
+                // Generate Project
+                // Use a safe namespace name (replace invalid chars)
+                var safeName = "Conn_" + request.ConnectionId.Replace("-", "_");
+                var outputDir = Path.Combine(AppContext.BaseDirectory, "UserProjects", safeName);
+                
+                _logger.LogInformation("Generating project for connection {Name} at {Path}", conn.Name, outputDir);
+                await _modelService.GenerateModelsAsync(conn, outputDir, "SharpPad.Models." + safeName);
+
+                // Reload Session
+                var projectPath = Path.Combine(outputDir, "UserProject.csproj");
+                await _session.ReloadProjectAsync(projectPath);
+
+                var generatedFiles = new List<editor.SourceFile>();
+                if (Directory.Exists(outputDir))
+                {
+                    foreach (var file in Directory.GetFiles(outputDir, "*.cs", SearchOption.TopDirectoryOnly))
+                    {
+                        var content = await File.ReadAllTextAsync(file);
+                        var fileName = Path.GetFileName(file);
+                        generatedFiles.Add(new editor.SourceFile { FileName = fileName, Content = content });
+                    }
+                }
+
+                var reply = new editor.ConnectReply { Success = true };
+                reply.GeneratedFiles.AddRange(generatedFiles);
+                return reply;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ConnectToDatabase failed");
+                return new editor.ConnectReply { Success = false, ErrorMessage = ex.Message };
+            }
+        }
     }
 }

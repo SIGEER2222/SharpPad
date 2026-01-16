@@ -6,8 +6,9 @@ import OutputRenderer from './OutputRenderer';
 import ConnectionManager from './components/ConnectionManager';
 import { useEditorSetup } from './hooks/useEditorSetup';
 import { updateEditorMarkers } from './utils/monacoHelpers';
-import { useFileSystem } from './hooks/useFileSystem';
+import { useFileSystem, type SourceFile } from './hooks/useFileSystem';
 import FileExplorer from './components/FileExplorer';
+import SchemaBrowser from './components/SchemaBrowser';
 
 const BACKEND_URL = 'http://localhost:5255';
 const client = new GrpcClient(BACKEND_URL);
@@ -313,14 +314,23 @@ function App() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
             
             {/* Sidebar */}
-            <div style={{ width: sidebarWidth, height: '100%', overflow: 'hidden' }}>
-                <FileExplorer 
-                    files={files} 
-                    activeFileId={activeFileId} 
-                    onSelect={setActiveFileId} 
-                    onAdd={addFile} 
-                    onRemove={removeFile}
-                />
+            <div style={{ width: sidebarWidth, height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ flex: 1, overflow: 'hidden' }}>
+                    <FileExplorer 
+                        files={files} 
+                        activeFileId={activeFileId} 
+                        onSelect={setActiveFileId} 
+                        onAdd={addFile} 
+                        onRemove={removeFile}
+                    />
+                </div>
+                <div style={{ height: '1px', backgroundColor: '#333' }} />
+                <div style={{ flex: 1, overflow: 'hidden', borderTop: '1px solid #333' }}>
+                    <SchemaBrowser 
+                        client={client} 
+                        activeConnectionId={activeConnectionId} 
+                    />
+                </div>
             </div>
 
             {/* Resizer 1 */}
@@ -398,6 +408,45 @@ function App() {
                 activeConnectionId={activeConnectionId}
                 onConnectionSelect={(id) => setActiveConnectionId(id)}
                 onClose={() => setShowConnectionManager(false)}
+                onConnected={(conn, files) => {
+          const safeName = "Conn_" + (conn.id || "").replace(/-/g, "_");
+          const namespace = "SharpPad.Models." + safeName;
+
+          const dbTemplate: SourceFile[] = [
+            {
+              id: '1',
+              name: 'Query.cs',
+              path: 'Scripts',
+              type: 'script',
+              content: `using System;
+using System.Linq;
+using SqlSugar;
+using ${namespace};
+
+// db is auto-injected from connection
+// Try listing tables:
+// db.DbMaintenance.GetTableInfoList().Dump("Tables");
+
+// Example Query:
+db.Queryable<mom_lot>().Take(20).ToList().Dump("Mom Lot Data");
+`
+            }
+          ];
+
+                    if (files && files.length > 0) {
+                        files.forEach((f, i) => {
+                            dbTemplate.push({
+                                id: 'gen_' + i,
+                                name: f.fileName || `Entity${i}.cs`,
+                                path: 'Generated',
+                                type: 'helper',
+                                content: f.content || ''
+                            });
+                        });
+                    }
+
+                    createProject(`DB: ${conn.name}`, dbTemplate);
+                }}
             />
         )}
     </div>
