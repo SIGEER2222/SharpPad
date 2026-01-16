@@ -1,5 +1,5 @@
 import React from 'react';
-import DumpTable from './DumpTable';
+import DataGrid from './components/DataGrid';
 
 interface OutputRendererProps {
     content: string;
@@ -42,9 +42,9 @@ const OutputRenderer: React.FC<OutputRendererProps> = ({ content }) => {
             try {
                 const payload = JSON.parse(extraction.json);
                 elements.push(
-                    <DumpTable 
+                    <DataGrid 
                         key={`dump-${keyCounter++}`} 
-                        data={payload.data} 
+                        data={Array.isArray(payload.data) ? payload.data : [payload.data]} 
                         title={payload.title} 
                     />
                 );

@@ -162,6 +162,62 @@ export namespace editor {
          * @returns Promise
          */
         public executeCode(request: editor.IExecuteCodeRequest): Promise<editor.ExecuteCodeReply>;
+
+        /**
+         * Calls GetConnections.
+         * @param request GetConnectionsRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and GetConnectionsReply
+         */
+        public getConnections(request: editor.IGetConnectionsRequest, callback: editor.EditorService.GetConnectionsCallback): void;
+
+        /**
+         * Calls GetConnections.
+         * @param request GetConnectionsRequest message or plain object
+         * @returns Promise
+         */
+        public getConnections(request: editor.IGetConnectionsRequest): Promise<editor.GetConnectionsReply>;
+
+        /**
+         * Calls SaveConnection.
+         * @param request SaveConnectionRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and SaveConnectionReply
+         */
+        public saveConnection(request: editor.ISaveConnectionRequest, callback: editor.EditorService.SaveConnectionCallback): void;
+
+        /**
+         * Calls SaveConnection.
+         * @param request SaveConnectionRequest message or plain object
+         * @returns Promise
+         */
+        public saveConnection(request: editor.ISaveConnectionRequest): Promise<editor.SaveConnectionReply>;
+
+        /**
+         * Calls DeleteConnection.
+         * @param request DeleteConnectionRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and DeleteConnectionReply
+         */
+        public deleteConnection(request: editor.IDeleteConnectionRequest, callback: editor.EditorService.DeleteConnectionCallback): void;
+
+        /**
+         * Calls DeleteConnection.
+         * @param request DeleteConnectionRequest message or plain object
+         * @returns Promise
+         */
+        public deleteConnection(request: editor.IDeleteConnectionRequest): Promise<editor.DeleteConnectionReply>;
+
+        /**
+         * Calls TestConnection.
+         * @param request TestConnectionRequest message or plain object
+         * @param callback Node-style callback called with the error, if any, and TestConnectionReply
+         */
+        public testConnection(request: editor.ITestConnectionRequest, callback: editor.EditorService.TestConnectionCallback): void;
+
+        /**
+         * Calls TestConnection.
+         * @param request TestConnectionRequest message or plain object
+         * @returns Promise
+         */
+        public testConnection(request: editor.ITestConnectionRequest): Promise<editor.TestConnectionReply>;
     }
 
     namespace EditorService {
@@ -235,6 +291,34 @@ export namespace editor {
          * @param [response] ExecuteCodeReply
          */
         type ExecuteCodeCallback = (error: (Error|null), response?: editor.ExecuteCodeReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#getConnections}.
+         * @param error Error, if any
+         * @param [response] GetConnectionsReply
+         */
+        type GetConnectionsCallback = (error: (Error|null), response?: editor.GetConnectionsReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#saveConnection}.
+         * @param error Error, if any
+         * @param [response] SaveConnectionReply
+         */
+        type SaveConnectionCallback = (error: (Error|null), response?: editor.SaveConnectionReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#deleteConnection}.
+         * @param error Error, if any
+         * @param [response] DeleteConnectionReply
+         */
+        type DeleteConnectionCallback = (error: (Error|null), response?: editor.DeleteConnectionReply) => void;
+
+        /**
+         * Callback as used by {@link editor.EditorService#testConnection}.
+         * @param error Error, if any
+         * @param [response] TestConnectionReply
+         */
+        type TestConnectionCallback = (error: (Error|null), response?: editor.TestConnectionReply) => void;
     }
 
     /** Properties of an InitializeRequest. */
@@ -660,6 +744,9 @@ export namespace editor {
 
         /** CompletionItem kind */
         kind?: (string|null);
+
+        /** CompletionItem sortText */
+        sortText?: (string|null);
     }
 
     /** Represents a CompletionItem. */
@@ -679,6 +766,9 @@ export namespace editor {
 
         /** CompletionItem kind. */
         public kind: string;
+
+        /** CompletionItem sortText. */
+        public sortText: string;
 
         /**
          * Creates a new CompletionItem instance using the specified properties.
@@ -2571,6 +2661,9 @@ export namespace editor {
 
         /** ExecuteCodeRequest extraFiles */
         extraFiles?: (editor.ISourceFile[]|null);
+
+        /** ExecuteCodeRequest connectionId */
+        connectionId?: (string|null);
     }
 
     /** Represents an ExecuteCodeRequest. */
@@ -2593,6 +2686,9 @@ export namespace editor {
 
         /** ExecuteCodeRequest extraFiles. */
         public extraFiles: editor.ISourceFile[];
+
+        /** ExecuteCodeRequest connectionId. */
+        public connectionId: string;
 
         /**
          * Creates a new ExecuteCodeRequest instance using the specified properties.
@@ -3011,6 +3107,921 @@ export namespace editor {
 
         /**
          * Gets the default type url for DiagnosticItem
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a ConnectionInfo. */
+    interface IConnectionInfo {
+
+        /** ConnectionInfo id */
+        id?: (string|null);
+
+        /** ConnectionInfo name */
+        name?: (string|null);
+
+        /** ConnectionInfo provider */
+        provider?: (string|null);
+
+        /** ConnectionInfo connectionString */
+        connectionString?: (string|null);
+    }
+
+    /** Represents a ConnectionInfo. */
+    class ConnectionInfo implements IConnectionInfo {
+
+        /**
+         * Constructs a new ConnectionInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IConnectionInfo);
+
+        /** ConnectionInfo id. */
+        public id: string;
+
+        /** ConnectionInfo name. */
+        public name: string;
+
+        /** ConnectionInfo provider. */
+        public provider: string;
+
+        /** ConnectionInfo connectionString. */
+        public connectionString: string;
+
+        /**
+         * Creates a new ConnectionInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ConnectionInfo instance
+         */
+        public static create(properties?: editor.IConnectionInfo): editor.ConnectionInfo;
+
+        /**
+         * Encodes the specified ConnectionInfo message. Does not implicitly {@link editor.ConnectionInfo.verify|verify} messages.
+         * @param message ConnectionInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IConnectionInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ConnectionInfo message, length delimited. Does not implicitly {@link editor.ConnectionInfo.verify|verify} messages.
+         * @param message ConnectionInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IConnectionInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ConnectionInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ConnectionInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.ConnectionInfo;
+
+        /**
+         * Decodes a ConnectionInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ConnectionInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.ConnectionInfo;
+
+        /**
+         * Verifies a ConnectionInfo message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ConnectionInfo message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ConnectionInfo
+         */
+        public static fromObject(object: { [k: string]: any }): editor.ConnectionInfo;
+
+        /**
+         * Creates a plain object from a ConnectionInfo message. Also converts values to other types if specified.
+         * @param message ConnectionInfo
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.ConnectionInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ConnectionInfo to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ConnectionInfo
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GetConnectionsRequest. */
+    interface IGetConnectionsRequest {
+    }
+
+    /** Represents a GetConnectionsRequest. */
+    class GetConnectionsRequest implements IGetConnectionsRequest {
+
+        /**
+         * Constructs a new GetConnectionsRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGetConnectionsRequest);
+
+        /**
+         * Creates a new GetConnectionsRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GetConnectionsRequest instance
+         */
+        public static create(properties?: editor.IGetConnectionsRequest): editor.GetConnectionsRequest;
+
+        /**
+         * Encodes the specified GetConnectionsRequest message. Does not implicitly {@link editor.GetConnectionsRequest.verify|verify} messages.
+         * @param message GetConnectionsRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGetConnectionsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GetConnectionsRequest message, length delimited. Does not implicitly {@link editor.GetConnectionsRequest.verify|verify} messages.
+         * @param message GetConnectionsRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGetConnectionsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GetConnectionsRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GetConnectionsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GetConnectionsRequest;
+
+        /**
+         * Decodes a GetConnectionsRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GetConnectionsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GetConnectionsRequest;
+
+        /**
+         * Verifies a GetConnectionsRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GetConnectionsRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GetConnectionsRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GetConnectionsRequest;
+
+        /**
+         * Creates a plain object from a GetConnectionsRequest message. Also converts values to other types if specified.
+         * @param message GetConnectionsRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GetConnectionsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GetConnectionsRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GetConnectionsRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GetConnectionsReply. */
+    interface IGetConnectionsReply {
+
+        /** GetConnectionsReply connections */
+        connections?: (editor.IConnectionInfo[]|null);
+    }
+
+    /** Represents a GetConnectionsReply. */
+    class GetConnectionsReply implements IGetConnectionsReply {
+
+        /**
+         * Constructs a new GetConnectionsReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IGetConnectionsReply);
+
+        /** GetConnectionsReply connections. */
+        public connections: editor.IConnectionInfo[];
+
+        /**
+         * Creates a new GetConnectionsReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GetConnectionsReply instance
+         */
+        public static create(properties?: editor.IGetConnectionsReply): editor.GetConnectionsReply;
+
+        /**
+         * Encodes the specified GetConnectionsReply message. Does not implicitly {@link editor.GetConnectionsReply.verify|verify} messages.
+         * @param message GetConnectionsReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IGetConnectionsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GetConnectionsReply message, length delimited. Does not implicitly {@link editor.GetConnectionsReply.verify|verify} messages.
+         * @param message GetConnectionsReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IGetConnectionsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GetConnectionsReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GetConnectionsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.GetConnectionsReply;
+
+        /**
+         * Decodes a GetConnectionsReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GetConnectionsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.GetConnectionsReply;
+
+        /**
+         * Verifies a GetConnectionsReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GetConnectionsReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GetConnectionsReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.GetConnectionsReply;
+
+        /**
+         * Creates a plain object from a GetConnectionsReply message. Also converts values to other types if specified.
+         * @param message GetConnectionsReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.GetConnectionsReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GetConnectionsReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GetConnectionsReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a SaveConnectionRequest. */
+    interface ISaveConnectionRequest {
+
+        /** SaveConnectionRequest connection */
+        connection?: (editor.IConnectionInfo|null);
+    }
+
+    /** Represents a SaveConnectionRequest. */
+    class SaveConnectionRequest implements ISaveConnectionRequest {
+
+        /**
+         * Constructs a new SaveConnectionRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.ISaveConnectionRequest);
+
+        /** SaveConnectionRequest connection. */
+        public connection?: (editor.IConnectionInfo|null);
+
+        /**
+         * Creates a new SaveConnectionRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SaveConnectionRequest instance
+         */
+        public static create(properties?: editor.ISaveConnectionRequest): editor.SaveConnectionRequest;
+
+        /**
+         * Encodes the specified SaveConnectionRequest message. Does not implicitly {@link editor.SaveConnectionRequest.verify|verify} messages.
+         * @param message SaveConnectionRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.ISaveConnectionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SaveConnectionRequest message, length delimited. Does not implicitly {@link editor.SaveConnectionRequest.verify|verify} messages.
+         * @param message SaveConnectionRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.ISaveConnectionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SaveConnectionRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SaveConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.SaveConnectionRequest;
+
+        /**
+         * Decodes a SaveConnectionRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SaveConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.SaveConnectionRequest;
+
+        /**
+         * Verifies a SaveConnectionRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SaveConnectionRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SaveConnectionRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.SaveConnectionRequest;
+
+        /**
+         * Creates a plain object from a SaveConnectionRequest message. Also converts values to other types if specified.
+         * @param message SaveConnectionRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.SaveConnectionRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SaveConnectionRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SaveConnectionRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a SaveConnectionReply. */
+    interface ISaveConnectionReply {
+
+        /** SaveConnectionReply success */
+        success?: (boolean|null);
+
+        /** SaveConnectionReply errorMessage */
+        errorMessage?: (string|null);
+
+        /** SaveConnectionReply id */
+        id?: (string|null);
+    }
+
+    /** Represents a SaveConnectionReply. */
+    class SaveConnectionReply implements ISaveConnectionReply {
+
+        /**
+         * Constructs a new SaveConnectionReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.ISaveConnectionReply);
+
+        /** SaveConnectionReply success. */
+        public success: boolean;
+
+        /** SaveConnectionReply errorMessage. */
+        public errorMessage: string;
+
+        /** SaveConnectionReply id. */
+        public id: string;
+
+        /**
+         * Creates a new SaveConnectionReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SaveConnectionReply instance
+         */
+        public static create(properties?: editor.ISaveConnectionReply): editor.SaveConnectionReply;
+
+        /**
+         * Encodes the specified SaveConnectionReply message. Does not implicitly {@link editor.SaveConnectionReply.verify|verify} messages.
+         * @param message SaveConnectionReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.ISaveConnectionReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SaveConnectionReply message, length delimited. Does not implicitly {@link editor.SaveConnectionReply.verify|verify} messages.
+         * @param message SaveConnectionReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.ISaveConnectionReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SaveConnectionReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SaveConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.SaveConnectionReply;
+
+        /**
+         * Decodes a SaveConnectionReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SaveConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.SaveConnectionReply;
+
+        /**
+         * Verifies a SaveConnectionReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SaveConnectionReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SaveConnectionReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.SaveConnectionReply;
+
+        /**
+         * Creates a plain object from a SaveConnectionReply message. Also converts values to other types if specified.
+         * @param message SaveConnectionReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.SaveConnectionReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SaveConnectionReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SaveConnectionReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeleteConnectionRequest. */
+    interface IDeleteConnectionRequest {
+
+        /** DeleteConnectionRequest id */
+        id?: (string|null);
+    }
+
+    /** Represents a DeleteConnectionRequest. */
+    class DeleteConnectionRequest implements IDeleteConnectionRequest {
+
+        /**
+         * Constructs a new DeleteConnectionRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IDeleteConnectionRequest);
+
+        /** DeleteConnectionRequest id. */
+        public id: string;
+
+        /**
+         * Creates a new DeleteConnectionRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeleteConnectionRequest instance
+         */
+        public static create(properties?: editor.IDeleteConnectionRequest): editor.DeleteConnectionRequest;
+
+        /**
+         * Encodes the specified DeleteConnectionRequest message. Does not implicitly {@link editor.DeleteConnectionRequest.verify|verify} messages.
+         * @param message DeleteConnectionRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IDeleteConnectionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeleteConnectionRequest message, length delimited. Does not implicitly {@link editor.DeleteConnectionRequest.verify|verify} messages.
+         * @param message DeleteConnectionRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IDeleteConnectionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeleteConnectionRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeleteConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.DeleteConnectionRequest;
+
+        /**
+         * Decodes a DeleteConnectionRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeleteConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.DeleteConnectionRequest;
+
+        /**
+         * Verifies a DeleteConnectionRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeleteConnectionRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeleteConnectionRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.DeleteConnectionRequest;
+
+        /**
+         * Creates a plain object from a DeleteConnectionRequest message. Also converts values to other types if specified.
+         * @param message DeleteConnectionRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.DeleteConnectionRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeleteConnectionRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeleteConnectionRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeleteConnectionReply. */
+    interface IDeleteConnectionReply {
+
+        /** DeleteConnectionReply success */
+        success?: (boolean|null);
+
+        /** DeleteConnectionReply errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a DeleteConnectionReply. */
+    class DeleteConnectionReply implements IDeleteConnectionReply {
+
+        /**
+         * Constructs a new DeleteConnectionReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.IDeleteConnectionReply);
+
+        /** DeleteConnectionReply success. */
+        public success: boolean;
+
+        /** DeleteConnectionReply errorMessage. */
+        public errorMessage: string;
+
+        /**
+         * Creates a new DeleteConnectionReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeleteConnectionReply instance
+         */
+        public static create(properties?: editor.IDeleteConnectionReply): editor.DeleteConnectionReply;
+
+        /**
+         * Encodes the specified DeleteConnectionReply message. Does not implicitly {@link editor.DeleteConnectionReply.verify|verify} messages.
+         * @param message DeleteConnectionReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.IDeleteConnectionReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeleteConnectionReply message, length delimited. Does not implicitly {@link editor.DeleteConnectionReply.verify|verify} messages.
+         * @param message DeleteConnectionReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.IDeleteConnectionReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeleteConnectionReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeleteConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.DeleteConnectionReply;
+
+        /**
+         * Decodes a DeleteConnectionReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeleteConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.DeleteConnectionReply;
+
+        /**
+         * Verifies a DeleteConnectionReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeleteConnectionReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeleteConnectionReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.DeleteConnectionReply;
+
+        /**
+         * Creates a plain object from a DeleteConnectionReply message. Also converts values to other types if specified.
+         * @param message DeleteConnectionReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.DeleteConnectionReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeleteConnectionReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeleteConnectionReply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a TestConnectionRequest. */
+    interface ITestConnectionRequest {
+
+        /** TestConnectionRequest connectionString */
+        connectionString?: (string|null);
+
+        /** TestConnectionRequest provider */
+        provider?: (string|null);
+    }
+
+    /** Represents a TestConnectionRequest. */
+    class TestConnectionRequest implements ITestConnectionRequest {
+
+        /**
+         * Constructs a new TestConnectionRequest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.ITestConnectionRequest);
+
+        /** TestConnectionRequest connectionString. */
+        public connectionString: string;
+
+        /** TestConnectionRequest provider. */
+        public provider: string;
+
+        /**
+         * Creates a new TestConnectionRequest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns TestConnectionRequest instance
+         */
+        public static create(properties?: editor.ITestConnectionRequest): editor.TestConnectionRequest;
+
+        /**
+         * Encodes the specified TestConnectionRequest message. Does not implicitly {@link editor.TestConnectionRequest.verify|verify} messages.
+         * @param message TestConnectionRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.ITestConnectionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified TestConnectionRequest message, length delimited. Does not implicitly {@link editor.TestConnectionRequest.verify|verify} messages.
+         * @param message TestConnectionRequest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.ITestConnectionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a TestConnectionRequest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns TestConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.TestConnectionRequest;
+
+        /**
+         * Decodes a TestConnectionRequest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns TestConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.TestConnectionRequest;
+
+        /**
+         * Verifies a TestConnectionRequest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a TestConnectionRequest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns TestConnectionRequest
+         */
+        public static fromObject(object: { [k: string]: any }): editor.TestConnectionRequest;
+
+        /**
+         * Creates a plain object from a TestConnectionRequest message. Also converts values to other types if specified.
+         * @param message TestConnectionRequest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.TestConnectionRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this TestConnectionRequest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for TestConnectionRequest
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a TestConnectionReply. */
+    interface ITestConnectionReply {
+
+        /** TestConnectionReply success */
+        success?: (boolean|null);
+
+        /** TestConnectionReply message */
+        message?: (string|null);
+    }
+
+    /** Represents a TestConnectionReply. */
+    class TestConnectionReply implements ITestConnectionReply {
+
+        /**
+         * Constructs a new TestConnectionReply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: editor.ITestConnectionReply);
+
+        /** TestConnectionReply success. */
+        public success: boolean;
+
+        /** TestConnectionReply message. */
+        public message: string;
+
+        /**
+         * Creates a new TestConnectionReply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns TestConnectionReply instance
+         */
+        public static create(properties?: editor.ITestConnectionReply): editor.TestConnectionReply;
+
+        /**
+         * Encodes the specified TestConnectionReply message. Does not implicitly {@link editor.TestConnectionReply.verify|verify} messages.
+         * @param message TestConnectionReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: editor.ITestConnectionReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified TestConnectionReply message, length delimited. Does not implicitly {@link editor.TestConnectionReply.verify|verify} messages.
+         * @param message TestConnectionReply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: editor.ITestConnectionReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a TestConnectionReply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns TestConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): editor.TestConnectionReply;
+
+        /**
+         * Decodes a TestConnectionReply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns TestConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): editor.TestConnectionReply;
+
+        /**
+         * Verifies a TestConnectionReply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a TestConnectionReply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns TestConnectionReply
+         */
+        public static fromObject(object: { [k: string]: any }): editor.TestConnectionReply;
+
+        /**
+         * Creates a plain object from a TestConnectionReply message. Also converts values to other types if specified.
+         * @param message TestConnectionReply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: editor.TestConnectionReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this TestConnectionReply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for TestConnectionReply
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

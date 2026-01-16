@@ -3,7 +3,7 @@ import * as monaco from 'monaco-editor';
 import { GrpcClient } from '../GrpcClient';
 import { editor } from '../proto/editor';
 import { Monarch, LanguageConfiguration } from '../Monarch';
-import { mapSeverity, mapCompletionItemKind, SHARP_PAD_THEME } from '../utils/monacoHelpers';
+import { mapSeverity, mapToMonacoCompletionItem, mapToMonacoCodeAction, SHARP_PAD_THEME } from '../utils/monacoHelpers';
 import type { SourceFile } from './useFileSystem';
 
 const LANGUAGE_ID = 'sharp-csharp';
@@ -153,6 +153,14 @@ export function useEditorSetup(
                 const extraFiles = getExtraFiles();
 
                 try {
+                    const word = model.getWordUntilPosition(position);
+                    const range = {
+                        startLineNumber: position.lineNumber,
+                        endLineNumber: position.lineNumber,
+                        startColumn: word.startColumn,
+                        endColumn: word.endColumn
+                    };
+
                     const reply = await client.call(
                         'editor.EditorService',
                         'GetCompletions',
@@ -161,12 +169,7 @@ export function useEditorSetup(
                         editor.CompletionReply
                     );
 
-                    const suggestions = reply.items.map((item: any) => ({
-                        label: item.displayText,
-                        kind: mapCompletionItemKind(item.kind),
-                        insertText: item.insertText,
-                        range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column)
-                    }));
+                    const suggestions = reply.items.map((item: any) => mapToMonacoCompletionItem(item, range));
 
                     return { suggestions };
                 } catch (e) {
@@ -267,6 +270,38 @@ export function useEditorSetup(
                 } catch (e) {
                     console.error(e);
                     return [];
+                }
+            }
+        }));
+
+        // Code Action Provider (Quick Fixes)
+        disposables.push(monaco.languages.registerCodeActionProvider(LANGUAGE_ID, {
+            provideCodeActions: async (model, range, _context, _token) => {
+                const code = model.getValue();
+                // Use the start of the range as the position for Roslyn
+                const offset = model.getOffsetAt(range.getStartPosition());
+                const extraFiles = getExtraFiles();
+
+                try {
+                    const reply = await client.call(
+                        'editor.EditorService',
+                        'GetQuickFixes',
+                        { code, position: offset, extraFiles },
+                        editor.QuickFixRequest,
+                        editor.QuickFixReply
+                    );
+
+                    const actions: monaco.languages.CodeAction[] = reply.fixes.map((fix: any) => 
+                        mapToMonacoCodeAction(fix, model.uri, (offset) => model.getPositionAt(offset))
+                    );
+
+                    return {
+                        actions: actions,
+                        dispose: () => {}
+                    };
+                } catch (e) {
+                    console.error('QuickFix Error:', e);
+                    return { actions: [], dispose: () => {} };
                 }
             }
         }));

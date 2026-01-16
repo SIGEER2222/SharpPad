@@ -15,6 +15,12 @@ service EditorService {
   rpc GetDiagnostics (DiagnosticsRequest) returns (DiagnosticsReply);
   rpc GetQuickFixes (QuickFixRequest) returns (QuickFixReply);
   rpc ExecuteCode (ExecuteCodeRequest) returns (ExecuteCodeReply);
+  
+  // Connection Management
+  rpc GetConnections (GetConnectionsRequest) returns (GetConnectionsReply);
+  rpc SaveConnection (SaveConnectionRequest) returns (SaveConnectionReply);
+  rpc DeleteConnection (DeleteConnectionRequest) returns (DeleteConnectionReply);
+  rpc TestConnection (TestConnectionRequest) returns (TestConnectionReply);
 }
 
 message InitializeRequest {
@@ -41,6 +47,7 @@ message CompletionItem {
   string displayText = 1;
   string insertText = 2;
   string kind = 3;
+  string sortText = 4;
 }
 
 message HoverInfoRequest {
@@ -141,6 +148,7 @@ message ExecuteCodeRequest {
   string typeName = 2;
   string methodName = 3;
   repeated SourceFile extraFiles = 4;
+  string connectionId = 5;
 }
 
 message SourceFile {
@@ -162,4 +170,46 @@ message DiagnosticItem {
   string severity = 3;
   int32 line = 4;
   int32 column = 5;
+}
+
+message ConnectionInfo {
+  string id = 1;
+  string name = 2;
+  string provider = 3; // "SqlServer", "PostgreSQL", "Sqlite", "MySql"
+  string connectionString = 4;
+}
+
+message GetConnectionsRequest { }
+
+message GetConnectionsReply {
+  repeated ConnectionInfo connections = 1;
+}
+
+message SaveConnectionRequest {
+  ConnectionInfo connection = 1;
+}
+
+message SaveConnectionReply {
+  bool success = 1;
+  string errorMessage = 2;
+  string id = 3; // New ID if created
+}
+
+message DeleteConnectionRequest {
+  string id = 1;
+}
+
+message DeleteConnectionReply {
+  bool success = 1;
+  string errorMessage = 2;
+}
+
+message TestConnectionRequest {
+  string connectionString = 1;
+  string provider = 2;
+}
+
+message TestConnectionReply {
+  bool success = 1;
+  string message = 2;
 }

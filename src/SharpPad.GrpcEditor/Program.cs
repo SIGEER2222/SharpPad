@@ -40,6 +40,10 @@ builder.WebHost.ConfigureKestrel(options =>
     {
         defaults.Protocols = HttpProtocols.Http1AndHttp2;
     });
+    // Add a dedicated HTTP/2 endpoint for native gRPC clients (like verify scripts)
+    options.ListenLocalhost(5256, o => o.Protocols = HttpProtocols.Http2);
+    // Main endpoint for Web/Browser (HTTP/1.1 via proxy or direct)
+    options.ListenLocalhost(5255, o => o.Protocols = HttpProtocols.Http1AndHttp2);
 });
 
 // Add services to the container.
@@ -58,6 +62,7 @@ builder.Services.AddSingleton<IWorkspaceProjectAnalyzer, ProjectAnalyzer>();
 builder.Services.AddSingleton<ICodeCompiler, CodeCompiler>();
 builder.Services.AddSingleton<IDynamicCodeExecutor, DynamicCodeExecutor>();
 builder.Services.AddSingleton<IPerformanceMeasurer, PerformanceMeasurer>();
+builder.Services.AddSingleton<IConnectionStorageService, ConnectionStorageService>();
 builder.Services.AddSingleton<IProjectAnalysisSession, ProjectAnalysisSession>();
 builder.Services.AddHostedService<SessionInitializationService>();
 

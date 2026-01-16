@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
@@ -14,7 +14,10 @@
 		<PackageReference Include="xunit" Version="2.9.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
 		<PackageReference Include="Serilog.Sinks.Xunit2" Version="1.1.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\MonacoRoslynCompletionProvider\MonacoRoslynCompletionProvider.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,19 +43,15 @@
 		<PackageReference Include="GiGraph.Dot" Version="4.1.0" />
 		
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Reactive" Version="6.0.0" />
-		<PackageReference Include="System.Runtime.Loader" Version="4.*" />
+		<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
 
-		<PackageReference Include="Buildalyzer" Version="6.*" />
-		<PackageReference Include="Buildalyzer.Workspaces" Version="6.*" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.*"></PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.*" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.*" />
-		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.*" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.*" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.*" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.11.0" />
+		<PackageReference Include="Buildalyzer" Version="6.0.0" />
+		<PackageReference Include="Buildalyzer.Workspaces" Version="6.0.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.0.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.0.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
 		<PackageReference Include="YamlDotNet" Version="16.0.0" />
 	</ItemGroup>
 

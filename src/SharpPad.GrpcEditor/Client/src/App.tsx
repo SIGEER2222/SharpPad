@@ -3,6 +3,7 @@ import 'monaco-editor/min/vs/editor/editor.main.css';
 import { GrpcClient } from './GrpcClient';
 import { editor } from './proto/editor';
 import OutputRenderer from './OutputRenderer';
+import ConnectionManager from './components/ConnectionManager';
 import { useEditorSetup } from './hooks/useEditorSetup';
 import { updateEditorMarkers } from './utils/monacoHelpers';
 import { useFileSystem } from './hooks/useFileSystem';
@@ -16,6 +17,10 @@ function App() {
   const [output, setOutput] = useState<string>('');
   const [metrics, setMetrics] = useState<string>('');
   
+  // Connection State
+  const [showConnectionManager, setShowConnectionManager] = useState(false);
+  const [activeConnectionId, setActiveConnectionId] = useState<string | null>(null);
+
   // Layout State
   const [outputWidth, setOutputWidth] = useState(() => window.innerWidth * 0.4);
   const [sidebarWidth, setSidebarWidth] = useState(250);
@@ -152,7 +157,8 @@ function App() {
           code: codeToRun,
           typeName: '', // Empty to let backend find Entry Point (supports Top-level statements)
           methodName: '',
-          extraFiles: extraFiles
+          extraFiles: extraFiles,
+          connectionId: activeConnectionId || undefined
       });
 
       try {
@@ -261,6 +267,24 @@ function App() {
                 <div style={{ width: '1px', height: '20px', backgroundColor: '#444' }} />
 
                 <button 
+                    onClick={() => setShowConnectionManager(true)}
+                    style={{ 
+                        background: 'none', 
+                        border: '1px solid #444', 
+                        color: activeConnectionId ? '#4ec9b0' : '#ccc', 
+                        cursor: 'pointer', 
+                        fontSize: '14px',
+                        padding: '4px 8px',
+                        borderRadius: '4px'
+                    }}
+                    title="Manage Connections"
+                >
+                    {activeConnectionId ? '🗄️ Connected' : '🗄️ Connections'}
+                </button>
+
+                <div style={{ width: '1px', height: '20px', backgroundColor: '#444' }} />
+
+                <button 
                     onClick={handleRun}
                     style={{ 
                         padding: '6px 16px', 
@@ -365,6 +389,15 @@ function App() {
                     cursor: 'ew-resize',
                     backgroundColor: 'transparent'
                 }}
+            />
+        )}
+
+        {showConnectionManager && (
+            <ConnectionManager 
+                client={client}
+                activeConnectionId={activeConnectionId}
+                onConnectionSelect={(id) => setActiveConnectionId(id)}
+                onClose={() => setShowConnectionManager(false)}
             />
         )}
     </div>

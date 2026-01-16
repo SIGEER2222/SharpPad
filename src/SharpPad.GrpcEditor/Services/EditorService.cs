@@ -2,17 +2,20 @@ using Grpc.Core;
 using SharpPad.SqlCore.Interfaces;
 using SharpPad.SqlCore.Models;
 using editor = SharpPad.GrpcEditor.Protos;
+using ConnectionInfo = SharpPad.GrpcEditor.Protos.ConnectionInfo;
 
 namespace SharpPad.GrpcEditor.Services
 {
     public class EditorService : editor.EditorService.EditorServiceBase
     {
         private readonly IProjectAnalysisSession _session;
+        private readonly IConnectionStorageService _connectionService;
         private readonly ILogger<EditorService> _logger;
 
-        public EditorService(IProjectAnalysisSession session, ILogger<EditorService> logger)
+        public EditorService(IProjectAnalysisSession session, IConnectionStorageService connectionService, ILogger<EditorService> logger)
         {
             _session = session;
+            _connectionService = connectionService;
             _logger = logger;
         }
 
@@ -74,7 +77,8 @@ namespace SharpPad.GrpcEditor.Services
                     {
                         DisplayText = item.DisplayText,
                         InsertText = item.InsertText,
-                        Kind = item.Kind
+                        Kind = item.Kind,
+                        SortText = item.SortText
                     });
                 }
             }
@@ -276,7 +280,28 @@ namespace SharpPad.GrpcEditor.Services
 
                 var extraFiles = request.ExtraFiles.Select(f => (f.FileName, f.Content));
 
-                var result = await _session.ExecuteCodeAsync(request.Code, "GeneratedDocument.cs", request.TypeName, request.MethodName, extraFiles);
+                string? connectionString = null;
+                string? providerName = null;
+
+                if (!string.IsNullOrEmpty(request.ConnectionId))
+                {
+                    try 
+                    {
+                        var connections = await _connectionService.GetAllAsync();
+                        var conn = connections.FirstOrDefault(c => c.Id == request.ConnectionId);
+                        if (conn != null)
+                        {
+                            connectionString = conn.ConnectionString;
+                            providerName = conn.Provider;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                         _logger.LogError(ex, "Failed to resolve connection string for ID: {ConnectionId}", request.ConnectionId);
+                    }
+                }
+
+                var result = await _session.ExecuteCodeAsync(request.Code, "GeneratedDocument.cs", request.TypeName, request.MethodName, extraFiles, null, connectionString, providerName);
                 
                 var outputBuilder = new System.Text.StringBuilder();
                 if (!string.IsNullOrEmpty(result.ConsoleOutput))
@@ -332,5 +357,80 @@ namespace SharpPad.GrpcEditor.Services
                 return new editor.ExecuteCodeReply { Success = false, ErrorMessage = ex.Message };
             }
         }
+
+        // Connection Management RPCs
+        public override async Task<editor.GetConnectionsReply> GetConnections(editor.GetConnectionsRequest request, ServerCallContext context)
+        {
+            var reply = new editor.GetConnectionsReply();
+            try 
+            {
+                var connections = await _connectionService.GetAllAsync();
+                foreach (var c in connections)
+                {
+                    reply.Connections.Add(new editor.ConnectionInfo 
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        Provider = c.Provider,
+                        ConnectionString = c.ConnectionString
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetConnections failed");
+            }
+            return reply;
+        }
+
+        public override async Task<editor.SaveConnectionReply> SaveConnection(editor.SaveConnectionRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var info = new ConnectionInfo
+                {
+                    Id = request.Connection.Id,
+                    Name = request.Connection.Name,
+                    Provider = request.Connection.Provider,
+                    ConnectionString = request.Connection.ConnectionString
+                };
+
+                var newId = await _connectionService.SaveAsync(info);
+                return new editor.SaveConnectionReply { Success = true, Id = newId };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "SaveConnection failed");
+                return new editor.SaveConnectionReply { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        public override async Task<editor.DeleteConnectionReply> DeleteConnection(editor.DeleteConnectionRequest request, ServerCallContext context)
+        {
+            try
+            {
+                await _connectionService.DeleteAsync(request.Id);
+                return new editor.DeleteConnectionReply { Success = true };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeleteConnection failed");
+                return new editor.DeleteConnectionReply { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        public override async Task<editor.TestConnectionReply> TestConnection(editor.TestConnectionRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var (success, msg) = await _connectionService.TestConnectionAsync(request.Provider, request.ConnectionString);
+                return new editor.TestConnectionReply { Success = success, Message = msg };
+            }
+            catch (Exception ex)
+            {
+                return new editor.TestConnectionReply { Success = false, Message = ex.Message };
+            }
+        }
+
     }
 }

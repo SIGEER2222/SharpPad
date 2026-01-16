@@ -1,9 +1,8 @@
-using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SharpPad.SqlCore.Implementations;
+using SharpPad.SqlCore.Interfaces;
 using SharpPad.SqlCore.Tests.Base;
-using SqlSugar;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -11,84 +10,104 @@ namespace SharpPad.SqlCore.Tests.Integration
 {
     public class CompletionTests : TestBase
     {
-        public CompletionTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
-        [Trait("Category", "GetCompletions_ShouldReturnItems")]
-        // dotnet test --filter "Category=GetCompletions_ShouldReturnItems"
-        public async Task GetCompletions_ShouldReturnItems()
+        public CompletionTests(ITestOutputHelper output) : base(output)
         {
-            // Arrange
-            using var session = CreateSession();
-            var projectPath = GetProjectPath();
-            var assemblyPaths = new[]
-            {
-                typeof(SqlSugarClient).Assembly.Location
-            };
-
-            await session.InitializeAsync(projectPath, assemblyPaths);
-
-            var code = """
-                using System;
-                using SqlSugar;
-                
-                public class Test
-                {
-                    public void Method()
-                    {
-                        var db = new SqlSugarClient(new ConnectionConfig());
-                        db.
-                    }
-                }
-                """;
-            
-            var position = code.LastIndexOf("db.") + 3;
-
-            // Act
-            var completions = await session.GetCompletionsAsync(code, position);
-
-            // Assert
-            Assert.NotNull(completions);
-            Assert.NotEmpty(completions);
-            Assert.Contains(completions, c => c.DisplayText == "Queryable");
         }
 
         [Fact]
-        public async Task GetCompletions_InsideMethod_ShouldReturnLocals()
+        [Trait("Category", "Should_Provide_Instance_Properties_Across_Files")]
+        // dotnet test --filter Category=Should_Provide_Instance_Properties_Across_Files
+        public async Task Should_Provide_Instance_Properties_Across_Files()
         {
             // Arrange
-            using var session = CreateSession();
-            var projectPath = GetProjectPath();
-            var assemblyPaths = new[]
-            {
-                typeof(SqlSugarClient).Assembly.Location
-            };
-
-            await session.InitializeAsync(projectPath, assemblyPaths);
-
-            var code = """
-                using System;
-                using SqlSugar;
-                
-                public class Test
-                {
-                    public void Method()
-                    {
-                        var myLocalVar = 10;
-                        myLo
-                    }
-                }
-                """;
+            var session = CreateSession();
             
-            var position = code.LastIndexOf("myLo") + 4;
+            var modelsCode = @"
+using System;
+using SqlSugar;
+
+public class StudentCourse
+{
+    [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public int CourseId { get; set; }
+    public int Score { get; set; }
+}";
+            
+            var runCode = @"
+var source = new StudentCourse();
+source.id";
+            var position = runCode.IndexOf("source.id") + "source.id".Length;
+
+            // Initialize
+            var projectPath = GetProjectPath();
+            await session.InitializeAsync(projectPath, new string[0]);
 
             // Act
-            var completions = await session.GetCompletionsAsync(code, position);
+            // Pass Models.cs as extra file
+            var extraFiles = new[] { ("Models.cs", modelsCode) };
+            var results = await session.GetCompletionsAsync(runCode, position, "Run.cs", extraFiles);
 
             // Assert
-            Assert.NotNull(completions);
-            Assert.NotEmpty(completions);
-            Assert.Contains(completions, c => c.DisplayText == "myLocalVar");
+            Assert.NotEmpty(results);
+            Assert.Contains(results, r => r.DisplayText == "Id");
+            Assert.Contains(results, r => r.DisplayText == "StudentId");
+            Assert.Contains(results, r => r.DisplayText == "CourseId");
+            
+            // Check InsertText
+            var idCompletion = results.First(r => r.DisplayText == "Id");
+            Assert.False(string.IsNullOrEmpty(idCompletion.InsertText), "InsertText should not be empty");
+        }
+
+        [Fact]
+        [Trait("Category", "Should_Provide_Local_Variable_With_Ranking")]
+        public async Task Should_Provide_Local_Variable_With_Ranking()
+        {
+            // Arrange
+            var session = CreateSession();
+            var modelsCode = @"
+public class StudentCourse2
+{
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public int CourseId { get; set; }
+    public int Score { get; set; }
+}";
+            var runCode = @"
+using System;
+
+var source = new StudentCourse2();
+so";
+            var position = runCode.LastIndexOf("so") + 2;
+ 
+             // Initialize
+             var projectPath = GetProjectPath();
+             await session.InitializeAsync(projectPath, new string[0]);
+ 
+             // Act
+             var extraFiles = new[] { ("Models.cs", modelsCode) };
+             var results = await session.GetCompletionsAsync(runCode, position, "Run.cs", extraFiles);
+ 
+             // Assert
+             Assert.NotEmpty(results);
+             
+             var sourceCompletion = results.FirstOrDefault(r => r.DisplayText == "source");
+            
+            if (sourceCompletion == null)
+            {
+                Output.WriteLine("Available completions:");
+                foreach (var r in results)
+                {
+                    Output.WriteLine($"- {r.DisplayText} (SortText: {r.SortText}, Kind: {r.Kind})");
+                }
+            }
+
+            Assert.NotNull(sourceCompletion);
+            
+            // Verify SortText is present (since we added it)
+            Assert.False(string.IsNullOrEmpty(sourceCompletion.SortText), "SortText should not be empty");
+            Output.WriteLine($"Source SortText: {sourceCompletion.SortText}");
         }
     }
 }

@@ -168,3 +168,47 @@ export const updateEditorMarkers = (
 
     monaco.editor.setModelMarkers(model, 'sharp-csharp', markers);
 };
+
+export const mapToMonacoCompletionItem = (
+    item: any,
+    range: monaco.IRange
+): monaco.languages.CompletionItem => {
+    return {
+        label: item.displayText,
+        kind: mapCompletionItemKind(item.kind),
+        sortText: item.sortText,
+        insertText: item.insertText,
+        range: range
+    };
+};
+
+export const mapToMonacoCodeAction = (
+    fix: any,
+    modelUri: monaco.Uri,
+    getPositionAt: (offset: number) => monaco.IPosition
+): monaco.languages.CodeAction => {
+    const startPos = getPositionAt(fix.spanStart);
+    const endPos = getPositionAt(fix.spanStart + fix.spanLength);
+    const editRange = {
+        startLineNumber: startPos.lineNumber,
+        startColumn: startPos.column,
+        endLineNumber: endPos.lineNumber,
+        endColumn: endPos.column
+    };
+
+    return {
+        title: fix.title,
+        kind: 'quickfix',
+        edit: {
+            edits: [{
+                resource: modelUri,
+                textEdit: {
+                    range: editRange,
+                    text: fix.newText
+                },
+                versionId: undefined
+            }]
+        },
+        isPreferred: true
+    };
+};

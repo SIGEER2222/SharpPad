@@ -9,7 +9,7 @@ namespace SharpPad.SqlCore.Implementations
 {
     public class DynamicCodeExecutor : IDynamicCodeExecutor
     {
-        public async Task<(object? Result, string ConsoleOutput)> ExecuteMethodAsync(byte[] assemblyBytes, string typeName, string methodName, object?[]? parameters = null)
+        public async Task<(object? Result, string ConsoleOutput)> ExecuteMethodAsync(byte[] assemblyBytes, string typeName, string methodName, object?[]? parameters = null, Action<Assembly>? onAssemblyLoaded = null)
         {
             using var stream = new MemoryStream(assemblyBytes);
             var context = new AssemblyLoadContext("DynamicContext", isCollectible: true);
@@ -78,6 +78,9 @@ namespace SharpPad.SqlCore.Implementations
 
                 var assembly = context.LoadFromStream(stream);
                 
+                // Invoke callback to allow setup (e.g. injecting static properties)
+                onAssemblyLoaded?.Invoke(assembly);
+
                 MethodInfo? method = null;
                 object? instance = null;
 

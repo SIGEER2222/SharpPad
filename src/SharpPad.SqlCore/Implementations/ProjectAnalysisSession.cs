@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using SharpPad.SqlCore.Interfaces;
 using SharpPad.SqlCore.Models;
 using System.Xml.Linq;
+using SqlSugar;
+using System.Reflection;
 
 namespace SharpPad.SqlCore.Implementations
 {
@@ -126,6 +128,17 @@ public static class DumpExtensions
     }
 }";
                     _baseProject = _baseProject.AddDocument("DumpExtensions.cs", dumpSource).Project;
+
+                    // Inject DB Context for Connection Management
+                    var dbSource = @"
+using SqlSugar;
+using System;
+
+public static class DB
+{
+    public static SqlSugarClient Instance { get; set; }
+}";
+                    _baseProject = _baseProject.AddDocument("DB.cs", dbSource).Project;
                 }
 
                 _initialized = true;
@@ -143,13 +156,15 @@ public static class DumpExtensions
             }
         }
 
-        public async Task<CodeExecutionResult> ExecuteCodeAsync(string code, string documentName, string typeName, string methodName, IEnumerable<(string FileName, string Content)>? extraFiles = null, object?[]? parameters = null)
+        public async Task<CodeExecutionResult> ExecuteCodeAsync(string code, string documentName, string typeName, string methodName, IEnumerable<(string FileName, string Content)>? extraFiles = null, object?[]? parameters = null, string? connectionString = null, string? providerName = null)
         {
             if (!_initialized || _baseProject == null)
                 throw new InvalidOperationException("Session not initialized");
 
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ProjectAnalysisSession));
+
+            SqlSugarClient? dbClient = null;
 
             try
             {
@@ -219,11 +234,55 @@ public static class DumpExtensions
 
                 // 4. Run Method (Every time)
                 var (resultValue, consoleOutput) = await _performanceMeasurer.MeasureAsync("Execute - Run Method", async () => {
+                    Action<Assembly>? onLoaded = null;
+                    if (!string.IsNullOrEmpty(connectionString))
+                    {
+                        onLoaded = (assembly) => {
+                            try 
+                            {
+                                DbType dbType = DbType.SqlServer;
+                                if (Enum.TryParse<DbType>(providerName, true, out var parsedType))
+                                {
+                                    dbType = parsedType;
+                                }
+
+                                dbClient = new SqlSugarClient(new ConnectionConfig
+                                {
+                                    ConnectionString = connectionString,
+                                    DbType = dbType,
+                                    IsAutoCloseConnection = true,
+                                    InitKeyType = InitKeyType.Attribute
+                                });
+
+                                // Aop setup for console logging
+                                dbClient.Aop.OnLogExecuting = (sql, pars) =>
+                                {
+                                    Console.WriteLine($"[SQL] {sql}");
+                                };
+
+                                var dbClass = assembly.GetType("DB");
+                                if (dbClass != null)
+                                {
+                                    var prop = dbClass.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+                                    if (prop != null)
+                                    {
+                                        prop.SetValue(null, dbClient);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"[DB Injection Error] {ex.Message}");
+                            }
+                        };
+                    }
+
                     return await _codeExecutor.ExecuteMethodAsync(
                         compilationResult.AssemblyBytes!,
                         typeName,
                         methodName,
-                        parameters);
+                        parameters,
+                        onLoaded);
                 });
 
                 var successDiagnostics = compilationResult.Diagnostics
@@ -263,6 +322,10 @@ public static class DumpExtensions
                     ErrorMessage = message
                 };
             }
+            finally
+            {
+                dbClient?.Dispose();
+            }
         }
 
         public async Task<IEnumerable<CompletionResult>> GetCompletionsAsync(string code, int position, string documentName = "GeneratedDocument.cs", IEnumerable<(string FileName, string Content)>? extraFiles = null)
@@ -299,11 +362,34 @@ public static class DumpExtensions
                 return Enumerable.Empty<CompletionResult>();
             }
 
-            return completions.ItemsList.Select(i => new CompletionResult
+            return completions.ItemsList.Select(i =>
             {
-                DisplayText = i.DisplayText,
-                InsertText = i.FilterText,
-                Kind = i.Tags.FirstOrDefault() ?? "Property"
+                var kind = i.Tags.FirstOrDefault() ?? "Property";
+                var sortText = i.SortText;
+
+                // Heuristic: Boost Locals and Parameters if they don't already have a high priority (starting with digits)
+                // We assume Roslyn uses "0000..." for high priority. If SortText starts with a letter, it's likely default.
+                // We prepend "0001_" to ensure it comes before "A..." but after "0000..." (0 < _).
+                if (!char.IsDigit(sortText.FirstOrDefault()))
+                {
+                    if (kind == "Local" || kind == "Parameter" || kind == "RangeVariable")
+                    {
+                        sortText = "0001_" + sortText;
+                    }
+                    else if (kind == "Field" || kind == "Property" || kind == "EnumMember")
+                    {
+                        sortText = "0002_" + sortText;
+                    }
+                    // Keep others as is (e.g. Types will start with their name)
+                }
+
+                return new CompletionResult
+                {
+                    DisplayText = i.DisplayText,
+                    InsertText = !string.IsNullOrEmpty(i.FilterText) ? i.FilterText : i.DisplayText,
+                    Kind = kind,
+                    SortText = sortText
+                };
             });
         }
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { mapSeverity, mapCompletionItemKind, defaultSnippets, SHARP_PAD_THEME, updateEditorMarkers } from './monacoHelpers';
+import { mapSeverity, mapCompletionItemKind, mapToMonacoCompletionItem, mapToMonacoCodeAction, defaultSnippets, SHARP_PAD_THEME, updateEditorMarkers } from './monacoHelpers';
 import * as monaco from 'monaco-editor';
 
 // Mock monaco-editor enums
@@ -84,6 +84,66 @@ describe('monacoHelpers', () => {
 
     it('should default to Text', () => {
       expect(mapCompletionItemKind('Unknown')).toBe(monaco.languages.CompletionItemKind.Text);
+    });
+  });
+
+  describe('mapToMonacoCompletionItem', () => {
+    it('should map item correctly with provided range', () => {
+        const item = {
+            displayText: 'source',
+            kind: 'Local',
+            sortText: '0001_source',
+            insertText: 'source'
+        };
+        const range = {
+            startLineNumber: 1,
+            startColumn: 1,
+            endLineNumber: 1,
+            endColumn: 3
+        } as monaco.IRange;
+
+        const result = mapToMonacoCompletionItem(item, range);
+
+        expect(result.label).toBe('source');
+        expect(result.kind).toBe(monaco.languages.CompletionItemKind.Variable);
+        expect(result.sortText).toBe('0001_source');
+        expect(result.insertText).toBe('source');
+        expect(result.range).toBe(range);
+    });
+  });
+
+  describe('mapToMonacoCodeAction', () => {
+    it('should map quick fix to code action', () => {
+        const fix = {
+            title: 'Fix typo',
+            newText: 'Console.WriteLine',
+            spanStart: 10,
+            spanLength: 5
+        };
+        const modelUri = { path: '/test.cs' } as monaco.Uri;
+        const getPositionAt = vi.fn((offset) => {
+            // Mock implementation: 10 -> L1, C11. 15 -> L1, C16
+            if (offset === 10) return { lineNumber: 1, column: 11 } as monaco.IPosition;
+            if (offset === 15) return { lineNumber: 1, column: 16 } as monaco.IPosition;
+            return { lineNumber: 1, column: 1 } as monaco.IPosition;
+        });
+
+        const result = mapToMonacoCodeAction(fix, modelUri, getPositionAt);
+
+        expect(result.title).toBe('Fix typo');
+        expect(result.kind).toBe('quickfix');
+        expect(result.isPreferred).toBe(true);
+        expect(result.edit?.edits).toHaveLength(1);
+        
+        const edit = result.edit!.edits[0] as any;
+        expect(edit.resource).toBe(modelUri);
+        expect(edit.textEdit.text).toBe('Console.WriteLine');
+        expect(edit.textEdit.range).toEqual({
+            startLineNumber: 1,
+            startColumn: 11,
+            endLineNumber: 1,
+            endColumn: 16
+        });
     });
   });
 

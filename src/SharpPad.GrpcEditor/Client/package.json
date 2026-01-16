@@ -6,11 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test": "vitest",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
     "@improbable-eng/grpc-web": "^0.15.0",
+    "ag-grid-community": "^35.0.0",
+    "ag-grid-react": "^35.0.0",
     "google-protobuf": "^3.21.4",
     "monaco-editor": "^0.55.1",
     "protobufjs": "^7.5.4",

@@ -1,22 +1,20 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-"use strict";
-
 import * as $protobuf from "protobufjs/minimal";
 
 // Common aliases
-var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-$root.editor = (function() {
+export const editor = $root.editor = (() => {
 
     /**
      * Namespace editor.
      * @exports editor
      * @namespace
      */
-    var editor = {};
+    const editor = {};
 
     editor.EditorService = (function() {
 
@@ -380,6 +378,138 @@ $root.editor = (function() {
          * @variation 2
          */
 
+        /**
+         * Callback as used by {@link editor.EditorService#getConnections}.
+         * @memberof editor.EditorService
+         * @typedef GetConnectionsCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.GetConnectionsReply} [response] GetConnectionsReply
+         */
+
+        /**
+         * Calls GetConnections.
+         * @function getConnections
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGetConnectionsRequest} request GetConnectionsRequest message or plain object
+         * @param {editor.EditorService.GetConnectionsCallback} callback Node-style callback called with the error, if any, and GetConnectionsReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.getConnections = function getConnections(request, callback) {
+            return this.rpcCall(getConnections, $root.editor.GetConnectionsRequest, $root.editor.GetConnectionsReply, request, callback);
+        }, "name", { value: "GetConnections" });
+
+        /**
+         * Calls GetConnections.
+         * @function getConnections
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IGetConnectionsRequest} request GetConnectionsRequest message or plain object
+         * @returns {Promise<editor.GetConnectionsReply>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link editor.EditorService#saveConnection}.
+         * @memberof editor.EditorService
+         * @typedef SaveConnectionCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.SaveConnectionReply} [response] SaveConnectionReply
+         */
+
+        /**
+         * Calls SaveConnection.
+         * @function saveConnection
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.ISaveConnectionRequest} request SaveConnectionRequest message or plain object
+         * @param {editor.EditorService.SaveConnectionCallback} callback Node-style callback called with the error, if any, and SaveConnectionReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.saveConnection = function saveConnection(request, callback) {
+            return this.rpcCall(saveConnection, $root.editor.SaveConnectionRequest, $root.editor.SaveConnectionReply, request, callback);
+        }, "name", { value: "SaveConnection" });
+
+        /**
+         * Calls SaveConnection.
+         * @function saveConnection
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.ISaveConnectionRequest} request SaveConnectionRequest message or plain object
+         * @returns {Promise<editor.SaveConnectionReply>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link editor.EditorService#deleteConnection}.
+         * @memberof editor.EditorService
+         * @typedef DeleteConnectionCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.DeleteConnectionReply} [response] DeleteConnectionReply
+         */
+
+        /**
+         * Calls DeleteConnection.
+         * @function deleteConnection
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IDeleteConnectionRequest} request DeleteConnectionRequest message or plain object
+         * @param {editor.EditorService.DeleteConnectionCallback} callback Node-style callback called with the error, if any, and DeleteConnectionReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.deleteConnection = function deleteConnection(request, callback) {
+            return this.rpcCall(deleteConnection, $root.editor.DeleteConnectionRequest, $root.editor.DeleteConnectionReply, request, callback);
+        }, "name", { value: "DeleteConnection" });
+
+        /**
+         * Calls DeleteConnection.
+         * @function deleteConnection
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.IDeleteConnectionRequest} request DeleteConnectionRequest message or plain object
+         * @returns {Promise<editor.DeleteConnectionReply>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link editor.EditorService#testConnection}.
+         * @memberof editor.EditorService
+         * @typedef TestConnectionCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {editor.TestConnectionReply} [response] TestConnectionReply
+         */
+
+        /**
+         * Calls TestConnection.
+         * @function testConnection
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.ITestConnectionRequest} request TestConnectionRequest message or plain object
+         * @param {editor.EditorService.TestConnectionCallback} callback Node-style callback called with the error, if any, and TestConnectionReply
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(EditorService.prototype.testConnection = function testConnection(request, callback) {
+            return this.rpcCall(testConnection, $root.editor.TestConnectionRequest, $root.editor.TestConnectionReply, request, callback);
+        }, "name", { value: "TestConnection" });
+
+        /**
+         * Calls TestConnection.
+         * @function testConnection
+         * @memberof editor.EditorService
+         * @instance
+         * @param {editor.ITestConnectionRequest} request TestConnectionRequest message or plain object
+         * @returns {Promise<editor.TestConnectionReply>} Promise
+         * @variation 2
+         */
+
         return EditorService;
     })();
 
@@ -404,7 +534,7 @@ $root.editor = (function() {
         function InitializeRequest(properties) {
             this.assemblyPaths = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -452,7 +582,7 @@ $root.editor = (function() {
             if (message.projectPath != null && Object.hasOwnProperty.call(message, "projectPath"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.projectPath);
             if (message.assemblyPaths != null && message.assemblyPaths.length)
-                for (var i = 0; i < message.assemblyPaths.length; ++i)
+                for (let i = 0; i < message.assemblyPaths.length; ++i)
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.assemblyPaths[i]);
             return writer;
         };
@@ -484,9 +614,9 @@ $root.editor = (function() {
         InitializeRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -541,7 +671,7 @@ $root.editor = (function() {
             if (message.assemblyPaths != null && message.hasOwnProperty("assemblyPaths")) {
                 if (!Array.isArray(message.assemblyPaths))
                     return "assemblyPaths: array expected";
-                for (var i = 0; i < message.assemblyPaths.length; ++i)
+                for (let i = 0; i < message.assemblyPaths.length; ++i)
                     if (!$util.isString(message.assemblyPaths[i]))
                         return "assemblyPaths: string[] expected";
             }
@@ -559,14 +689,14 @@ $root.editor = (function() {
         InitializeRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.InitializeRequest)
                 return object;
-            var message = new $root.editor.InitializeRequest();
+            let message = new $root.editor.InitializeRequest();
             if (object.projectPath != null)
                 message.projectPath = String(object.projectPath);
             if (object.assemblyPaths) {
                 if (!Array.isArray(object.assemblyPaths))
                     throw TypeError(".editor.InitializeRequest.assemblyPaths: array expected");
                 message.assemblyPaths = [];
-                for (var i = 0; i < object.assemblyPaths.length; ++i)
+                for (let i = 0; i < object.assemblyPaths.length; ++i)
                     message.assemblyPaths[i] = String(object.assemblyPaths[i]);
             }
             return message;
@@ -584,7 +714,7 @@ $root.editor = (function() {
         InitializeRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.assemblyPaths = [];
             if (options.defaults)
@@ -593,7 +723,7 @@ $root.editor = (function() {
                 object.projectPath = message.projectPath;
             if (message.assemblyPaths && message.assemblyPaths.length) {
                 object.assemblyPaths = [];
-                for (var j = 0; j < message.assemblyPaths.length; ++j)
+                for (let j = 0; j < message.assemblyPaths.length; ++j)
                     object.assemblyPaths[j] = message.assemblyPaths[j];
             }
             return object;
@@ -648,7 +778,7 @@ $root.editor = (function() {
          */
         function InitializeReply(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -727,9 +857,9 @@ $root.editor = (function() {
         InitializeReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.InitializeReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -796,7 +926,7 @@ $root.editor = (function() {
         InitializeReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.InitializeReply)
                 return object;
-            var message = new $root.editor.InitializeReply();
+            let message = new $root.editor.InitializeReply();
             if (object.success != null)
                 message.success = Boolean(object.success);
             if (object.errorMessage != null)
@@ -816,7 +946,7 @@ $root.editor = (function() {
         InitializeReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.success = false;
                 object.errorMessage = "";
@@ -879,7 +1009,7 @@ $root.editor = (function() {
         function CompletionRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -937,7 +1067,7 @@ $root.editor = (function() {
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -969,9 +1099,9 @@ $root.editor = (function() {
         CompletionRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1033,8 +1163,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -1053,7 +1183,7 @@ $root.editor = (function() {
         CompletionRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.CompletionRequest)
                 return object;
-            var message = new $root.editor.CompletionRequest();
+            let message = new $root.editor.CompletionRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
@@ -1062,7 +1192,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.CompletionRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.CompletionRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -1083,7 +1213,7 @@ $root.editor = (function() {
         CompletionRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults) {
@@ -1096,7 +1226,7 @@ $root.editor = (function() {
                 object.position = message.position;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -1151,7 +1281,7 @@ $root.editor = (function() {
         function CompletionReply(properties) {
             this.items = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1189,7 +1319,7 @@ $root.editor = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.items != null && message.items.length)
-                for (var i = 0; i < message.items.length; ++i)
+                for (let i = 0; i < message.items.length; ++i)
                     $root.editor.CompletionItem.encode(message.items[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -1221,9 +1351,9 @@ $root.editor = (function() {
         CompletionReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1271,8 +1401,8 @@ $root.editor = (function() {
             if (message.items != null && message.hasOwnProperty("items")) {
                 if (!Array.isArray(message.items))
                     return "items: array expected";
-                for (var i = 0; i < message.items.length; ++i) {
-                    var error = $root.editor.CompletionItem.verify(message.items[i]);
+                for (let i = 0; i < message.items.length; ++i) {
+                    let error = $root.editor.CompletionItem.verify(message.items[i]);
                     if (error)
                         return "items." + error;
                 }
@@ -1291,12 +1421,12 @@ $root.editor = (function() {
         CompletionReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.CompletionReply)
                 return object;
-            var message = new $root.editor.CompletionReply();
+            let message = new $root.editor.CompletionReply();
             if (object.items) {
                 if (!Array.isArray(object.items))
                     throw TypeError(".editor.CompletionReply.items: array expected");
                 message.items = [];
-                for (var i = 0; i < object.items.length; ++i) {
+                for (let i = 0; i < object.items.length; ++i) {
                     if (typeof object.items[i] !== "object")
                         throw TypeError(".editor.CompletionReply.items: object expected");
                     message.items[i] = $root.editor.CompletionItem.fromObject(object.items[i]);
@@ -1317,12 +1447,12 @@ $root.editor = (function() {
         CompletionReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.items = [];
             if (message.items && message.items.length) {
                 object.items = [];
-                for (var j = 0; j < message.items.length; ++j)
+                for (let j = 0; j < message.items.length; ++j)
                     object.items[j] = $root.editor.CompletionItem.toObject(message.items[j], options);
             }
             return object;
@@ -1366,6 +1496,7 @@ $root.editor = (function() {
          * @property {string|null} [displayText] CompletionItem displayText
          * @property {string|null} [insertText] CompletionItem insertText
          * @property {string|null} [kind] CompletionItem kind
+         * @property {string|null} [sortText] CompletionItem sortText
          */
 
         /**
@@ -1378,7 +1509,7 @@ $root.editor = (function() {
          */
         function CompletionItem(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1406,6 +1537,14 @@ $root.editor = (function() {
          * @instance
          */
         CompletionItem.prototype.kind = "";
+
+        /**
+         * CompletionItem sortText.
+         * @member {string} sortText
+         * @memberof editor.CompletionItem
+         * @instance
+         */
+        CompletionItem.prototype.sortText = "";
 
         /**
          * Creates a new CompletionItem instance using the specified properties.
@@ -1437,6 +1576,8 @@ $root.editor = (function() {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.insertText);
             if (message.kind != null && Object.hasOwnProperty.call(message, "kind"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.kind);
+            if (message.sortText != null && Object.hasOwnProperty.call(message, "sortText"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.sortText);
             return writer;
         };
 
@@ -1467,9 +1608,9 @@ $root.editor = (function() {
         CompletionItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionItem();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.CompletionItem();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1483,6 +1624,10 @@ $root.editor = (function() {
                     }
                 case 3: {
                         message.kind = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.sortText = reader.string();
                         break;
                     }
                 default:
@@ -1529,6 +1674,9 @@ $root.editor = (function() {
             if (message.kind != null && message.hasOwnProperty("kind"))
                 if (!$util.isString(message.kind))
                     return "kind: string expected";
+            if (message.sortText != null && message.hasOwnProperty("sortText"))
+                if (!$util.isString(message.sortText))
+                    return "sortText: string expected";
             return null;
         };
 
@@ -1543,13 +1691,15 @@ $root.editor = (function() {
         CompletionItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.CompletionItem)
                 return object;
-            var message = new $root.editor.CompletionItem();
+            let message = new $root.editor.CompletionItem();
             if (object.displayText != null)
                 message.displayText = String(object.displayText);
             if (object.insertText != null)
                 message.insertText = String(object.insertText);
             if (object.kind != null)
                 message.kind = String(object.kind);
+            if (object.sortText != null)
+                message.sortText = String(object.sortText);
             return message;
         };
 
@@ -1565,11 +1715,12 @@ $root.editor = (function() {
         CompletionItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.displayText = "";
                 object.insertText = "";
                 object.kind = "";
+                object.sortText = "";
             }
             if (message.displayText != null && message.hasOwnProperty("displayText"))
                 object.displayText = message.displayText;
@@ -1577,6 +1728,8 @@ $root.editor = (function() {
                 object.insertText = message.insertText;
             if (message.kind != null && message.hasOwnProperty("kind"))
                 object.kind = message.kind;
+            if (message.sortText != null && message.hasOwnProperty("sortText"))
+                object.sortText = message.sortText;
             return object;
         };
 
@@ -1631,7 +1784,7 @@ $root.editor = (function() {
         function HoverInfoRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1689,7 +1842,7 @@ $root.editor = (function() {
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -1721,9 +1874,9 @@ $root.editor = (function() {
         HoverInfoRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -1785,8 +1938,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -1805,7 +1958,7 @@ $root.editor = (function() {
         HoverInfoRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.HoverInfoRequest)
                 return object;
-            var message = new $root.editor.HoverInfoRequest();
+            let message = new $root.editor.HoverInfoRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
@@ -1814,7 +1967,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.HoverInfoRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.HoverInfoRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -1835,7 +1988,7 @@ $root.editor = (function() {
         HoverInfoRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults) {
@@ -1848,7 +2001,7 @@ $root.editor = (function() {
                 object.position = message.position;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -1905,7 +2058,7 @@ $root.editor = (function() {
          */
         function HoverInfoReply(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2004,9 +2157,9 @@ $root.editor = (function() {
         HoverInfoReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.HoverInfoReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2087,7 +2240,7 @@ $root.editor = (function() {
         HoverInfoReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.HoverInfoReply)
                 return object;
-            var message = new $root.editor.HoverInfoReply();
+            let message = new $root.editor.HoverInfoReply();
             if (object.hasInfo != null)
                 message.hasInfo = Boolean(object.hasInfo);
             if (object.information != null)
@@ -2111,7 +2264,7 @@ $root.editor = (function() {
         HoverInfoReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.hasInfo = false;
                 object.information = "";
@@ -2180,7 +2333,7 @@ $root.editor = (function() {
         function SignatureHelpRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2238,7 +2391,7 @@ $root.editor = (function() {
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -2270,9 +2423,9 @@ $root.editor = (function() {
         SignatureHelpRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2334,8 +2487,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -2354,7 +2507,7 @@ $root.editor = (function() {
         SignatureHelpRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SignatureHelpRequest)
                 return object;
-            var message = new $root.editor.SignatureHelpRequest();
+            let message = new $root.editor.SignatureHelpRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
@@ -2363,7 +2516,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.SignatureHelpRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.SignatureHelpRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -2384,7 +2537,7 @@ $root.editor = (function() {
         SignatureHelpRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults) {
@@ -2397,7 +2550,7 @@ $root.editor = (function() {
                 object.position = message.position;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -2455,7 +2608,7 @@ $root.editor = (function() {
         function SignatureHelpReply(properties) {
             this.signatures = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2519,7 +2672,7 @@ $root.editor = (function() {
             if (message.hasHelp != null && Object.hasOwnProperty.call(message, "hasHelp"))
                 writer.uint32(/* id 1, wireType 0 =*/8).bool(message.hasHelp);
             if (message.signatures != null && message.signatures.length)
-                for (var i = 0; i < message.signatures.length; ++i)
+                for (let i = 0; i < message.signatures.length; ++i)
                     $root.editor.SignatureItem.encode(message.signatures[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.activeParameter != null && Object.hasOwnProperty.call(message, "activeParameter"))
                 writer.uint32(/* id 3, wireType 0 =*/24).int32(message.activeParameter);
@@ -2555,9 +2708,9 @@ $root.editor = (function() {
         SignatureHelpReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureHelpReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2620,8 +2773,8 @@ $root.editor = (function() {
             if (message.signatures != null && message.hasOwnProperty("signatures")) {
                 if (!Array.isArray(message.signatures))
                     return "signatures: array expected";
-                for (var i = 0; i < message.signatures.length; ++i) {
-                    var error = $root.editor.SignatureItem.verify(message.signatures[i]);
+                for (let i = 0; i < message.signatures.length; ++i) {
+                    let error = $root.editor.SignatureItem.verify(message.signatures[i]);
                     if (error)
                         return "signatures." + error;
                 }
@@ -2646,14 +2799,14 @@ $root.editor = (function() {
         SignatureHelpReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SignatureHelpReply)
                 return object;
-            var message = new $root.editor.SignatureHelpReply();
+            let message = new $root.editor.SignatureHelpReply();
             if (object.hasHelp != null)
                 message.hasHelp = Boolean(object.hasHelp);
             if (object.signatures) {
                 if (!Array.isArray(object.signatures))
                     throw TypeError(".editor.SignatureHelpReply.signatures: array expected");
                 message.signatures = [];
-                for (var i = 0; i < object.signatures.length; ++i) {
+                for (let i = 0; i < object.signatures.length; ++i) {
                     if (typeof object.signatures[i] !== "object")
                         throw TypeError(".editor.SignatureHelpReply.signatures: object expected");
                     message.signatures[i] = $root.editor.SignatureItem.fromObject(object.signatures[i]);
@@ -2678,7 +2831,7 @@ $root.editor = (function() {
         SignatureHelpReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.signatures = [];
             if (options.defaults) {
@@ -2690,7 +2843,7 @@ $root.editor = (function() {
                 object.hasHelp = message.hasHelp;
             if (message.signatures && message.signatures.length) {
                 object.signatures = [];
-                for (var j = 0; j < message.signatures.length; ++j)
+                for (let j = 0; j < message.signatures.length; ++j)
                     object.signatures[j] = $root.editor.SignatureItem.toObject(message.signatures[j], options);
             }
             if (message.activeParameter != null && message.hasOwnProperty("activeParameter"))
@@ -2751,7 +2904,7 @@ $root.editor = (function() {
         function SignatureItem(properties) {
             this.parameters = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2809,7 +2962,7 @@ $root.editor = (function() {
             if (message.documentation != null && Object.hasOwnProperty.call(message, "documentation"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.documentation);
             if (message.parameters != null && message.parameters.length)
-                for (var i = 0; i < message.parameters.length; ++i)
+                for (let i = 0; i < message.parameters.length; ++i)
                     $root.editor.ParameterItem.encode(message.parameters[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -2841,9 +2994,9 @@ $root.editor = (function() {
         SignatureItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureItem();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SignatureItem();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -2905,8 +3058,8 @@ $root.editor = (function() {
             if (message.parameters != null && message.hasOwnProperty("parameters")) {
                 if (!Array.isArray(message.parameters))
                     return "parameters: array expected";
-                for (var i = 0; i < message.parameters.length; ++i) {
-                    var error = $root.editor.ParameterItem.verify(message.parameters[i]);
+                for (let i = 0; i < message.parameters.length; ++i) {
+                    let error = $root.editor.ParameterItem.verify(message.parameters[i]);
                     if (error)
                         return "parameters." + error;
                 }
@@ -2925,7 +3078,7 @@ $root.editor = (function() {
         SignatureItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SignatureItem)
                 return object;
-            var message = new $root.editor.SignatureItem();
+            let message = new $root.editor.SignatureItem();
             if (object.label != null)
                 message.label = String(object.label);
             if (object.documentation != null)
@@ -2934,7 +3087,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.parameters))
                     throw TypeError(".editor.SignatureItem.parameters: array expected");
                 message.parameters = [];
-                for (var i = 0; i < object.parameters.length; ++i) {
+                for (let i = 0; i < object.parameters.length; ++i) {
                     if (typeof object.parameters[i] !== "object")
                         throw TypeError(".editor.SignatureItem.parameters: object expected");
                     message.parameters[i] = $root.editor.ParameterItem.fromObject(object.parameters[i]);
@@ -2955,7 +3108,7 @@ $root.editor = (function() {
         SignatureItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.parameters = [];
             if (options.defaults) {
@@ -2968,7 +3121,7 @@ $root.editor = (function() {
                 object.documentation = message.documentation;
             if (message.parameters && message.parameters.length) {
                 object.parameters = [];
-                for (var j = 0; j < message.parameters.length; ++j)
+                for (let j = 0; j < message.parameters.length; ++j)
                     object.parameters[j] = $root.editor.ParameterItem.toObject(message.parameters[j], options);
             }
             return object;
@@ -3023,7 +3176,7 @@ $root.editor = (function() {
          */
         function ParameterItem(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3102,9 +3255,9 @@ $root.editor = (function() {
         ParameterItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ParameterItem();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ParameterItem();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3171,7 +3324,7 @@ $root.editor = (function() {
         ParameterItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.ParameterItem)
                 return object;
-            var message = new $root.editor.ParameterItem();
+            let message = new $root.editor.ParameterItem();
             if (object.label != null)
                 message.label = String(object.label);
             if (object.documentation != null)
@@ -3191,7 +3344,7 @@ $root.editor = (function() {
         ParameterItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.label = "";
                 object.documentation = "";
@@ -3254,7 +3407,7 @@ $root.editor = (function() {
         function DefinitionRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3312,7 +3465,7 @@ $root.editor = (function() {
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -3344,9 +3497,9 @@ $root.editor = (function() {
         DefinitionRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3408,8 +3561,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -3428,7 +3581,7 @@ $root.editor = (function() {
         DefinitionRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DefinitionRequest)
                 return object;
-            var message = new $root.editor.DefinitionRequest();
+            let message = new $root.editor.DefinitionRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
@@ -3437,7 +3590,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.DefinitionRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.DefinitionRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -3458,7 +3611,7 @@ $root.editor = (function() {
         DefinitionRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults) {
@@ -3471,7 +3624,7 @@ $root.editor = (function() {
                 object.position = message.position;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -3528,7 +3681,7 @@ $root.editor = (function() {
          */
         function DefinitionReply(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3627,9 +3780,9 @@ $root.editor = (function() {
         DefinitionReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DefinitionReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3710,7 +3863,7 @@ $root.editor = (function() {
         DefinitionReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DefinitionReply)
                 return object;
-            var message = new $root.editor.DefinitionReply();
+            let message = new $root.editor.DefinitionReply();
             if (object.hasDefinition != null)
                 message.hasDefinition = Boolean(object.hasDefinition);
             if (object.filePath != null)
@@ -3734,7 +3887,7 @@ $root.editor = (function() {
         DefinitionReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.hasDefinition = false;
                 object.filePath = "";
@@ -3802,7 +3955,7 @@ $root.editor = (function() {
         function SemanticTokensRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3850,7 +4003,7 @@ $root.editor = (function() {
             if (message.code != null && Object.hasOwnProperty.call(message, "code"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
@@ -3882,9 +4035,9 @@ $root.editor = (function() {
         SemanticTokensRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -3939,8 +4092,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -3959,14 +4112,14 @@ $root.editor = (function() {
         SemanticTokensRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SemanticTokensRequest)
                 return object;
-            var message = new $root.editor.SemanticTokensRequest();
+            let message = new $root.editor.SemanticTokensRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.extraFiles) {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.SemanticTokensRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.SemanticTokensRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -3987,7 +4140,7 @@ $root.editor = (function() {
         SemanticTokensRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults)
@@ -3996,7 +4149,7 @@ $root.editor = (function() {
                 object.code = message.code;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -4051,7 +4204,7 @@ $root.editor = (function() {
         function SemanticTokensReply(properties) {
             this.data = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4090,7 +4243,7 @@ $root.editor = (function() {
                 writer = $Writer.create();
             if (message.data != null && message.data.length) {
                 writer.uint32(/* id 1, wireType 2 =*/10).fork();
-                for (var i = 0; i < message.data.length; ++i)
+                for (let i = 0; i < message.data.length; ++i)
                     writer.int32(message.data[i]);
                 writer.ldelim();
             }
@@ -4124,9 +4277,9 @@ $root.editor = (function() {
         SemanticTokensReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SemanticTokensReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4134,7 +4287,7 @@ $root.editor = (function() {
                         if (!(message.data && message.data.length))
                             message.data = [];
                         if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
+                            let end2 = reader.uint32() + reader.pos;
                             while (reader.pos < end2)
                                 message.data.push(reader.int32());
                         } else
@@ -4179,7 +4332,7 @@ $root.editor = (function() {
             if (message.data != null && message.hasOwnProperty("data")) {
                 if (!Array.isArray(message.data))
                     return "data: array expected";
-                for (var i = 0; i < message.data.length; ++i)
+                for (let i = 0; i < message.data.length; ++i)
                     if (!$util.isInteger(message.data[i]))
                         return "data: integer[] expected";
             }
@@ -4197,12 +4350,12 @@ $root.editor = (function() {
         SemanticTokensReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SemanticTokensReply)
                 return object;
-            var message = new $root.editor.SemanticTokensReply();
+            let message = new $root.editor.SemanticTokensReply();
             if (object.data) {
                 if (!Array.isArray(object.data))
                     throw TypeError(".editor.SemanticTokensReply.data: array expected");
                 message.data = [];
-                for (var i = 0; i < object.data.length; ++i)
+                for (let i = 0; i < object.data.length; ++i)
                     message.data[i] = object.data[i] | 0;
             }
             return message;
@@ -4220,12 +4373,12 @@ $root.editor = (function() {
         SemanticTokensReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.data = [];
             if (message.data && message.data.length) {
                 object.data = [];
-                for (var j = 0; j < message.data.length; ++j)
+                for (let j = 0; j < message.data.length; ++j)
                     object.data[j] = message.data[j];
             }
             return object;
@@ -4279,7 +4432,7 @@ $root.editor = (function() {
          */
         function FormatCodeRequest(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4348,9 +4501,9 @@ $root.editor = (function() {
         FormatCodeRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4410,7 +4563,7 @@ $root.editor = (function() {
         FormatCodeRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.FormatCodeRequest)
                 return object;
-            var message = new $root.editor.FormatCodeRequest();
+            let message = new $root.editor.FormatCodeRequest();
             if (object.code != null)
                 message.code = String(object.code);
             return message;
@@ -4428,7 +4581,7 @@ $root.editor = (function() {
         FormatCodeRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.code = "";
             if (message.code != null && message.hasOwnProperty("code"))
@@ -4484,7 +4637,7 @@ $root.editor = (function() {
          */
         function FormatCodeReply(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4553,9 +4706,9 @@ $root.editor = (function() {
         FormatCodeReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.FormatCodeReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4615,7 +4768,7 @@ $root.editor = (function() {
         FormatCodeReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.FormatCodeReply)
                 return object;
-            var message = new $root.editor.FormatCodeReply();
+            let message = new $root.editor.FormatCodeReply();
             if (object.formattedCode != null)
                 message.formattedCode = String(object.formattedCode);
             return message;
@@ -4633,7 +4786,7 @@ $root.editor = (function() {
         FormatCodeReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.formattedCode = "";
             if (message.formattedCode != null && message.hasOwnProperty("formattedCode"))
@@ -4691,7 +4844,7 @@ $root.editor = (function() {
         function DiagnosticsRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4739,7 +4892,7 @@ $root.editor = (function() {
             if (message.code != null && Object.hasOwnProperty.call(message, "code"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.code);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
@@ -4771,9 +4924,9 @@ $root.editor = (function() {
         DiagnosticsRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -4828,8 +4981,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -4848,14 +5001,14 @@ $root.editor = (function() {
         DiagnosticsRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DiagnosticsRequest)
                 return object;
-            var message = new $root.editor.DiagnosticsRequest();
+            let message = new $root.editor.DiagnosticsRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.extraFiles) {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.DiagnosticsRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.DiagnosticsRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -4876,7 +5029,7 @@ $root.editor = (function() {
         DiagnosticsRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults)
@@ -4885,7 +5038,7 @@ $root.editor = (function() {
                 object.code = message.code;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -4940,7 +5093,7 @@ $root.editor = (function() {
         function DiagnosticsReply(properties) {
             this.diagnostics = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4978,7 +5131,7 @@ $root.editor = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.diagnostics != null && message.diagnostics.length)
-                for (var i = 0; i < message.diagnostics.length; ++i)
+                for (let i = 0; i < message.diagnostics.length; ++i)
                     $root.editor.DiagnosticItem.encode(message.diagnostics[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -5010,9 +5163,9 @@ $root.editor = (function() {
         DiagnosticsReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticsReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5060,8 +5213,8 @@ $root.editor = (function() {
             if (message.diagnostics != null && message.hasOwnProperty("diagnostics")) {
                 if (!Array.isArray(message.diagnostics))
                     return "diagnostics: array expected";
-                for (var i = 0; i < message.diagnostics.length; ++i) {
-                    var error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
+                for (let i = 0; i < message.diagnostics.length; ++i) {
+                    let error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
                     if (error)
                         return "diagnostics." + error;
                 }
@@ -5080,12 +5233,12 @@ $root.editor = (function() {
         DiagnosticsReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DiagnosticsReply)
                 return object;
-            var message = new $root.editor.DiagnosticsReply();
+            let message = new $root.editor.DiagnosticsReply();
             if (object.diagnostics) {
                 if (!Array.isArray(object.diagnostics))
                     throw TypeError(".editor.DiagnosticsReply.diagnostics: array expected");
                 message.diagnostics = [];
-                for (var i = 0; i < object.diagnostics.length; ++i) {
+                for (let i = 0; i < object.diagnostics.length; ++i) {
                     if (typeof object.diagnostics[i] !== "object")
                         throw TypeError(".editor.DiagnosticsReply.diagnostics: object expected");
                     message.diagnostics[i] = $root.editor.DiagnosticItem.fromObject(object.diagnostics[i]);
@@ -5106,12 +5259,12 @@ $root.editor = (function() {
         DiagnosticsReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.diagnostics = [];
             if (message.diagnostics && message.diagnostics.length) {
                 object.diagnostics = [];
-                for (var j = 0; j < message.diagnostics.length; ++j)
+                for (let j = 0; j < message.diagnostics.length; ++j)
                     object.diagnostics[j] = $root.editor.DiagnosticItem.toObject(message.diagnostics[j], options);
             }
             return object;
@@ -5168,7 +5321,7 @@ $root.editor = (function() {
         function QuickFixRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5226,7 +5379,7 @@ $root.editor = (function() {
             if (message.position != null && Object.hasOwnProperty.call(message, "position"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
@@ -5258,9 +5411,9 @@ $root.editor = (function() {
         QuickFixRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5322,8 +5475,8 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
@@ -5342,7 +5495,7 @@ $root.editor = (function() {
         QuickFixRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.QuickFixRequest)
                 return object;
-            var message = new $root.editor.QuickFixRequest();
+            let message = new $root.editor.QuickFixRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.position != null)
@@ -5351,7 +5504,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.QuickFixRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.QuickFixRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
@@ -5372,7 +5525,7 @@ $root.editor = (function() {
         QuickFixRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults) {
@@ -5385,7 +5538,7 @@ $root.editor = (function() {
                 object.position = message.position;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
             return object;
@@ -5440,7 +5593,7 @@ $root.editor = (function() {
         function QuickFixReply(properties) {
             this.fixes = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5478,7 +5631,7 @@ $root.editor = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.fixes != null && message.fixes.length)
-                for (var i = 0; i < message.fixes.length; ++i)
+                for (let i = 0; i < message.fixes.length; ++i)
                     $root.editor.QuickFixItem.encode(message.fixes[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -5510,9 +5663,9 @@ $root.editor = (function() {
         QuickFixReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5560,8 +5713,8 @@ $root.editor = (function() {
             if (message.fixes != null && message.hasOwnProperty("fixes")) {
                 if (!Array.isArray(message.fixes))
                     return "fixes: array expected";
-                for (var i = 0; i < message.fixes.length; ++i) {
-                    var error = $root.editor.QuickFixItem.verify(message.fixes[i]);
+                for (let i = 0; i < message.fixes.length; ++i) {
+                    let error = $root.editor.QuickFixItem.verify(message.fixes[i]);
                     if (error)
                         return "fixes." + error;
                 }
@@ -5580,12 +5733,12 @@ $root.editor = (function() {
         QuickFixReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.QuickFixReply)
                 return object;
-            var message = new $root.editor.QuickFixReply();
+            let message = new $root.editor.QuickFixReply();
             if (object.fixes) {
                 if (!Array.isArray(object.fixes))
                     throw TypeError(".editor.QuickFixReply.fixes: array expected");
                 message.fixes = [];
-                for (var i = 0; i < object.fixes.length; ++i) {
+                for (let i = 0; i < object.fixes.length; ++i) {
                     if (typeof object.fixes[i] !== "object")
                         throw TypeError(".editor.QuickFixReply.fixes: object expected");
                     message.fixes[i] = $root.editor.QuickFixItem.fromObject(object.fixes[i]);
@@ -5606,12 +5759,12 @@ $root.editor = (function() {
         QuickFixReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.fixes = [];
             if (message.fixes && message.fixes.length) {
                 object.fixes = [];
-                for (var j = 0; j < message.fixes.length; ++j)
+                for (let j = 0; j < message.fixes.length; ++j)
                     object.fixes[j] = $root.editor.QuickFixItem.toObject(message.fixes[j], options);
             }
             return object;
@@ -5668,7 +5821,7 @@ $root.editor = (function() {
          */
         function QuickFixItem(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5767,9 +5920,9 @@ $root.editor = (function() {
         QuickFixItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixItem();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.QuickFixItem();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -5850,7 +6003,7 @@ $root.editor = (function() {
         QuickFixItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.QuickFixItem)
                 return object;
-            var message = new $root.editor.QuickFixItem();
+            let message = new $root.editor.QuickFixItem();
             if (object.title != null)
                 message.title = String(object.title);
             if (object.newText != null)
@@ -5874,7 +6027,7 @@ $root.editor = (function() {
         QuickFixItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.title = "";
                 object.newText = "";
@@ -5931,6 +6084,7 @@ $root.editor = (function() {
          * @property {string|null} [typeName] ExecuteCodeRequest typeName
          * @property {string|null} [methodName] ExecuteCodeRequest methodName
          * @property {Array.<editor.ISourceFile>|null} [extraFiles] ExecuteCodeRequest extraFiles
+         * @property {string|null} [connectionId] ExecuteCodeRequest connectionId
          */
 
         /**
@@ -5944,7 +6098,7 @@ $root.editor = (function() {
         function ExecuteCodeRequest(properties) {
             this.extraFiles = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5982,6 +6136,14 @@ $root.editor = (function() {
         ExecuteCodeRequest.prototype.extraFiles = $util.emptyArray;
 
         /**
+         * ExecuteCodeRequest connectionId.
+         * @member {string} connectionId
+         * @memberof editor.ExecuteCodeRequest
+         * @instance
+         */
+        ExecuteCodeRequest.prototype.connectionId = "";
+
+        /**
          * Creates a new ExecuteCodeRequest instance using the specified properties.
          * @function create
          * @memberof editor.ExecuteCodeRequest
@@ -6012,8 +6174,10 @@ $root.editor = (function() {
             if (message.methodName != null && Object.hasOwnProperty.call(message, "methodName"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.methodName);
             if (message.extraFiles != null && message.extraFiles.length)
-                for (var i = 0; i < message.extraFiles.length; ++i)
+                for (let i = 0; i < message.extraFiles.length; ++i)
                     $root.editor.SourceFile.encode(message.extraFiles[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.connectionId != null && Object.hasOwnProperty.call(message, "connectionId"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.connectionId);
             return writer;
         };
 
@@ -6044,9 +6208,9 @@ $root.editor = (function() {
         ExecuteCodeRequest.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeRequest();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeRequest();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -6066,6 +6230,10 @@ $root.editor = (function() {
                         if (!(message.extraFiles && message.extraFiles.length))
                             message.extraFiles = [];
                         message.extraFiles.push($root.editor.SourceFile.decode(reader, reader.uint32()));
+                        break;
+                    }
+                case 5: {
+                        message.connectionId = reader.string();
                         break;
                     }
                 default:
@@ -6115,12 +6283,15 @@ $root.editor = (function() {
             if (message.extraFiles != null && message.hasOwnProperty("extraFiles")) {
                 if (!Array.isArray(message.extraFiles))
                     return "extraFiles: array expected";
-                for (var i = 0; i < message.extraFiles.length; ++i) {
-                    var error = $root.editor.SourceFile.verify(message.extraFiles[i]);
+                for (let i = 0; i < message.extraFiles.length; ++i) {
+                    let error = $root.editor.SourceFile.verify(message.extraFiles[i]);
                     if (error)
                         return "extraFiles." + error;
                 }
             }
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                if (!$util.isString(message.connectionId))
+                    return "connectionId: string expected";
             return null;
         };
 
@@ -6135,7 +6306,7 @@ $root.editor = (function() {
         ExecuteCodeRequest.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.ExecuteCodeRequest)
                 return object;
-            var message = new $root.editor.ExecuteCodeRequest();
+            let message = new $root.editor.ExecuteCodeRequest();
             if (object.code != null)
                 message.code = String(object.code);
             if (object.typeName != null)
@@ -6146,12 +6317,14 @@ $root.editor = (function() {
                 if (!Array.isArray(object.extraFiles))
                     throw TypeError(".editor.ExecuteCodeRequest.extraFiles: array expected");
                 message.extraFiles = [];
-                for (var i = 0; i < object.extraFiles.length; ++i) {
+                for (let i = 0; i < object.extraFiles.length; ++i) {
                     if (typeof object.extraFiles[i] !== "object")
                         throw TypeError(".editor.ExecuteCodeRequest.extraFiles: object expected");
                     message.extraFiles[i] = $root.editor.SourceFile.fromObject(object.extraFiles[i]);
                 }
             }
+            if (object.connectionId != null)
+                message.connectionId = String(object.connectionId);
             return message;
         };
 
@@ -6167,13 +6340,14 @@ $root.editor = (function() {
         ExecuteCodeRequest.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.extraFiles = [];
             if (options.defaults) {
                 object.code = "";
                 object.typeName = "";
                 object.methodName = "";
+                object.connectionId = "";
             }
             if (message.code != null && message.hasOwnProperty("code"))
                 object.code = message.code;
@@ -6183,9 +6357,11 @@ $root.editor = (function() {
                 object.methodName = message.methodName;
             if (message.extraFiles && message.extraFiles.length) {
                 object.extraFiles = [];
-                for (var j = 0; j < message.extraFiles.length; ++j)
+                for (let j = 0; j < message.extraFiles.length; ++j)
                     object.extraFiles[j] = $root.editor.SourceFile.toObject(message.extraFiles[j], options);
             }
+            if (message.connectionId != null && message.hasOwnProperty("connectionId"))
+                object.connectionId = message.connectionId;
             return object;
         };
 
@@ -6238,7 +6414,7 @@ $root.editor = (function() {
          */
         function SourceFile(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6317,9 +6493,9 @@ $root.editor = (function() {
         SourceFile.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SourceFile();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SourceFile();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -6386,7 +6562,7 @@ $root.editor = (function() {
         SourceFile.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.SourceFile)
                 return object;
-            var message = new $root.editor.SourceFile();
+            let message = new $root.editor.SourceFile();
             if (object.fileName != null)
                 message.fileName = String(object.fileName);
             if (object.content != null)
@@ -6406,7 +6582,7 @@ $root.editor = (function() {
         SourceFile.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.fileName = "";
                 object.content = "";
@@ -6471,7 +6647,7 @@ $root.editor = (function() {
         function ExecuteCodeReply(properties) {
             this.diagnostics = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6547,7 +6723,7 @@ $root.editor = (function() {
             if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.errorMessage);
             if (message.diagnostics != null && message.diagnostics.length)
-                for (var i = 0; i < message.diagnostics.length; ++i)
+                for (let i = 0; i < message.diagnostics.length; ++i)
                     $root.editor.DiagnosticItem.encode(message.diagnostics[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             if (message.consoleOutput != null && Object.hasOwnProperty.call(message, "consoleOutput"))
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.consoleOutput);
@@ -6581,9 +6757,9 @@ $root.editor = (function() {
         ExecuteCodeReply.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeReply();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ExecuteCodeReply();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -6656,8 +6832,8 @@ $root.editor = (function() {
             if (message.diagnostics != null && message.hasOwnProperty("diagnostics")) {
                 if (!Array.isArray(message.diagnostics))
                     return "diagnostics: array expected";
-                for (var i = 0; i < message.diagnostics.length; ++i) {
-                    var error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
+                for (let i = 0; i < message.diagnostics.length; ++i) {
+                    let error = $root.editor.DiagnosticItem.verify(message.diagnostics[i]);
                     if (error)
                         return "diagnostics." + error;
                 }
@@ -6679,7 +6855,7 @@ $root.editor = (function() {
         ExecuteCodeReply.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.ExecuteCodeReply)
                 return object;
-            var message = new $root.editor.ExecuteCodeReply();
+            let message = new $root.editor.ExecuteCodeReply();
             if (object.success != null)
                 message.success = Boolean(object.success);
             if (object.output != null)
@@ -6690,7 +6866,7 @@ $root.editor = (function() {
                 if (!Array.isArray(object.diagnostics))
                     throw TypeError(".editor.ExecuteCodeReply.diagnostics: array expected");
                 message.diagnostics = [];
-                for (var i = 0; i < object.diagnostics.length; ++i) {
+                for (let i = 0; i < object.diagnostics.length; ++i) {
                     if (typeof object.diagnostics[i] !== "object")
                         throw TypeError(".editor.ExecuteCodeReply.diagnostics: object expected");
                     message.diagnostics[i] = $root.editor.DiagnosticItem.fromObject(object.diagnostics[i]);
@@ -6713,7 +6889,7 @@ $root.editor = (function() {
         ExecuteCodeReply.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.diagnostics = [];
             if (options.defaults) {
@@ -6730,7 +6906,7 @@ $root.editor = (function() {
                 object.errorMessage = message.errorMessage;
             if (message.diagnostics && message.diagnostics.length) {
                 object.diagnostics = [];
-                for (var j = 0; j < message.diagnostics.length; ++j)
+                for (let j = 0; j < message.diagnostics.length; ++j)
                     object.diagnostics[j] = $root.editor.DiagnosticItem.toObject(message.diagnostics[j], options);
             }
             if (message.consoleOutput != null && message.hasOwnProperty("consoleOutput"))
@@ -6790,7 +6966,7 @@ $root.editor = (function() {
          */
         function DiagnosticItem(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6899,9 +7075,9 @@ $root.editor = (function() {
         DiagnosticItem.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticItem();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DiagnosticItem();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
                 if (tag === error)
                     break;
                 switch (tag >>> 3) {
@@ -6989,7 +7165,7 @@ $root.editor = (function() {
         DiagnosticItem.fromObject = function fromObject(object) {
             if (object instanceof $root.editor.DiagnosticItem)
                 return object;
-            var message = new $root.editor.DiagnosticItem();
+            let message = new $root.editor.DiagnosticItem();
             if (object.id != null)
                 message.id = String(object.id);
             if (object.message != null)
@@ -7015,7 +7191,7 @@ $root.editor = (function() {
         DiagnosticItem.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.id = "";
                 object.message = "";
@@ -7065,8 +7241,2039 @@ $root.editor = (function() {
         return DiagnosticItem;
     })();
 
+    editor.ConnectionInfo = (function() {
+
+        /**
+         * Properties of a ConnectionInfo.
+         * @memberof editor
+         * @interface IConnectionInfo
+         * @property {string|null} [id] ConnectionInfo id
+         * @property {string|null} [name] ConnectionInfo name
+         * @property {string|null} [provider] ConnectionInfo provider
+         * @property {string|null} [connectionString] ConnectionInfo connectionString
+         */
+
+        /**
+         * Constructs a new ConnectionInfo.
+         * @memberof editor
+         * @classdesc Represents a ConnectionInfo.
+         * @implements IConnectionInfo
+         * @constructor
+         * @param {editor.IConnectionInfo=} [properties] Properties to set
+         */
+        function ConnectionInfo(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ConnectionInfo id.
+         * @member {string} id
+         * @memberof editor.ConnectionInfo
+         * @instance
+         */
+        ConnectionInfo.prototype.id = "";
+
+        /**
+         * ConnectionInfo name.
+         * @member {string} name
+         * @memberof editor.ConnectionInfo
+         * @instance
+         */
+        ConnectionInfo.prototype.name = "";
+
+        /**
+         * ConnectionInfo provider.
+         * @member {string} provider
+         * @memberof editor.ConnectionInfo
+         * @instance
+         */
+        ConnectionInfo.prototype.provider = "";
+
+        /**
+         * ConnectionInfo connectionString.
+         * @member {string} connectionString
+         * @memberof editor.ConnectionInfo
+         * @instance
+         */
+        ConnectionInfo.prototype.connectionString = "";
+
+        /**
+         * Creates a new ConnectionInfo instance using the specified properties.
+         * @function create
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {editor.IConnectionInfo=} [properties] Properties to set
+         * @returns {editor.ConnectionInfo} ConnectionInfo instance
+         */
+        ConnectionInfo.create = function create(properties) {
+            return new ConnectionInfo(properties);
+        };
+
+        /**
+         * Encodes the specified ConnectionInfo message. Does not implicitly {@link editor.ConnectionInfo.verify|verify} messages.
+         * @function encode
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {editor.IConnectionInfo} message ConnectionInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectionInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            if (message.provider != null && Object.hasOwnProperty.call(message, "provider"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.provider);
+            if (message.connectionString != null && Object.hasOwnProperty.call(message, "connectionString"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.connectionString);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ConnectionInfo message, length delimited. Does not implicitly {@link editor.ConnectionInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {editor.IConnectionInfo} message ConnectionInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectionInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ConnectionInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.ConnectionInfo} ConnectionInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectionInfo.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.ConnectionInfo();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.provider = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.connectionString = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ConnectionInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.ConnectionInfo} ConnectionInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectionInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ConnectionInfo message.
+         * @function verify
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ConnectionInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isString(message.id))
+                    return "id: string expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.provider != null && message.hasOwnProperty("provider"))
+                if (!$util.isString(message.provider))
+                    return "provider: string expected";
+            if (message.connectionString != null && message.hasOwnProperty("connectionString"))
+                if (!$util.isString(message.connectionString))
+                    return "connectionString: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a ConnectionInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.ConnectionInfo} ConnectionInfo
+         */
+        ConnectionInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.ConnectionInfo)
+                return object;
+            let message = new $root.editor.ConnectionInfo();
+            if (object.id != null)
+                message.id = String(object.id);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.provider != null)
+                message.provider = String(object.provider);
+            if (object.connectionString != null)
+                message.connectionString = String(object.connectionString);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ConnectionInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {editor.ConnectionInfo} message ConnectionInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ConnectionInfo.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.id = "";
+                object.name = "";
+                object.provider = "";
+                object.connectionString = "";
+            }
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.provider != null && message.hasOwnProperty("provider"))
+                object.provider = message.provider;
+            if (message.connectionString != null && message.hasOwnProperty("connectionString"))
+                object.connectionString = message.connectionString;
+            return object;
+        };
+
+        /**
+         * Converts this ConnectionInfo to JSON.
+         * @function toJSON
+         * @memberof editor.ConnectionInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ConnectionInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ConnectionInfo
+         * @function getTypeUrl
+         * @memberof editor.ConnectionInfo
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ConnectionInfo.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.ConnectionInfo";
+        };
+
+        return ConnectionInfo;
+    })();
+
+    editor.GetConnectionsRequest = (function() {
+
+        /**
+         * Properties of a GetConnectionsRequest.
+         * @memberof editor
+         * @interface IGetConnectionsRequest
+         */
+
+        /**
+         * Constructs a new GetConnectionsRequest.
+         * @memberof editor
+         * @classdesc Represents a GetConnectionsRequest.
+         * @implements IGetConnectionsRequest
+         * @constructor
+         * @param {editor.IGetConnectionsRequest=} [properties] Properties to set
+         */
+        function GetConnectionsRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new GetConnectionsRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {editor.IGetConnectionsRequest=} [properties] Properties to set
+         * @returns {editor.GetConnectionsRequest} GetConnectionsRequest instance
+         */
+        GetConnectionsRequest.create = function create(properties) {
+            return new GetConnectionsRequest(properties);
+        };
+
+        /**
+         * Encodes the specified GetConnectionsRequest message. Does not implicitly {@link editor.GetConnectionsRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {editor.IGetConnectionsRequest} message GetConnectionsRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetConnectionsRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GetConnectionsRequest message, length delimited. Does not implicitly {@link editor.GetConnectionsRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {editor.IGetConnectionsRequest} message GetConnectionsRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetConnectionsRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GetConnectionsRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GetConnectionsRequest} GetConnectionsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetConnectionsRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GetConnectionsRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GetConnectionsRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GetConnectionsRequest} GetConnectionsRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetConnectionsRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GetConnectionsRequest message.
+         * @function verify
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GetConnectionsRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a GetConnectionsRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GetConnectionsRequest} GetConnectionsRequest
+         */
+        GetConnectionsRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GetConnectionsRequest)
+                return object;
+            return new $root.editor.GetConnectionsRequest();
+        };
+
+        /**
+         * Creates a plain object from a GetConnectionsRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {editor.GetConnectionsRequest} message GetConnectionsRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GetConnectionsRequest.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this GetConnectionsRequest to JSON.
+         * @function toJSON
+         * @memberof editor.GetConnectionsRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GetConnectionsRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GetConnectionsRequest
+         * @function getTypeUrl
+         * @memberof editor.GetConnectionsRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GetConnectionsRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GetConnectionsRequest";
+        };
+
+        return GetConnectionsRequest;
+    })();
+
+    editor.GetConnectionsReply = (function() {
+
+        /**
+         * Properties of a GetConnectionsReply.
+         * @memberof editor
+         * @interface IGetConnectionsReply
+         * @property {Array.<editor.IConnectionInfo>|null} [connections] GetConnectionsReply connections
+         */
+
+        /**
+         * Constructs a new GetConnectionsReply.
+         * @memberof editor
+         * @classdesc Represents a GetConnectionsReply.
+         * @implements IGetConnectionsReply
+         * @constructor
+         * @param {editor.IGetConnectionsReply=} [properties] Properties to set
+         */
+        function GetConnectionsReply(properties) {
+            this.connections = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GetConnectionsReply connections.
+         * @member {Array.<editor.IConnectionInfo>} connections
+         * @memberof editor.GetConnectionsReply
+         * @instance
+         */
+        GetConnectionsReply.prototype.connections = $util.emptyArray;
+
+        /**
+         * Creates a new GetConnectionsReply instance using the specified properties.
+         * @function create
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {editor.IGetConnectionsReply=} [properties] Properties to set
+         * @returns {editor.GetConnectionsReply} GetConnectionsReply instance
+         */
+        GetConnectionsReply.create = function create(properties) {
+            return new GetConnectionsReply(properties);
+        };
+
+        /**
+         * Encodes the specified GetConnectionsReply message. Does not implicitly {@link editor.GetConnectionsReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {editor.IGetConnectionsReply} message GetConnectionsReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetConnectionsReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connections != null && message.connections.length)
+                for (let i = 0; i < message.connections.length; ++i)
+                    $root.editor.ConnectionInfo.encode(message.connections[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GetConnectionsReply message, length delimited. Does not implicitly {@link editor.GetConnectionsReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {editor.IGetConnectionsReply} message GetConnectionsReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GetConnectionsReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GetConnectionsReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.GetConnectionsReply} GetConnectionsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetConnectionsReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.GetConnectionsReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        if (!(message.connections && message.connections.length))
+                            message.connections = [];
+                        message.connections.push($root.editor.ConnectionInfo.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GetConnectionsReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.GetConnectionsReply} GetConnectionsReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GetConnectionsReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GetConnectionsReply message.
+         * @function verify
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GetConnectionsReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connections != null && message.hasOwnProperty("connections")) {
+                if (!Array.isArray(message.connections))
+                    return "connections: array expected";
+                for (let i = 0; i < message.connections.length; ++i) {
+                    let error = $root.editor.ConnectionInfo.verify(message.connections[i]);
+                    if (error)
+                        return "connections." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a GetConnectionsReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.GetConnectionsReply} GetConnectionsReply
+         */
+        GetConnectionsReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.GetConnectionsReply)
+                return object;
+            let message = new $root.editor.GetConnectionsReply();
+            if (object.connections) {
+                if (!Array.isArray(object.connections))
+                    throw TypeError(".editor.GetConnectionsReply.connections: array expected");
+                message.connections = [];
+                for (let i = 0; i < object.connections.length; ++i) {
+                    if (typeof object.connections[i] !== "object")
+                        throw TypeError(".editor.GetConnectionsReply.connections: object expected");
+                    message.connections[i] = $root.editor.ConnectionInfo.fromObject(object.connections[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GetConnectionsReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {editor.GetConnectionsReply} message GetConnectionsReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GetConnectionsReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.connections = [];
+            if (message.connections && message.connections.length) {
+                object.connections = [];
+                for (let j = 0; j < message.connections.length; ++j)
+                    object.connections[j] = $root.editor.ConnectionInfo.toObject(message.connections[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this GetConnectionsReply to JSON.
+         * @function toJSON
+         * @memberof editor.GetConnectionsReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GetConnectionsReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GetConnectionsReply
+         * @function getTypeUrl
+         * @memberof editor.GetConnectionsReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GetConnectionsReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.GetConnectionsReply";
+        };
+
+        return GetConnectionsReply;
+    })();
+
+    editor.SaveConnectionRequest = (function() {
+
+        /**
+         * Properties of a SaveConnectionRequest.
+         * @memberof editor
+         * @interface ISaveConnectionRequest
+         * @property {editor.IConnectionInfo|null} [connection] SaveConnectionRequest connection
+         */
+
+        /**
+         * Constructs a new SaveConnectionRequest.
+         * @memberof editor
+         * @classdesc Represents a SaveConnectionRequest.
+         * @implements ISaveConnectionRequest
+         * @constructor
+         * @param {editor.ISaveConnectionRequest=} [properties] Properties to set
+         */
+        function SaveConnectionRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SaveConnectionRequest connection.
+         * @member {editor.IConnectionInfo|null|undefined} connection
+         * @memberof editor.SaveConnectionRequest
+         * @instance
+         */
+        SaveConnectionRequest.prototype.connection = null;
+
+        /**
+         * Creates a new SaveConnectionRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {editor.ISaveConnectionRequest=} [properties] Properties to set
+         * @returns {editor.SaveConnectionRequest} SaveConnectionRequest instance
+         */
+        SaveConnectionRequest.create = function create(properties) {
+            return new SaveConnectionRequest(properties);
+        };
+
+        /**
+         * Encodes the specified SaveConnectionRequest message. Does not implicitly {@link editor.SaveConnectionRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {editor.ISaveConnectionRequest} message SaveConnectionRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SaveConnectionRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connection != null && Object.hasOwnProperty.call(message, "connection"))
+                $root.editor.ConnectionInfo.encode(message.connection, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SaveConnectionRequest message, length delimited. Does not implicitly {@link editor.SaveConnectionRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {editor.ISaveConnectionRequest} message SaveConnectionRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SaveConnectionRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SaveConnectionRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.SaveConnectionRequest} SaveConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SaveConnectionRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SaveConnectionRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.connection = $root.editor.ConnectionInfo.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SaveConnectionRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.SaveConnectionRequest} SaveConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SaveConnectionRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SaveConnectionRequest message.
+         * @function verify
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SaveConnectionRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connection != null && message.hasOwnProperty("connection")) {
+                let error = $root.editor.ConnectionInfo.verify(message.connection);
+                if (error)
+                    return "connection." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a SaveConnectionRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.SaveConnectionRequest} SaveConnectionRequest
+         */
+        SaveConnectionRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.SaveConnectionRequest)
+                return object;
+            let message = new $root.editor.SaveConnectionRequest();
+            if (object.connection != null) {
+                if (typeof object.connection !== "object")
+                    throw TypeError(".editor.SaveConnectionRequest.connection: object expected");
+                message.connection = $root.editor.ConnectionInfo.fromObject(object.connection);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SaveConnectionRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {editor.SaveConnectionRequest} message SaveConnectionRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SaveConnectionRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.connection = null;
+            if (message.connection != null && message.hasOwnProperty("connection"))
+                object.connection = $root.editor.ConnectionInfo.toObject(message.connection, options);
+            return object;
+        };
+
+        /**
+         * Converts this SaveConnectionRequest to JSON.
+         * @function toJSON
+         * @memberof editor.SaveConnectionRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SaveConnectionRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SaveConnectionRequest
+         * @function getTypeUrl
+         * @memberof editor.SaveConnectionRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SaveConnectionRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.SaveConnectionRequest";
+        };
+
+        return SaveConnectionRequest;
+    })();
+
+    editor.SaveConnectionReply = (function() {
+
+        /**
+         * Properties of a SaveConnectionReply.
+         * @memberof editor
+         * @interface ISaveConnectionReply
+         * @property {boolean|null} [success] SaveConnectionReply success
+         * @property {string|null} [errorMessage] SaveConnectionReply errorMessage
+         * @property {string|null} [id] SaveConnectionReply id
+         */
+
+        /**
+         * Constructs a new SaveConnectionReply.
+         * @memberof editor
+         * @classdesc Represents a SaveConnectionReply.
+         * @implements ISaveConnectionReply
+         * @constructor
+         * @param {editor.ISaveConnectionReply=} [properties] Properties to set
+         */
+        function SaveConnectionReply(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SaveConnectionReply success.
+         * @member {boolean} success
+         * @memberof editor.SaveConnectionReply
+         * @instance
+         */
+        SaveConnectionReply.prototype.success = false;
+
+        /**
+         * SaveConnectionReply errorMessage.
+         * @member {string} errorMessage
+         * @memberof editor.SaveConnectionReply
+         * @instance
+         */
+        SaveConnectionReply.prototype.errorMessage = "";
+
+        /**
+         * SaveConnectionReply id.
+         * @member {string} id
+         * @memberof editor.SaveConnectionReply
+         * @instance
+         */
+        SaveConnectionReply.prototype.id = "";
+
+        /**
+         * Creates a new SaveConnectionReply instance using the specified properties.
+         * @function create
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {editor.ISaveConnectionReply=} [properties] Properties to set
+         * @returns {editor.SaveConnectionReply} SaveConnectionReply instance
+         */
+        SaveConnectionReply.create = function create(properties) {
+            return new SaveConnectionReply(properties);
+        };
+
+        /**
+         * Encodes the specified SaveConnectionReply message. Does not implicitly {@link editor.SaveConnectionReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {editor.ISaveConnectionReply} message SaveConnectionReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SaveConnectionReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.errorMessage);
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.id);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SaveConnectionReply message, length delimited. Does not implicitly {@link editor.SaveConnectionReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {editor.ISaveConnectionReply} message SaveConnectionReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SaveConnectionReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SaveConnectionReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.SaveConnectionReply} SaveConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SaveConnectionReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.SaveConnectionReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.id = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SaveConnectionReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.SaveConnectionReply} SaveConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SaveConnectionReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SaveConnectionReply message.
+         * @function verify
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SaveConnectionReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isString(message.id))
+                    return "id: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a SaveConnectionReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.SaveConnectionReply} SaveConnectionReply
+         */
+        SaveConnectionReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.SaveConnectionReply)
+                return object;
+            let message = new $root.editor.SaveConnectionReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            if (object.id != null)
+                message.id = String(object.id);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SaveConnectionReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {editor.SaveConnectionReply} message SaveConnectionReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SaveConnectionReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.errorMessage = "";
+                object.id = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            return object;
+        };
+
+        /**
+         * Converts this SaveConnectionReply to JSON.
+         * @function toJSON
+         * @memberof editor.SaveConnectionReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SaveConnectionReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SaveConnectionReply
+         * @function getTypeUrl
+         * @memberof editor.SaveConnectionReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SaveConnectionReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.SaveConnectionReply";
+        };
+
+        return SaveConnectionReply;
+    })();
+
+    editor.DeleteConnectionRequest = (function() {
+
+        /**
+         * Properties of a DeleteConnectionRequest.
+         * @memberof editor
+         * @interface IDeleteConnectionRequest
+         * @property {string|null} [id] DeleteConnectionRequest id
+         */
+
+        /**
+         * Constructs a new DeleteConnectionRequest.
+         * @memberof editor
+         * @classdesc Represents a DeleteConnectionRequest.
+         * @implements IDeleteConnectionRequest
+         * @constructor
+         * @param {editor.IDeleteConnectionRequest=} [properties] Properties to set
+         */
+        function DeleteConnectionRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * DeleteConnectionRequest id.
+         * @member {string} id
+         * @memberof editor.DeleteConnectionRequest
+         * @instance
+         */
+        DeleteConnectionRequest.prototype.id = "";
+
+        /**
+         * Creates a new DeleteConnectionRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {editor.IDeleteConnectionRequest=} [properties] Properties to set
+         * @returns {editor.DeleteConnectionRequest} DeleteConnectionRequest instance
+         */
+        DeleteConnectionRequest.create = function create(properties) {
+            return new DeleteConnectionRequest(properties);
+        };
+
+        /**
+         * Encodes the specified DeleteConnectionRequest message. Does not implicitly {@link editor.DeleteConnectionRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {editor.IDeleteConnectionRequest} message DeleteConnectionRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeleteConnectionRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified DeleteConnectionRequest message, length delimited. Does not implicitly {@link editor.DeleteConnectionRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {editor.IDeleteConnectionRequest} message DeleteConnectionRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeleteConnectionRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a DeleteConnectionRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.DeleteConnectionRequest} DeleteConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeleteConnectionRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DeleteConnectionRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.id = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a DeleteConnectionRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.DeleteConnectionRequest} DeleteConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeleteConnectionRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a DeleteConnectionRequest message.
+         * @function verify
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        DeleteConnectionRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isString(message.id))
+                    return "id: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a DeleteConnectionRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.DeleteConnectionRequest} DeleteConnectionRequest
+         */
+        DeleteConnectionRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.DeleteConnectionRequest)
+                return object;
+            let message = new $root.editor.DeleteConnectionRequest();
+            if (object.id != null)
+                message.id = String(object.id);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a DeleteConnectionRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {editor.DeleteConnectionRequest} message DeleteConnectionRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        DeleteConnectionRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.id = "";
+            if (message.id != null && message.hasOwnProperty("id"))
+                object.id = message.id;
+            return object;
+        };
+
+        /**
+         * Converts this DeleteConnectionRequest to JSON.
+         * @function toJSON
+         * @memberof editor.DeleteConnectionRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        DeleteConnectionRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DeleteConnectionRequest
+         * @function getTypeUrl
+         * @memberof editor.DeleteConnectionRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DeleteConnectionRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.DeleteConnectionRequest";
+        };
+
+        return DeleteConnectionRequest;
+    })();
+
+    editor.DeleteConnectionReply = (function() {
+
+        /**
+         * Properties of a DeleteConnectionReply.
+         * @memberof editor
+         * @interface IDeleteConnectionReply
+         * @property {boolean|null} [success] DeleteConnectionReply success
+         * @property {string|null} [errorMessage] DeleteConnectionReply errorMessage
+         */
+
+        /**
+         * Constructs a new DeleteConnectionReply.
+         * @memberof editor
+         * @classdesc Represents a DeleteConnectionReply.
+         * @implements IDeleteConnectionReply
+         * @constructor
+         * @param {editor.IDeleteConnectionReply=} [properties] Properties to set
+         */
+        function DeleteConnectionReply(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * DeleteConnectionReply success.
+         * @member {boolean} success
+         * @memberof editor.DeleteConnectionReply
+         * @instance
+         */
+        DeleteConnectionReply.prototype.success = false;
+
+        /**
+         * DeleteConnectionReply errorMessage.
+         * @member {string} errorMessage
+         * @memberof editor.DeleteConnectionReply
+         * @instance
+         */
+        DeleteConnectionReply.prototype.errorMessage = "";
+
+        /**
+         * Creates a new DeleteConnectionReply instance using the specified properties.
+         * @function create
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {editor.IDeleteConnectionReply=} [properties] Properties to set
+         * @returns {editor.DeleteConnectionReply} DeleteConnectionReply instance
+         */
+        DeleteConnectionReply.create = function create(properties) {
+            return new DeleteConnectionReply(properties);
+        };
+
+        /**
+         * Encodes the specified DeleteConnectionReply message. Does not implicitly {@link editor.DeleteConnectionReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {editor.IDeleteConnectionReply} message DeleteConnectionReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeleteConnectionReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.errorMessage);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified DeleteConnectionReply message, length delimited. Does not implicitly {@link editor.DeleteConnectionReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {editor.IDeleteConnectionReply} message DeleteConnectionReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeleteConnectionReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a DeleteConnectionReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.DeleteConnectionReply} DeleteConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeleteConnectionReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.DeleteConnectionReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a DeleteConnectionReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.DeleteConnectionReply} DeleteConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeleteConnectionReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a DeleteConnectionReply message.
+         * @function verify
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        DeleteConnectionReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a DeleteConnectionReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.DeleteConnectionReply} DeleteConnectionReply
+         */
+        DeleteConnectionReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.DeleteConnectionReply)
+                return object;
+            let message = new $root.editor.DeleteConnectionReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a DeleteConnectionReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {editor.DeleteConnectionReply} message DeleteConnectionReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        DeleteConnectionReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.errorMessage = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            return object;
+        };
+
+        /**
+         * Converts this DeleteConnectionReply to JSON.
+         * @function toJSON
+         * @memberof editor.DeleteConnectionReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        DeleteConnectionReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DeleteConnectionReply
+         * @function getTypeUrl
+         * @memberof editor.DeleteConnectionReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DeleteConnectionReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.DeleteConnectionReply";
+        };
+
+        return DeleteConnectionReply;
+    })();
+
+    editor.TestConnectionRequest = (function() {
+
+        /**
+         * Properties of a TestConnectionRequest.
+         * @memberof editor
+         * @interface ITestConnectionRequest
+         * @property {string|null} [connectionString] TestConnectionRequest connectionString
+         * @property {string|null} [provider] TestConnectionRequest provider
+         */
+
+        /**
+         * Constructs a new TestConnectionRequest.
+         * @memberof editor
+         * @classdesc Represents a TestConnectionRequest.
+         * @implements ITestConnectionRequest
+         * @constructor
+         * @param {editor.ITestConnectionRequest=} [properties] Properties to set
+         */
+        function TestConnectionRequest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TestConnectionRequest connectionString.
+         * @member {string} connectionString
+         * @memberof editor.TestConnectionRequest
+         * @instance
+         */
+        TestConnectionRequest.prototype.connectionString = "";
+
+        /**
+         * TestConnectionRequest provider.
+         * @member {string} provider
+         * @memberof editor.TestConnectionRequest
+         * @instance
+         */
+        TestConnectionRequest.prototype.provider = "";
+
+        /**
+         * Creates a new TestConnectionRequest instance using the specified properties.
+         * @function create
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {editor.ITestConnectionRequest=} [properties] Properties to set
+         * @returns {editor.TestConnectionRequest} TestConnectionRequest instance
+         */
+        TestConnectionRequest.create = function create(properties) {
+            return new TestConnectionRequest(properties);
+        };
+
+        /**
+         * Encodes the specified TestConnectionRequest message. Does not implicitly {@link editor.TestConnectionRequest.verify|verify} messages.
+         * @function encode
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {editor.ITestConnectionRequest} message TestConnectionRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TestConnectionRequest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.connectionString != null && Object.hasOwnProperty.call(message, "connectionString"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.connectionString);
+            if (message.provider != null && Object.hasOwnProperty.call(message, "provider"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.provider);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TestConnectionRequest message, length delimited. Does not implicitly {@link editor.TestConnectionRequest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {editor.ITestConnectionRequest} message TestConnectionRequest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TestConnectionRequest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TestConnectionRequest message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.TestConnectionRequest} TestConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TestConnectionRequest.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.TestConnectionRequest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.connectionString = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.provider = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a TestConnectionRequest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.TestConnectionRequest} TestConnectionRequest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TestConnectionRequest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TestConnectionRequest message.
+         * @function verify
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TestConnectionRequest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.connectionString != null && message.hasOwnProperty("connectionString"))
+                if (!$util.isString(message.connectionString))
+                    return "connectionString: string expected";
+            if (message.provider != null && message.hasOwnProperty("provider"))
+                if (!$util.isString(message.provider))
+                    return "provider: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a TestConnectionRequest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.TestConnectionRequest} TestConnectionRequest
+         */
+        TestConnectionRequest.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.TestConnectionRequest)
+                return object;
+            let message = new $root.editor.TestConnectionRequest();
+            if (object.connectionString != null)
+                message.connectionString = String(object.connectionString);
+            if (object.provider != null)
+                message.provider = String(object.provider);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TestConnectionRequest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {editor.TestConnectionRequest} message TestConnectionRequest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TestConnectionRequest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.connectionString = "";
+                object.provider = "";
+            }
+            if (message.connectionString != null && message.hasOwnProperty("connectionString"))
+                object.connectionString = message.connectionString;
+            if (message.provider != null && message.hasOwnProperty("provider"))
+                object.provider = message.provider;
+            return object;
+        };
+
+        /**
+         * Converts this TestConnectionRequest to JSON.
+         * @function toJSON
+         * @memberof editor.TestConnectionRequest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TestConnectionRequest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for TestConnectionRequest
+         * @function getTypeUrl
+         * @memberof editor.TestConnectionRequest
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        TestConnectionRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.TestConnectionRequest";
+        };
+
+        return TestConnectionRequest;
+    })();
+
+    editor.TestConnectionReply = (function() {
+
+        /**
+         * Properties of a TestConnectionReply.
+         * @memberof editor
+         * @interface ITestConnectionReply
+         * @property {boolean|null} [success] TestConnectionReply success
+         * @property {string|null} [message] TestConnectionReply message
+         */
+
+        /**
+         * Constructs a new TestConnectionReply.
+         * @memberof editor
+         * @classdesc Represents a TestConnectionReply.
+         * @implements ITestConnectionReply
+         * @constructor
+         * @param {editor.ITestConnectionReply=} [properties] Properties to set
+         */
+        function TestConnectionReply(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TestConnectionReply success.
+         * @member {boolean} success
+         * @memberof editor.TestConnectionReply
+         * @instance
+         */
+        TestConnectionReply.prototype.success = false;
+
+        /**
+         * TestConnectionReply message.
+         * @member {string} message
+         * @memberof editor.TestConnectionReply
+         * @instance
+         */
+        TestConnectionReply.prototype.message = "";
+
+        /**
+         * Creates a new TestConnectionReply instance using the specified properties.
+         * @function create
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {editor.ITestConnectionReply=} [properties] Properties to set
+         * @returns {editor.TestConnectionReply} TestConnectionReply instance
+         */
+        TestConnectionReply.create = function create(properties) {
+            return new TestConnectionReply(properties);
+        };
+
+        /**
+         * Encodes the specified TestConnectionReply message. Does not implicitly {@link editor.TestConnectionReply.verify|verify} messages.
+         * @function encode
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {editor.ITestConnectionReply} message TestConnectionReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TestConnectionReply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.message);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TestConnectionReply message, length delimited. Does not implicitly {@link editor.TestConnectionReply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {editor.ITestConnectionReply} message TestConnectionReply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TestConnectionReply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TestConnectionReply message from the specified reader or buffer.
+         * @function decode
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {editor.TestConnectionReply} TestConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TestConnectionReply.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.editor.TestConnectionReply();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.message = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a TestConnectionReply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {editor.TestConnectionReply} TestConnectionReply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TestConnectionReply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TestConnectionReply message.
+         * @function verify
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TestConnectionReply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.message != null && message.hasOwnProperty("message"))
+                if (!$util.isString(message.message))
+                    return "message: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a TestConnectionReply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {editor.TestConnectionReply} TestConnectionReply
+         */
+        TestConnectionReply.fromObject = function fromObject(object) {
+            if (object instanceof $root.editor.TestConnectionReply)
+                return object;
+            let message = new $root.editor.TestConnectionReply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.message != null)
+                message.message = String(object.message);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TestConnectionReply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {editor.TestConnectionReply} message TestConnectionReply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TestConnectionReply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.message = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.message != null && message.hasOwnProperty("message"))
+                object.message = message.message;
+            return object;
+        };
+
+        /**
+         * Converts this TestConnectionReply to JSON.
+         * @function toJSON
+         * @memberof editor.TestConnectionReply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TestConnectionReply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for TestConnectionReply
+         * @function getTypeUrl
+         * @memberof editor.TestConnectionReply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        TestConnectionReply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/editor.TestConnectionReply";
+        };
+
+        return TestConnectionReply;
+    })();
+
     return editor;
 })();
 
-export const editor = $root.editor;
-export default $root;
+export { $root as default };
